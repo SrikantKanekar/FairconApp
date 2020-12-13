@@ -1,4 +1,4 @@
-package com.example.faircon.ui.home
+package com.example.faircon.ui.main.home
 
 import androidx.fragment.app.Fragment
 import com.example.faircon.R

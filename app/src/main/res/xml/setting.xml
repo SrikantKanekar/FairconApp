@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.settings.SettingsFragment">
 
-    <PreferenceCategory
-        android:title="NOTIFICATION">
+    <PreferenceCategory android:title="NOTIFICATION">
         <Preference
             android:enabled="false"
             android:icon="@drawable/ic_baseline_notifications_none_24"
@@ -11,8 +12,7 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory
-        android:title="OTHER SETTINGS">
+    <PreferenceCategory android:title="OTHER SETTINGS">
         <ListPreference
             android:defaultValue="default"
             android:entries="@array/theme_preference_array_entries"

@@ -5,14 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.example.faircon.R
-import com.example.faircon.util.MessageType
-import com.example.faircon.util.Response
-import com.example.faircon.util.StateMessageCallback
-import com.example.faircon.util.UIComponentType
+import com.example.faircon.session.SessionManager
+import com.example.faircon.util.*
+import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(),
     UICommunicationListener {
-    private val TAG: String = "AppDebug"
+
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     private var dialogInView: MaterialDialog? = null
 
     override fun onResponseReceived(
@@ -50,7 +52,7 @@ abstract class BaseActivity : AppCompatActivity(),
             is UIComponentType.None -> {
                 // This would be a good place to send to your Error Reporting
                 // software of choice (ex: Firebase crash reporting)
-                Log.i(TAG, "onResponseReceived: ${response.message}")
+                Log.i(Constants.TAG, "onResponseReceived: ${response.message}")
                 stateMessageCallback.removeMessageFromStack()
             }
         }

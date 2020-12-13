@@ -1,7 +1,6 @@
-package com.example.faircon.ui.settings
+package com.example.faircon.ui.main.settings
 
 import android.os.Bundle
-import android.text.InputType
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.*
 import com.example.faircon.R

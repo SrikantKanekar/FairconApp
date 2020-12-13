@@ -14,5 +14,13 @@ class MyPreferences
 ) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
+    fun saveAuthenticatedUser(email: String) {
+        val editor = prefs.edit()
+        editor.putString("AuthenticatedUser", email)
+        editor.apply()
+    }
 
+    fun getAuthenticatedUser(): String? {
+        return prefs.getString("AuthenticatedUser", null)
+    }
 }
