@@ -1,20 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
     tools:context=".ui.main.home.HomeFragment">
 
     <TextView
+        android:id="@+id/fan_speed_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Faircon"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="5dp"
+        android:text="Fan Speed"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/fan_speed_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fan_speed_text"
+        android:padding="7dp"
+        android:text="350 RPM"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="15sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/fan_speed_progress"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fan_speed_text"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:progress="50"
+        android:padding="15dp"
+        app:indicatorColor="?attr/colorPrimary" />
+
+    <TextView
+        android:id="@+id/temperature_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fan_speed_value"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Temperature"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/temperature_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temperature_text"
+        android:padding="7dp"
+        android:text="19 C"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="15sp" />
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/temperature_progress"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temperature_text"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:progress="40"
+        app:indicatorColor="?attr/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tec_voltage_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temperature_value"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Tec Voltage"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tec_voltage_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tec_voltage_text"
+        android:padding="7dp"
+        android:text="8.5 V"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textSize="15sp" />
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/tec_voltage_progress"
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tec_voltage_text"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:progress="70"
+        app:indicatorColor="?attr/colorPrimary" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_controller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:contentDescription="Controller"
+        app:srcCompat="@drawable/ic_baseline_settings_remote_24" />
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.main.controller.ControllerFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Fan Speed"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/fan_speed_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stepSize="1"
+        android:valueFrom="200"
+        android:valueTo="400" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature"
+        android:layout_marginTop="40dp"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/temperature_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stepSize="1"
+        android:valueFrom="15"
+        android:valueTo="25" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tec Voltage"
+        android:layout_marginTop="40dp"
+        android:textAppearance="?attr/textAppearanceOverline"
+        android:textSize="15sp" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/tec_voltage_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stepSize="0.25"
+        android:valueFrom="0"
+        android:valueTo="12" />
+</LinearLayout>

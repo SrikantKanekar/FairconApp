@@ -4,13 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.main.settings.SettingsFragment">
 
+    <PreferenceCategory android:title="GOOGLE ASSISTANT">
+        <SwitchPreferenceCompat
+            android:enabled="false"
+            android:icon="@drawable/ic_baseline_assistant_24"
+            android:title="Assistant" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="NOTIFICATION">
         <Preference
             android:enabled="false"
             android:icon="@drawable/ic_baseline_notifications_none_24"
             android:title="Notification" />
     </PreferenceCategory>
-
 
     <PreferenceCategory android:title="OTHER SETTINGS">
         <ListPreference
@@ -21,6 +27,12 @@
             android:key="theme_preference"
             android:title="Theme"
             app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            android:enabled="false"
+            android:icon="@drawable/ic_baseline_help_24"
+            android:title="Help" />
+
         <Preference
             android:enabled="false"
             android:icon="@drawable/ic_baseline_error_outline_24"
