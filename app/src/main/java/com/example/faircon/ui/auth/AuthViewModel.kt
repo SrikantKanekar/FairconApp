@@ -1,6 +1,5 @@
 package com.example.faircon.ui.auth
 
-import androidx.hilt.lifecycle.ViewModelInject
 import com.example.faircon.models.AuthToken
 import com.example.faircon.repository.auth.AuthRepository
 import com.example.faircon.ui.BaseViewModel
@@ -10,11 +9,14 @@ import com.example.faircon.ui.auth.state.LoginFields
 import com.example.faircon.ui.auth.state.RegistrationFields
 import com.example.faircon.util.*
 import com.example.faircon.util.ErrorHandling.Companion.INVALID_STATE_EVENT
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
+@HiltViewModel
 class AuthViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val authRepository: AuthRepository
 ) : BaseViewModel<AuthViewState>() {

@@ -1,6 +1,5 @@
 package com.example.faircon.ui.main.account
 
-import androidx.hilt.lifecycle.ViewModelInject
 import com.example.faircon.models.AccountProperties
 import com.example.faircon.repository.main.AccountRepository
 import com.example.faircon.session.SessionManager
@@ -9,11 +8,14 @@ import com.example.faircon.ui.main.account.state.AccountStateEvent.*
 import com.example.faircon.ui.main.account.state.AccountViewState
 import com.example.faircon.util.*
 import com.example.faircon.util.ErrorHandling.Companion.INVALID_STATE_EVENT
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
+@HiltViewModel
 class AccountViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val sessionManager: SessionManager,
     private val accountRepository: AccountRepository

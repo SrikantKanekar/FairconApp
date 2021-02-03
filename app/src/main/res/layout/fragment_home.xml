@@ -27,9 +27,8 @@
         android:textAppearance="?attr/textAppearanceBody2"
         android:textSize="15sp" />
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/fan_speed_progress"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/fan_speed_text"
@@ -60,9 +59,8 @@
         android:textAppearance="?attr/textAppearanceBody2"
         android:textSize="15sp" />
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/temperature_progress"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/temperature_text"
@@ -93,9 +91,8 @@
         android:textAppearance="?attr/textAppearanceBody2"
         android:textSize="15sp" />
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/tec_voltage_progress"
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tec_voltage_text"
