@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.settings.SettingsFragment">
+    tools:context=".framework.presentation.main.settings.SettingsFragment">
 
     <PreferenceCategory android:title="GOOGLE ASSISTANT">
         <SwitchPreferenceCompat

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/launcherFragment"
-        android:name="com.example.faircon.ui.auth.LauncherFragment"
+        android:name="com.example.faircon.framework.presentation.auth.LauncherFragment"
         android:label="fragment_launcher"
         tools:layout="@layout/fragment_launcher">
 
@@ -41,20 +41,20 @@
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.faircon.ui.auth.ForgotPasswordFragment"
+        android:name="com.example.faircon.framework.presentation.auth.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" />
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.faircon.ui.auth.LoginFragment"
+        android:name="com.example.faircon.framework.presentation.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.faircon.ui.auth.RegisterFragment"
+        android:name="com.example.faircon.framework.presentation.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
 </navigation>
