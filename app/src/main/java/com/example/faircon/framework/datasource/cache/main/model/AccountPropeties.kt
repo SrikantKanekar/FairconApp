@@ -1,11 +1,8 @@
 package com.example.faircon.framework.datasource.cache.main.model
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 @Entity(tableName = "account_properties")
 data class AccountProperties(
     @PrimaryKey(autoGenerate = false)
@@ -14,7 +11,7 @@ data class AccountProperties(
     var email: String,
 
     var username: String
-) :Parcelable {
+) {
 
     class UpdateAccountError {
         companion object {

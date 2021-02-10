@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
@@ -61,7 +60,11 @@ dependencies {
     implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha06"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:3.4.4"
 
     //Navigation Component
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"

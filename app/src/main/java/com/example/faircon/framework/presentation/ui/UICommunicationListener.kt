@@ -9,6 +9,4 @@ interface UICommunicationListener {
         response: Response,
         stateMessageCallback: StateMessageCallback
     )
-
-    fun displayProgressBar(isLoading: Boolean)
 }

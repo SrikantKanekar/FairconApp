@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.4.21'
+        kotlin_version = '1.4.21-2'
         hiltVersion = '2.31.2-alpha'
         compose_version = '1.0.0-alpha11'
     }
@@ -27,11 +27,11 @@ task clean(type: Delete) {
 }
 
 ext {
-    navigationVersion = '2.3.2'
+    navigationVersion = '2.3.3'
     lifecycle_version = '2.2.0'
     coroutines_version = "1.4.2"
     room_version = '2.2.6'
-    hiltAndroidXVersion = '1.0.0-alpha02'
+    hiltAndroidXVersion = '1.0.0-alpha03'
     retrofitVersion = '2.9.0'
     glideVersion = '4.11.0'
     material_dialogs_version = "3.3.0"

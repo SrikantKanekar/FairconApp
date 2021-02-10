@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".framework.presentation.main.settings.SettingsFragment">
+    tools:context=".framework.presentation.ui.main.settings.SettingsFragment">
 
     <PreferenceCategory android:title="GOOGLE ASSISTANT">
         <SwitchPreferenceCompat
@@ -26,7 +26,8 @@
             android:icon="@drawable/ic_baseline_brightness_4_24"
             android:key="theme_preference"
             android:title="Theme"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            android:enabled="false" />
 
         <Preference
             android:enabled="false"

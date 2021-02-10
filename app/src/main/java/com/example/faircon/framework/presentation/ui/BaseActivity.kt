@@ -6,6 +6,7 @@ import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.example.faircon.R
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.business.domain.util.printLogD
+import com.example.faircon.framework.datasource.preference.ThemeManager
 import com.example.faircon.framework.datasource.session.SessionManager
 import javax.inject.Inject
 
@@ -93,8 +94,6 @@ abstract class BaseActivity : AppCompatActivity(),
             }
         } ?: stateMessageCallback.removeMessageFromStack()
     }
-
-    abstract override fun displayProgressBar(isLoading: Boolean)
 
     override fun onPause() {
         super.onPause()

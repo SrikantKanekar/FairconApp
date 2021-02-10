@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.faircon.framework.presentation.main.home.HomeFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.faircon.framework.presentation.main.settings.SettingsFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.settings.SettingsFragment"
         android:label="Settings"/>
 
     <fragment android:id="@+id/accountFragment"
-        android:name="com.example.faircon.framework.presentation.main.account.AccountFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.account.AccountFragment"
         android:label="@string/fragment_account"
         tools:layout="@layout/fragment_account">
 
@@ -37,7 +37,7 @@
     </fragment>
 
     <fragment android:id="@+id/changePasswordFragment"
-        android:name="com.example.faircon.framework.presentation.main.account.ChangePasswordFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.account.ChangePasswordFragment"
         android:label="@string/fragment_change_password"
         tools:layout="@layout/fragment_change_password">
 
@@ -55,7 +55,7 @@
 
 
     <fragment android:id="@+id/updateAccountFragment"
-        android:name="com.example.faircon.framework.presentation.main.account.UpdateAccountFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.account.UpdateAccountFragment"
         android:label="@string/fragment_update_account"
         tools:layout="@layout/fragment_update_account">
 
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/controllerFragment"
-        android:name="com.example.faircon.framework.presentation.main.controller.ControllerFragment"
+        android:name="com.example.faircon.framework.presentation.ui.main.controller.ControllerFragment"
         android:label="Controller"
         tools:layout="@layout/fragment_controller"/>
 </navigation>

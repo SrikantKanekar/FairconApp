@@ -10,8 +10,8 @@ import com.example.faircon.framework.datasource.cache.main.model.AccountProperti
 import com.example.faircon.framework.datasource.network.auth.AuthService
 import com.example.faircon.framework.datasource.network.auth.response.LoginResponse
 import com.example.faircon.framework.datasource.preference.MyPreferences
-import com.example.faircon.framework.presentation.auth.state.AuthViewState
-import com.example.faircon.framework.presentation.auth.state.LoginFields
+import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
+import com.example.faircon.framework.presentation.ui.auth.state.LoginFields
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -77,7 +77,7 @@ class Login(
                                 stateEvent = stateEvent
                             )
                         }
-                        myPreferences.saveAuthenticatedUser(email)
+                        myPreferences.setAuthenticatedUser(email)
 
                         return DataState.data(
                             data = AuthViewState(

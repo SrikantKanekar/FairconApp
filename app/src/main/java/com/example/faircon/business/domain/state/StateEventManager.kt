@@ -1,18 +1,12 @@
 package com.example.faircon.business.domain.state
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateOf
 import com.example.faircon.business.domain.util.printLogD
 
 class StateEventManager {
 
     private val activeStateEvents: HashMap<String, StateEvent> = HashMap()
-//    val shouldDisplayProgressBar = mutableStateOf(false)
-
-    private val _shouldDisplayProgressbar = MutableLiveData<Boolean>()
-
-    val shouldDisplayProgressBar : LiveData<Boolean>
-        get() = _shouldDisplayProgressbar
+    val shouldDisplayProgressbar = mutableStateOf(false)
 
     fun isStateEventActive(stateEvent: StateEvent): Boolean {
         printLogD(
@@ -54,7 +48,7 @@ class StateEventManager {
                 progressBar = true
             }
         }
-        _shouldDisplayProgressbar.value = progressBar
+        shouldDisplayProgressbar.value = progressBar
         printLogD("StateEventManager", "ProgressBar $progressBar ")
     }
 }

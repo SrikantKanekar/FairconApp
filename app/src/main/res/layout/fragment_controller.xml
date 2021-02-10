@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".framework.presentation.main.controller.ControllerFragment">
+    tools:context=".framework.presentation.ui.main.controller.ControllerFragment">
 
     <TextView
         android:layout_width="wrap_content"

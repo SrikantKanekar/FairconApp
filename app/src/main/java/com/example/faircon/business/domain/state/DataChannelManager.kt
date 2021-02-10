@@ -15,7 +15,7 @@ abstract class DataChannelManager<ViewState> {
 
     private val stateEventManager: StateEventManager = StateEventManager()
     private var channelScope: CoroutineScope? = null
-    val shouldDisplayProgressBar = stateEventManager.shouldDisplayProgressBar
+    val shouldDisplayProgressBar = stateEventManager.shouldDisplayProgressbar
     val messageStack = MessageStack()
 
     fun launchJob(

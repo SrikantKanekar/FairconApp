@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faircon">
 
-        <activity android:name=".framework.presentation.main.MainActivity"
+        <activity android:name="com.example.faircon.framework.presentation.ui.main.MainActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".framework.presentation.auth.AuthActivity"
+            android:name="com.example.faircon.framework.presentation.ui.auth.AuthActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

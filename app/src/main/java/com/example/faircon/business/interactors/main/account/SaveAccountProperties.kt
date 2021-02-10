@@ -8,7 +8,7 @@ import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
 import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
 import com.example.faircon.framework.datasource.network.GenericResponse
 import com.example.faircon.framework.datasource.network.main.MainService
-import com.example.faircon.framework.presentation.main.account.state.AccountViewState
+import com.example.faircon.framework.presentation.ui.main.account.state.AccountViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 

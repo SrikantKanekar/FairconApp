@@ -7,7 +7,7 @@ import com.example.faircon.framework.datasource.cache.auth.AuthTokenDao
 import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
 import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
 import com.example.faircon.framework.datasource.preference.MyPreferences
-import com.example.faircon.framework.presentation.auth.state.AuthViewState
+import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

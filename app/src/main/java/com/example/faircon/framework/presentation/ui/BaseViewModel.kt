@@ -20,6 +20,10 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
 
     abstract fun initNewViewState(): ViewState
 
+    fun getCurrentViewStateOrNew(): ViewState {
+        return viewState.value ?: initNewViewState()
+    }
+
     private val dataChannelManager: DataChannelManager<ViewState> =
         object : DataChannelManager<ViewState>() {
             override fun handleNewData(data: ViewState) {
