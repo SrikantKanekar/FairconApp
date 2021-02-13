@@ -5,9 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +15,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.faircon.framework.presentation.components.MyOutlinedText
+import com.example.faircon.framework.presentation.components.MyOverlineText
 import com.example.faircon.framework.presentation.components.MySlider
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
@@ -34,6 +31,7 @@ class ControllerFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = viewModel.shouldDisplayProgressBar.value
                 ) {
 
@@ -54,24 +52,27 @@ class ControllerFragment : Fragment() {
                         ShowSlider(
                             name = "Fan Speed",
                             initialPosition = sliderValues.fanSpeed,
+                            unit = "RPM",
                             valueRange = 300f..400f,
-                            steps = 20,
+                            steps = 19,
                             onValueChangeEnd = { viewModel.setFanSpeed(it) }
                         )
 
                         ShowSlider(
                             name = "Temperature",
                             initialPosition = sliderValues.temperature,
+                            unit = "C",
                             valueRange = 15f..25f,
-                            steps = 10,
+                            steps = 9,
                             onValueChangeEnd = { viewModel.setTemperature(it) }
                         )
 
                         ShowSlider(
                             name = "Tec Voltage",
                             initialPosition = sliderValues.tecVoltage,
+                            unit = "V",
                             valueRange = 0f..12f,
-                            steps = 24,
+                            steps = 23,
                             onValueChangeEnd = { viewModel.setTecVoltage(it) }
                         )
                     }
@@ -85,6 +86,7 @@ class ControllerFragment : Fragment() {
 fun ShowSlider(
     name: String,
     initialPosition: Float,
+    unit: String,
     valueRange: ClosedFloatingPointRange<Float>,
     steps: Int,
     onValueChangeEnd: (Float) -> Unit
@@ -92,18 +94,22 @@ fun ShowSlider(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(5.dp)
+            .padding(bottom = 30.dp),
+        horizontalAlignment = Alignment.Start
     ) {
 
-        MyOutlinedText(text = name)
+        val currentValue = remember { mutableStateOf(initialPosition) }
+
+        MyOverlineText(text = "$name : ${currentValue.value} $unit")
 
         MySlider(
             initialPosition = initialPosition,
             valueRange = valueRange,
             steps = steps,
-            onValueChangeEnd = { onValueChangeEnd(it) }
+            onValueChangeEnd = {
+                onValueChangeEnd(it)
+                currentValue.value = it
+            }
         )
     }
 }

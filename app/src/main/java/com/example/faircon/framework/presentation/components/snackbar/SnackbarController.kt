@@ -1,6 +1,5 @@
-package com.example.faircon.framework.presentation.components
+package com.example.faircon.framework.presentation.components.snackbar
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,10 +13,10 @@ import kotlinx.coroutines.launch
  * show one after another. I don't like that.
  *
  */
-@ExperimentalMaterialApi
+
 class SnackbarController
 constructor(
-        private val scope: CoroutineScope
+    private val scope: CoroutineScope
 ){
 
     private var snackbarJob: Job? = null
@@ -29,15 +28,15 @@ constructor(
     fun getScope() = scope
 
     fun showSnackbar(
-            scaffoldState: ScaffoldState,
-            message: String,
-            actionLabel: String
+        scaffoldState: ScaffoldState,
+        message: String,
+        actionLabel: String
     ){
         if(snackbarJob == null){
             snackbarJob = scope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
-                        message = message,
-                        actionLabel = actionLabel
+                    message = message,
+                    actionLabel = actionLabel
                 )
                 cancelActiveJob()
             }
@@ -46,8 +45,8 @@ constructor(
             cancelActiveJob()
             snackbarJob = scope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
-                        message = message,
-                        actionLabel = actionLabel
+                    message = message,
+                    actionLabel = actionLabel
                 )
                 cancelActiveJob()
             }

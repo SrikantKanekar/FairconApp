@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import com.example.faircon.R
-import com.example.faircon.framework.presentation.components.LauncherScreenLogo
+import com.example.faircon.framework.presentation.components.image.LauncherScreenLogo
 import com.example.faircon.framework.presentation.components.MyLinkTextButton
 import com.example.faircon.framework.presentation.components.MyTextButton
 import com.example.faircon.framework.presentation.theme.FairconTheme
@@ -26,6 +26,7 @@ class LauncherFragment : BaseAuthFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = viewModel.shouldDisplayProgressBar.value
                 ) {
                     Column(
@@ -35,11 +36,12 @@ class LauncherFragment : BaseAuthFragment() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Spacer(modifier = Modifier.height(100.dp))
+                        Spacer(modifier = Modifier.height(150.dp))
 
                         LauncherScreenLogo()
 
                         MyTextButton(
+                            modifier = Modifier.padding(top = 50.dp),
                             text = "Login",
                             onClick = { navLogin() }
                         )

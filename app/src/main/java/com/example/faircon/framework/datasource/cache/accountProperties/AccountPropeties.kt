@@ -1,4 +1,4 @@
-package com.example.faircon.framework.datasource.cache.main.model
+package com.example.faircon.framework.datasource.cache.accountProperties
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

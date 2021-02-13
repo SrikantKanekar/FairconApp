@@ -3,13 +3,13 @@ package com.example.faircon.business.interactors.auth
 import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.cache.auth.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.auth.models.AuthToken
-import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
-import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
+import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.authToken.AuthToken
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
 import com.example.faircon.framework.datasource.network.auth.AuthService
 import com.example.faircon.framework.datasource.network.auth.response.RegistrationResponse
-import com.example.faircon.framework.datasource.preference.MyPreferences
+import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import com.example.faircon.framework.presentation.ui.auth.state.RegistrationFields
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ class Registration(
     private val authTokenDao: AuthTokenDao,
     private val accountPropertiesDao: AccountPropertiesDao,
     private val authService: AuthService,
-    private val myPreferences: MyPreferences
+    private val emailDataStore: EmailDataStore
 ) {
 
     fun attemptRegistration(
@@ -93,7 +93,8 @@ class Registration(
                                 stateEvent = stateEvent
                             )
                         }
-                        myPreferences.setAuthenticatedUser(email)
+                        emailDataStore.updateAuthenticatedUserEmail(email)
+
                         return DataState.data(
                             data = AuthViewState(
                                 authToken = authToken

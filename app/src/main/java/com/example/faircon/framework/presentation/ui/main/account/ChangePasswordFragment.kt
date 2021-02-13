@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
 import com.example.faircon.business.domain.state.StateMessageCallback
 import com.example.faircon.framework.presentation.components.LoadingButton
-import com.example.faircon.framework.presentation.components.MyPasswordTextField
+import com.example.faircon.framework.presentation.components.textField.ConfirmPasswordState
+import com.example.faircon.framework.presentation.components.textField.MyPasswordTextField
+import com.example.faircon.framework.presentation.components.textField.PasswordState
 import com.example.faircon.framework.presentation.theme.FairconTheme
 import com.example.faircon.framework.presentation.ui.main.account.state.AccountStateEvent
 
@@ -41,14 +42,9 @@ class ChangePasswordFragment : BaseAccountFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = false
                 ) {
-
-                    val changePasswordFields = viewModel
-                        .viewState
-                        .observeAsState(viewModel.getCurrentViewStateOrNew())
-                        .value
-                        .changePasswordFields
 
                     Scaffold {
                         Column(
@@ -63,49 +59,53 @@ class ChangePasswordFragment : BaseAccountFragment() {
                             val newPasswordFocusRequester = remember { FocusRequester() }
                             val confirmPasswordFocusRequester = remember { FocusRequester() }
 
+
+                            val currentPasswordState = remember { PasswordState() }
                             MyPasswordTextField(
-                                onValueChange = { changePasswordFields.currentPassword = it },
+                                passwordState = currentPasswordState,
                                 label = "Current password",
-                                onImeAction = {
-                                    newPasswordFocusRequester.requestFocus()
-                                }
+                                onImeAction = { newPasswordFocusRequester.requestFocus() }
                             )
 
+                            val newPasswordState = remember { PasswordState() }
                             MyPasswordTextField(
                                 modifier = Modifier.focusRequester(newPasswordFocusRequester),
-                                onValueChange = { changePasswordFields.newPassword = it },
+                                passwordState = newPasswordState,
                                 label = "New password",
-                                onImeAction = {
-                                    confirmPasswordFocusRequester.requestFocus()
-                                }
+                                onImeAction = { confirmPasswordFocusRequester.requestFocus() }
                             )
 
+                            val confirmPasswordState =
+                                remember { ConfirmPasswordState(newPasswordState) }
                             MyPasswordTextField(
                                 modifier = Modifier.focusRequester(confirmPasswordFocusRequester),
-                                onValueChange = { changePasswordFields.confirmPassword = it },
+                                passwordState = confirmPasswordState,
                                 label = "Confirm new password",
                                 imeAction = ImeAction.Done,
                                 onImeAction = {
-                                    viewModel.setStateEvent(
-                                        AccountStateEvent.ChangePasswordEvent(
-                                            changePasswordFields.currentPassword,
-                                            changePasswordFields.newPassword,
-                                            changePasswordFields.confirmPassword
+                                    if (currentPasswordState.isValid && newPasswordState.isValid
+                                        && confirmPasswordState.isValid
+                                    ) {
+                                        changePassword(
+                                            currentPasswordState.text,
+                                            newPasswordState.text,
+                                            confirmPasswordState.text
                                         )
-                                    )
+                                    }
                                 }
                             )
 
                             LoadingButton(
                                 isLoading = viewModel.shouldDisplayProgressBar.value,
                                 text = "Update password",
+                                enabled = currentPasswordState.isValid
+                                        && newPasswordState.isValid
+                                        && confirmPasswordState.isValid,
                                 onClick = {
-                                    viewModel.setStateEvent(
-                                        AccountStateEvent.ChangePasswordEvent(
-                                            changePasswordFields.currentPassword,
-                                            changePasswordFields.newPassword,
-                                            changePasswordFields.confirmPassword
-                                        )
+                                    changePassword(
+                                        currentPasswordState.text,
+                                        newPasswordState.text,
+                                        confirmPasswordState.text
                                     )
                                 }
                             )
@@ -114,6 +114,20 @@ class ChangePasswordFragment : BaseAccountFragment() {
                 }
             }
         }
+    }
+
+    private fun changePassword(
+        current: String,
+        new: String,
+        confirm: String
+    ) {
+        viewModel.setStateEvent(
+            AccountStateEvent.ChangePasswordEvent(
+                current,
+                new,
+                confirm
+            )
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -7,33 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.airbnb.lottie.LottieAnimationView
 import com.example.faircon.framework.presentation.components.LoadingButton
-import com.example.faircon.framework.presentation.components.MyEmailTextField
-import com.example.faircon.framework.presentation.components.MyPasswordTextField
+import com.example.faircon.framework.presentation.components.textField.EmailState
+import com.example.faircon.framework.presentation.components.textField.MyEmailTextField
+import com.example.faircon.framework.presentation.components.textField.MyPasswordTextField
+import com.example.faircon.framework.presentation.components.textField.PasswordState
 import com.example.faircon.framework.presentation.theme.FairconTheme
-import com.example.faircon.framework.presentation.theme.typography
 import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.LoginAttemptEvent
-import java.util.*
 
 class LoginFragment : BaseAuthFragment() {
 
@@ -46,14 +41,9 @@ class LoginFragment : BaseAuthFragment() {
             setContent {
 
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = false
                 ) {
-
-                    val loginFields = viewModel
-                        .viewState
-                        .observeAsState(viewModel.getCurrentViewStateOrNew())
-                        .value
-                        .loginFields
 
                     Scaffold {
                         Column(
@@ -76,31 +66,37 @@ class LoginFragment : BaseAuthFragment() {
 
                             val focusRequester = remember { FocusRequester() }
 
+
+                            val emailState = remember { EmailState() }
                             MyEmailTextField(
-                                initialValue = loginFields.login_email,
-                                onValueChange = { viewModel.setLoginEmail(it) },
-                                onImeAction = {
-                                    focusRequester.requestFocus()
-                                }
+                                emailState = emailState,
+                                onImeAction = { focusRequester.requestFocus() }
                             )
 
+                            val passwordState = remember { PasswordState() }
                             MyPasswordTextField(
                                 modifier = Modifier.focusRequester(focusRequester),
-                                initialValue = loginFields.login_password,
-                                onValueChange = { viewModel.setLoginPassword(it) },
+                                passwordState = passwordState,
                                 imeAction = ImeAction.Done,
                                 onImeAction = {
-                                    login(loginFields.login_email, loginFields.login_password)
+                                    if (emailState.isValid && passwordState.isValid){
+                                        login(
+                                            emailState.text,
+                                            passwordState.text,
+                                        )
+                                    }
                                 }
                             )
 
                             LoadingButton(
                                 isLoading = viewModel.shouldDisplayProgressBar.value,
                                 text = "LOGIN",
+                                enabled = emailState.isValid
+                                        && passwordState.isValid,
                                 onClick = {
                                     login(
-                                        loginFields.login_email,
-                                        loginFields.login_password
+                                        emailState.text,
+                                        passwordState.text,
                                     )
                                 }
                             )

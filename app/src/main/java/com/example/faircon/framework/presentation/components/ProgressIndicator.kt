@@ -1,8 +1,10 @@
 package com.example.faircon.framework.presentation.components
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.ProgressIndicatorDefaults
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -19,4 +21,16 @@ fun MyLinearProgressIndicator(
         modifier = modifier,
         progress = animatedProgress.value
     )
+}
+
+@Composable
+fun MyCircularProgressIndicator(
+    isDisplayed: Boolean,
+    modifier: Modifier = Modifier
+) {
+    if (isDisplayed){
+        CircularProgressIndicator(
+            modifier = modifier
+        )
+    }
 }

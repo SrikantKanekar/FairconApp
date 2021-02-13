@@ -1,6 +1,6 @@
 package com.example.faircon.framework.presentation.ui.auth.state
 
-import com.example.faircon.framework.datasource.cache.auth.models.AuthToken
+import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 
 data class AuthViewState(
     var loginFields: LoginFields = LoginFields(),

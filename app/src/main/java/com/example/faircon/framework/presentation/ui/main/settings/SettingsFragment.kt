@@ -1,51 +1,48 @@
 package com.example.faircon.framework.presentation.ui.main.settings
 
 import android.os.Bundle
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.example.faircon.R
-import com.example.faircon.framework.datasource.preference.ThemeManager
-import com.example.faircon.framework.datasource.preference.ThemeManager.Companion.DARK
-import com.example.faircon.framework.datasource.preference.ThemeManager.Companion.DEFAULT
-import com.example.faircon.framework.datasource.preference.ThemeManager.Companion.LIGHT
-import com.example.faircon.framework.datasource.preference.ThemeManager.Companion.THEME_PREFERENCE
+import com.example.faircon.framework.datasource.dataStore.ThemeDataStore
+import com.example.faircon.framework.datasource.dataStore.ThemeDataStore.*
+import com.example.faircon.framework.datasource.dataStore.ThemeDataStore.Companion.APP_THEME
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
     @Inject
-    lateinit var themeManager: ThemeManager
+    lateinit var themeDataStore: ThemeDataStore
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.setting, rootKey)
 
         preferenceManager
-            .findPreference<ListPreference>(THEME_PREFERENCE)
+            .findPreference<SwitchPreferenceCompat>(APP_THEME)
             ?.onPreferenceChangeListener = this
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         when (preference?.key) {
-            THEME_PREFERENCE -> {
-                setTheme(newValue.toString())
+            APP_THEME -> {
+                setTheme(newValue == THEME.DARK)
             }
         }
         return true
     }
 
-    private fun setTheme(theme: String){
-        when (theme) {
-            DEFAULT -> {
-                themeManager.setTheme(DEFAULT)
-            }
-            LIGHT -> {
-                themeManager.setTheme(LIGHT)
-            }
-            DARK -> {
-                themeManager.setTheme(DARK)
+    private fun setTheme(isDark: Boolean) {
+        CoroutineScope(IO).launch {
+            if (isDark) {
+                themeDataStore.updateAppTheme(THEME.DARK)
+            } else {
+                themeDataStore.updateAppTheme(THEME.LIGHT)
             }
         }
     }

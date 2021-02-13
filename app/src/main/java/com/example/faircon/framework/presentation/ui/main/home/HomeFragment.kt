@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SettingsRemote
 import androidx.compose.runtime.Composable
@@ -14,17 +13,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.faircon.R
 import com.example.faircon.framework.presentation.components.MyFab
 import com.example.faircon.framework.presentation.components.MyLinearProgressIndicator
-import com.example.faircon.framework.presentation.components.MyOutlinedText
+import com.example.faircon.framework.presentation.components.MyOverlineText
+import com.example.faircon.framework.presentation.components.MyValueText
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
-class HomeFragment :Fragment(R.layout.fragment_home){
+class HomeFragment :Fragment(){
 
     val viewModel by viewModels<HomeViewModel>()
 
@@ -36,6 +35,7 @@ class HomeFragment :Fragment(R.layout.fragment_home){
         return ComposeView(requireContext()).apply {
             setContent {
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = viewModel.shouldDisplayProgressBar.value
                 ) {
 
@@ -47,9 +47,10 @@ class HomeFragment :Fragment(R.layout.fragment_home){
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(horizontal = 16.dp)
-                                    .padding(top = 50.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
+
+                                Spacer(modifier = Modifier.height(50.dp))
+
                                 ShowData(
                                     name = "Fan Speed",
                                     value = 350f,
@@ -95,24 +96,25 @@ fun ShowData(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 30.dp),
+            .padding(bottom = 50.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(5.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        MyOutlinedText(text = name)
+
+        MyOverlineText(text = name)
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            MyOutlinedText(
-                modifier = Modifier.fillMaxWidth(),
-                text = "$value $unit",
-                fontSize = 15.sp
+
+            MyValueText(
+                modifier = Modifier.width(80.dp),
+                text = "$value $unit"
             )
+
             MyLinearProgressIndicator(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp),
                 progress = progress
             )
         }

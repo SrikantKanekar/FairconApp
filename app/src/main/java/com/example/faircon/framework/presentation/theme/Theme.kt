@@ -1,14 +1,16 @@
 package com.example.faircon.framework.presentation.theme
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.faircon.framework.presentation.components.CircularIndeterminateProgressBar
+import com.example.faircon.framework.presentation.components.*
+import com.example.faircon.framework.presentation.components.snackbar.DefaultSnackbar
+import java.util.*
 
 private val LightColorPalette = lightColors(
     primary = blue300,
@@ -19,6 +21,7 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
+    onError = Red800
 )
 
 private val DarkColorPalette = darkColors(
@@ -30,23 +33,65 @@ private val DarkColorPalette = darkColors(
     onPrimary = Color.Black,
     onBackground = Color.White,
     onSurface = Color.White,
+    onError = Red300
 )
 
 @Composable
 fun FairconTheme(
+    darkTheme: Boolean,
+    isNetworkAvailable: Boolean = true,
     displayProgressBar: Boolean,
-    content: @Composable () -> Unit
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    messageQueue: Queue<GenericDialogInfo>? = null,
+    onDismiss: () -> Unit = {},
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colors = DarkColorPalette,
+        colors = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = typography,
         shapes = shapes
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            content()
-            CircularIndeterminateProgressBar(isDisplayed = displayProgressBar)
+
+            Column{
+                ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
+                content()
+            }
+
+            MyCircularProgressIndicator(
+                isDisplayed = displayProgressBar,
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            DefaultSnackbar(
+                snackbarHostState = scaffoldState.snackbarHostState,
+                onDismiss = {
+                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                },
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+            ProcessMessageStack(
+                messageQueue = messageQueue,
+                onDismiss = onDismiss,
+            )
         }
+    }
+}
+
+@Composable
+fun ProcessMessageStack(
+    messageQueue: Queue<GenericDialogInfo>?,
+    onDismiss: () -> Unit,
+) {
+    messageQueue?.peek()?.let { dialogInfo ->
+        GenericDialog(
+            onDismiss = onDismiss,
+            title = dialogInfo.title,
+            description = dialogInfo.description,
+            positiveAction = dialogInfo.positiveAction,
+            negativeAction = dialogInfo.negativeAction
+        )
     }
 }

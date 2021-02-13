@@ -3,7 +3,7 @@ package com.example.faircon.framework.presentation.ui.auth
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.auth.AuthInteractors
-import com.example.faircon.framework.datasource.cache.auth.models.AuthToken
+import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.*
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState

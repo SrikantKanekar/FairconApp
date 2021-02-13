@@ -1,10 +1,10 @@
-package com.example.faircon.framework.presentation.components
+package com.example.faircon.framework.presentation.components.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.faircon.R
@@ -20,12 +20,11 @@ fun AppLogo(
     size: Dp = 110.dp
 ) {
     if (isDisplayed) {
-        val imageResource = imageResource(R.mipmap.ic_launcher_round)
+        val painterResource = painterResource(R.mipmap.ic_launcher_round)
 
         Image(
-            modifier = Modifier
-                .preferredSize(size),
-            bitmap = imageResource,
+            modifier = Modifier.preferredSize(size),
+            painter = painterResource,
             contentDescription = "Logo"
         )
     }

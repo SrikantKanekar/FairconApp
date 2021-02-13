@@ -5,12 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,9 +17,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.faircon.business.domain.state.StateMessageCallback
 import com.example.faircon.framework.presentation.components.LoadingButton
-import com.example.faircon.framework.presentation.components.MyEmailTextField
-import com.example.faircon.framework.presentation.components.MyOutlinedTextField
-import com.example.faircon.framework.presentation.components.MyUsernameTextField
+import com.example.faircon.framework.presentation.components.textField.EmailState
+import com.example.faircon.framework.presentation.components.textField.MyEmailTextField
+import com.example.faircon.framework.presentation.components.textField.MyUsernameTextField
+import com.example.faircon.framework.presentation.components.textField.UsernameState
 import com.example.faircon.framework.presentation.theme.FairconTheme
 import com.example.faircon.framework.presentation.ui.main.account.state.AccountStateEvent
 
@@ -46,6 +43,7 @@ class UpdateAccountFragment : BaseAccountFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = false
                 ) {
 
@@ -65,50 +63,42 @@ class UpdateAccountFragment : BaseAccountFragment() {
 
                             Spacer(modifier = Modifier.height(170.dp))
 
-                            val updateAccountField = viewModel
-                                .viewState
-                                .observeAsState(viewModel.getCurrentViewStateOrNew())
-                                .value
-                                .updateAccountFields
-
                             accountProperties?.let { accountProperties ->
 
-                                updateAccountField.email = accountProperties.email
-                                updateAccountField.username = accountProperties.username
                                 val focusRequester = remember { FocusRequester() }
 
+                                val emailState = remember { EmailState(accountProperties.email) }
                                 MyEmailTextField(
-                                    initialValue = updateAccountField.email,
-                                    onValueChange = { updateAccountField.email = it },
-                                    onImeAction = {
-                                        focusRequester.requestFocus()
-                                    }
+                                    emailState = emailState,
+                                    onImeAction = { focusRequester.requestFocus() }
                                 )
 
+                                val usernameState =
+                                    remember { UsernameState(accountProperties.username) }
                                 MyUsernameTextField(
-                                    modifier = Modifier.focusRequester(focusRequester),
-                                    initialValue = updateAccountField.username,
-                                    onValueChange = { updateAccountField.username = it },
+                                    modifier = Modifier.padding(top = 10.dp)
+                                        .focusRequester(focusRequester),
+                                    usernameState = usernameState,
                                     imeAction = ImeAction.Done,
                                     onImeAction = {
-                                        viewModel.setStateEvent(
-                                            AccountStateEvent.UpdateAccountPropertiesEvent(
-                                                updateAccountField.email,
-                                                updateAccountField.username
+                                        if (emailState.isValid && usernameState.isValid) {
+                                            updateAccount(
+                                                emailState.text,
+                                                usernameState.text
                                             )
-                                        )
+                                        }
                                     }
                                 )
 
                                 LoadingButton(
                                     isLoading = viewModel.shouldDisplayProgressBar.value,
                                     text = "Update",
+                                    enabled = emailState.isValid
+                                            && usernameState.isValid,
                                     onClick = {
-                                        viewModel.setStateEvent(
-                                            AccountStateEvent.UpdateAccountPropertiesEvent(
-                                                updateAccountField.email,
-                                                updateAccountField.username
-                                            )
+                                        updateAccount(
+                                            emailState.text,
+                                            usernameState.text
                                         )
                                     }
                                 )
@@ -118,6 +108,18 @@ class UpdateAccountFragment : BaseAccountFragment() {
                 }
             }
         }
+    }
+
+    private fun updateAccount(
+        email: String,
+        username: String
+    ) {
+        viewModel.setStateEvent(
+            AccountStateEvent.UpdateAccountPropertiesEvent(
+                email,
+                username
+            )
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

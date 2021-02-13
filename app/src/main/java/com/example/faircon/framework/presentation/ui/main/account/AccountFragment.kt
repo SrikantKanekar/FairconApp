@@ -3,39 +3,32 @@ package com.example.faircon.framework.presentation.ui.main.account
 import android.os.Bundle
 import android.view.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.faircon.R
 import com.example.faircon.business.domain.state.StateMessageCallback
 import com.example.faircon.framework.presentation.components.MyButton
-import com.example.faircon.framework.presentation.components.MyCircularImage
+import com.example.faircon.framework.presentation.components.image.MyCircularImage
 import com.example.faircon.framework.presentation.components.MyLinkTextButton
 import com.example.faircon.framework.presentation.components.ProfileDetailText
 import com.example.faircon.framework.presentation.theme.FairconTheme
 import com.example.faircon.framework.presentation.ui.main.account.state.AccountStateEvent.GetAccountPropertiesEvent
+import kotlinx.coroutines.launch
 
 class AccountFragment : BaseAccountFragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        savedInstanceState?.let { inState ->
-//            (inState[ACCOUNT_VIEW_STATE_BUNDLE_KEY] as AccountViewState?)?.let { viewState ->
-//                viewModel.setViewState(viewState)
-//            }
-//        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +37,16 @@ class AccountFragment : BaseAccountFragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val scaffoldState = rememberScaffoldState()
+
                 FairconTheme(
-                    displayProgressBar = viewModel.shouldDisplayProgressBar.value
+                    darkTheme = true,
+                    isNetworkAvailable = true,
+                    displayProgressBar = viewModel.shouldDisplayProgressBar.value,
+                    scaffoldState = scaffoldState,
+                    messageQueue = viewModel.messageQueue.value,
+                    onDismiss = viewModel::removeHeadMessage
                 ) {
 
                     val accountProperties = viewModel
@@ -54,23 +55,33 @@ class AccountFragment : BaseAccountFragment() {
                         .value
                         .accountProperties
 
-                    Scaffold {
+
+                    Scaffold(
+                        scaffoldState = scaffoldState,
+                        snackbarHost = { scaffoldState.snackbarHostState }
+                    ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp)
                         ) {
+
                             Column(
                                 modifier = Modifier.fillMaxWidth()
                             ) {
 
-                                Spacer(modifier = Modifier.height(20.dp))
-                                MyCircularImage(imageVector = Icons.Default.Person)
-                                Spacer(modifier = Modifier.height(20.dp))
+                                Spacer(modifier = Modifier.height(30.dp))
+
+                                MyCircularImage(
+                                    modifier = Modifier.padding(start = 20.dp),
+                                    imageVector = Icons.Default.Person
+                                )
+
+                                Spacer(modifier = Modifier.height(30.dp))
 
                                 Divider()
 
-                                Spacer(modifier = Modifier.height(20.dp))
+                                Spacer(modifier = Modifier.height(30.dp))
 
                                 accountProperties?.let { accountProperties ->
 
@@ -81,6 +92,7 @@ class AccountFragment : BaseAccountFragment() {
                                     )
 
                                     ProfileDetail(
+                                        modifier = Modifier.padding(top = 15.dp),
                                         field = "Username",
                                         value = accountProperties.username,
                                         imageVector = Icons.Default.Person
@@ -91,9 +103,10 @@ class AccountFragment : BaseAccountFragment() {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 15.dp)
+                                    .align(Alignment.BottomCenter),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
+
                                 MyLinkTextButton(
                                     text = "Change Password",
                                     onClick = {
@@ -103,9 +116,20 @@ class AccountFragment : BaseAccountFragment() {
                                 )
 
                                 MyButton(
+                                    modifier = Modifier.padding(top = 0.dp).padding(bottom = 40.dp),
                                     text = "Logout",
                                     onClick = { viewModel.logout() }
                                 )
+
+                                if (false){
+                                    viewModel.snackbarController.getScope().launch {
+                                        viewModel.snackbarController.showSnackbar(
+                                            scaffoldState = scaffoldState,
+                                            message = "An error occurred with this recipe",
+                                            actionLabel = "Ok"
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -126,7 +150,7 @@ class AccountFragment : BaseAccountFragment() {
     }
 
     private fun subscribeObservers() {
-        viewModel.stateMessage.observe(viewLifecycleOwner, Observer { stateMessage ->
+        viewModel.stateMessage.observe(viewLifecycleOwner, { stateMessage ->
             stateMessage?.let {
                 uiCommunicationListener.onResponseReceived(
                     response = it.response,
@@ -157,21 +181,22 @@ class AccountFragment : BaseAccountFragment() {
 
 @Composable
 fun ProfileDetail(
+    modifier: Modifier = Modifier,
     field: String,
     value: String,
     imageVector: ImageVector
 ) {
     Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Icon(
-            modifier = Modifier.padding(5.dp).preferredSize(30.dp),
+            modifier = Modifier.padding(10.dp).preferredSize(40.dp),
             imageVector = imageVector,
             contentDescription = ""
         )
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
+        Column {
             ProfileDetailText(text = field)
             ProfileDetailText(text = value)
         }

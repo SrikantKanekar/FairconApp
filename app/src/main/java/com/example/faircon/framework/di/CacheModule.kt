@@ -2,10 +2,11 @@ package com.example.faircon.framework.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
 import com.example.faircon.framework.datasource.cache.AppDatabase
 import com.example.faircon.framework.datasource.cache.AppDatabase.Companion.DATABASE_NAME
-import com.example.faircon.framework.datasource.cache.auth.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
+import com.example.faircon.framework.presentation.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ object CacheModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(app: Application): AppDatabase {
+    fun provideAppDatabase(app: BaseApplication): AppDatabase {
         return Room
             .databaseBuilder(app, AppDatabase::class.java, DATABASE_NAME)
             .fallbackToDestructiveMigration()

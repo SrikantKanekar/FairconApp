@@ -1,7 +1,7 @@
 package com.example.faircon.framework.datasource.network.main
 
 import com.example.faircon.framework.datasource.network.GenericResponse
-import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
 import retrofit2.http.*
 import javax.inject.Singleton
 

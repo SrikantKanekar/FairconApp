@@ -6,7 +6,7 @@ import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.example.faircon.R
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.business.domain.util.printLogD
-import com.example.faircon.framework.datasource.preference.ThemeManager
+import com.example.faircon.framework.datasource.network.connectivity.ConnectivityManager
 import com.example.faircon.framework.datasource.session.SessionManager
 import javax.inject.Inject
 
@@ -15,6 +15,19 @@ abstract class BaseActivity : AppCompatActivity(),
 
     @Inject
     lateinit var sessionManager: SessionManager
+
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
+
+    override fun onStart() {
+        super.onStart()
+        connectivityManager.registerConnectionObserver(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityManager.unregisterConnectionObserver(this)
+    }
 
     private var dialogInView: MaterialDialog? = null
 

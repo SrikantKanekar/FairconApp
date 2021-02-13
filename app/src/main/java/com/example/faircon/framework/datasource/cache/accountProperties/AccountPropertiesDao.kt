@@ -1,10 +1,9 @@
-package com.example.faircon.framework.datasource.cache.main
+package com.example.faircon.framework.datasource.cache.accountProperties
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.*
 import androidx.room.Query
-import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
 
 @Dao
 interface AccountPropertiesDao {

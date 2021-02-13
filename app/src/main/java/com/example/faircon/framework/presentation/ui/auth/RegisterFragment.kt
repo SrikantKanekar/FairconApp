@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.ComposeView
@@ -19,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.faircon.framework.presentation.components.*
+import com.example.faircon.framework.presentation.components.textField.*
 import com.example.faircon.framework.presentation.theme.FairconTheme
 import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.RegisterAttemptEvent
 
@@ -33,14 +31,9 @@ class RegisterFragment : BaseAuthFragment() {
             setContent {
 
                 FairconTheme(
+                    darkTheme = true,
                     displayProgressBar = false
                 ) {
-
-                    val registrationFields = viewModel
-                        .viewState
-                        .observeAsState(viewModel.getCurrentViewStateOrNew())
-                        .value
-                        .registrationFields
 
                     Scaffold {
                         Column(
@@ -65,57 +58,61 @@ class RegisterFragment : BaseAuthFragment() {
                             val passwordFocusRequester = remember { FocusRequester() }
                             val confirmFocusRequester = remember { FocusRequester() }
 
+
+                            val emailState = remember { EmailState() }
                             MyEmailTextField(
-                                initialValue = registrationFields.registration_email,
-                                onValueChange = { viewModel.setRegistrationEmail(it) },
-                                onImeAction = {
-                                    usernameFocusRequester.requestFocus()
-                                }
+                                emailState = emailState,
+                                onImeAction = { usernameFocusRequester.requestFocus() }
                             )
 
+                            val usernameState = remember { UsernameState() }
                             MyUsernameTextField(
                                 modifier = Modifier.focusRequester(usernameFocusRequester),
-                                initialValue = registrationFields.registration_username,
-                                onValueChange = { viewModel.setRegistrationUsername(it) },
-                                onImeAction = {
-                                    passwordFocusRequester.requestFocus()
-                                }
+                                usernameState = usernameState,
+                                onImeAction = { passwordFocusRequester.requestFocus() }
                             )
 
+                            val passwordState = remember { PasswordState() }
                             MyPasswordTextField(
                                 modifier = Modifier.focusRequester(passwordFocusRequester),
-                                initialValue = registrationFields.registration_password,
-                                onValueChange = { viewModel.setRegistrationPassword(it) },
-                                onImeAction = {
-                                    confirmFocusRequester.requestFocus()
-                                }
+                                passwordState = passwordState,
+                                onImeAction = { confirmFocusRequester.requestFocus() }
                             )
 
+                            val confirmPasswordState =
+                                remember { ConfirmPasswordState(passwordState) }
                             MyPasswordTextField(
                                 modifier = Modifier.focusRequester(confirmFocusRequester),
-                                initialValue = registrationFields.registration_confirm_password,
-                                onValueChange = { viewModel.setRegistrationConfirmPassword(it) },
+                                passwordState = confirmPasswordState,
                                 label = "Confirm Password",
                                 imeAction = ImeAction.Done,
                                 onImeAction = {
-                                    register(
-                                        registrationFields.registration_email,
-                                        registrationFields.registration_username,
-                                        registrationFields.registration_password,
-                                        registrationFields.registration_confirm_password
-                                    )
+
+                                    if (emailState.isValid && usernameState.isValid
+                                        && passwordState.isValid && confirmPasswordState.isValid){
+                                        register(
+                                            emailState.text,
+                                            usernameState.text,
+                                            passwordState.text,
+                                            confirmPasswordState.text
+                                        )
+                                    }
                                 }
                             )
 
                             LoadingButton(
                                 isLoading = viewModel.shouldDisplayProgressBar.value,
                                 text = "Register",
+                                enabled = emailState.isValid
+                                        && usernameState.isValid
+                                        && passwordState.isValid
+                                        && confirmPasswordState.isValid,
                                 onClick = {
                                     register(
-                                        registrationFields.registration_email,
-                                        registrationFields.registration_username,
-                                        registrationFields.registration_password,
-                                        registrationFields.registration_confirm_password
+                                        emailState.text,
+                                        usernameState.text,
+                                        passwordState.text,
+                                        confirmPasswordState.text
                                     )
                                 }
                             )

@@ -1,11 +1,9 @@
 package com.example.faircon.framework.presentation.components
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -15,7 +13,7 @@ fun MyLinkTextButton(
     onClick: () -> Unit
 ) {
     TextButton(
-        modifier = modifier.padding(5.dp),
+        modifier = modifier,
         onClick = onClick
     ) {
         MyLinkText(text = text)
@@ -30,7 +28,7 @@ fun MyTextButton(
     onClick: () -> Unit
 ) {
     TextButton(
-        modifier = modifier.padding(5.dp),
+        modifier = modifier,
         onClick = onClick
     ) {
         MyText(

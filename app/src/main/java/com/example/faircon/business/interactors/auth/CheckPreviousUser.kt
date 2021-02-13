@@ -3,25 +3,26 @@ package com.example.faircon.business.interactors.auth
 import com.example.faircon.business.data.cache.CacheResponseHandler
 import com.example.faircon.business.data.common.safeCacheCall
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.cache.auth.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
-import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
-import com.example.faircon.framework.datasource.preference.MyPreferences
+import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
+import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class CheckPreviousUser(
     private val authTokenDao: AuthTokenDao,
     private val accountPropertiesDao: AccountPropertiesDao,
-    private val myPreferences: MyPreferences
+    private val emailDataStore: EmailDataStore
 ) {
 
     fun checkPreviousAuthUser(
         stateEvent: StateEvent
     ): Flow<DataState<AuthViewState>?> = flow {
-        val previousAuthUserEmail = myPreferences.getAuthenticatedUser()
+        val previousAuthUserEmail = emailDataStore.preferenceFlow.first()
 
         if (previousAuthUserEmail.isNullOrBlank()) {
             emit(returnNoTokenFound(stateEvent))

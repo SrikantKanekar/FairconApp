@@ -1,10 +1,9 @@
-package com.example.faircon.framework.datasource.cache.auth
+package com.example.faircon.framework.datasource.cache.authToken
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.faircon.framework.datasource.cache.auth.models.AuthToken
 
 @Dao
 interface AuthTokenDao {

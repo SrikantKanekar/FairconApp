@@ -1,35 +1,34 @@
-package com.example.faircon.framework.presentation.components
+package com.example.faircon.framework.presentation.components.textField
 
-import androidx.compose.foundation.InteractionState
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.SoftwareKeyboardController
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun MyUsernameTextField(
     modifier: Modifier = Modifier,
-    initialValue: String,
-    onValueChange: (String) -> Unit,
+    usernameState: UsernameState,
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {}
 ) {
 
     MyOutlinedTextField(
         modifier = modifier,
-        initialValue = initialValue,
-        onValueChange = { onValueChange(it) },
+        textFieldState = usernameState,
         label = "Username",
         leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = imeAction),
@@ -40,15 +39,13 @@ fun MyUsernameTextField(
 @Composable
 fun MyEmailTextField(
     modifier: Modifier = Modifier,
-    initialValue: String,
-    onValueChange: (String) -> Unit,
+    emailState: EmailState,
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {}
 ) {
     MyOutlinedTextField(
         modifier = modifier,
-        initialValue = initialValue,
-        onValueChange = { onValueChange(it) },
+        textFieldState = emailState,
         label = "Email",
         placeholder = "abc@gmail.com",
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "") },
@@ -61,8 +58,7 @@ fun MyEmailTextField(
 @Composable
 fun MyPasswordTextField(
     modifier: Modifier = Modifier,
-    initialValue: String = "",
-    onValueChange: (String) -> Unit,
+    passwordState: TextFieldState,
     label: String = "Password",
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {}
@@ -72,8 +68,7 @@ fun MyPasswordTextField(
 
     MyOutlinedTextField(
         modifier = modifier,
-        initialValue = initialValue,
-        onValueChange = { onValueChange(it) },
+        textFieldState = passwordState,
         label = label,
         placeholder = "password",
         leadingIcon = { Icon(imageVector = Icons.Default.VpnKey, contentDescription = "") },
@@ -99,8 +94,7 @@ fun MyPasswordTextField(
 @Composable
 fun MyOutlinedTextField(
     modifier: Modifier = Modifier,
-    initialValue: String,
-    onValueChange: (String) -> Unit,
+    textFieldState: TextFieldState,
     label: String,
     placeholder: String = "",
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -110,28 +104,66 @@ fun MyOutlinedTextField(
     onImeAction: () -> Unit = {}
 ) {
 
-    val value = remember { mutableStateOf(initialValue) }
+    val state = remember { textFieldState }
+    var softwareKeyboardController: SoftwareKeyboardController? = null
 
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
-        value = value.value,
+        value = state.text,
         onValueChange = {
-            onValueChange(it)
-            value.value = it
+            state.text = it
         },
-        textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
-        label = { Text(text = label) },
+        modifier = modifier
+            .fillMaxWidth()
+            .onFocusChanged { focusState ->
+                val focused = focusState == FocusState.Active
+                state.onFocusChange(focused)
+                if (!focused) {
+                    state.enableShowErrors()
+                }
+            },
+        textStyle = MaterialTheme.typography.body2,
+        label = {
+            Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.body2
+                )
+            }
+        },
         placeholder = { Text(text = placeholder) },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
+        isErrorValue = state.showErrors(),
+        singleLine = true,
         visualTransformation = visualTransformation,
+        onTextInputStarted = { softwareKeyboardController = it },
         keyboardOptions = keyboardOptions,
-        onImeActionPerformed = { action, softKeyboardController ->
-            if (action == ImeAction.Done){
-                softKeyboardController?.hideSoftwareKeyboard()
-            }
-            onImeAction()
-        },
-        maxLines = 1
+        keyboardActions = KeyboardActions(
+            onDone = {
+                softwareKeyboardController?.hideSoftwareKeyboard()
+                onImeAction()
+            },
+            onNext = { onImeAction() },
+        )
     )
+    state.getError()?.let { error -> TextFieldError(textError = error) }
+}
+
+
+/**
+ * To be removed when [TextField]s support error
+ */
+@Composable
+fun TextFieldError(textError: String) {
+    Row(modifier = Modifier.fillMaxWidth().padding(bottom = 2.dp)) {
+        Spacer(modifier = Modifier.preferredWidth(16.dp))
+        Text(
+            text = textError,
+            modifier = Modifier.fillMaxWidth(),
+            style = LocalTextStyle.current.copy(
+                color = MaterialTheme.colors.error,
+                fontSize = 12.sp
+            )
+        )
+    }
 }

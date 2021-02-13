@@ -8,11 +8,11 @@ import com.example.faircon.business.interactors.main.account.AccountInteractors
 import com.example.faircon.business.interactors.main.account.GetAccountProperties
 import com.example.faircon.business.interactors.main.account.SaveAccountProperties
 import com.example.faircon.business.interactors.main.account.UpdatePassword
-import com.example.faircon.framework.datasource.cache.auth.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.main.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
 import com.example.faircon.framework.datasource.network.auth.AuthService
 import com.example.faircon.framework.datasource.network.main.MainService
-import com.example.faircon.framework.datasource.preference.MyPreferences
+import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,12 +29,12 @@ object InteractorsModule {
         authTokenDao: AuthTokenDao,
         accountPropertiesDao: AccountPropertiesDao,
         authService: AuthService,
-        myPreferences: MyPreferences
+        emailDataStore: EmailDataStore
     ): AuthInteractors{
         return AuthInteractors(
-            Login(authTokenDao, accountPropertiesDao, authService, myPreferences),
-            Registration(authTokenDao, accountPropertiesDao, authService, myPreferences),
-            CheckPreviousUser(authTokenDao, accountPropertiesDao, myPreferences)
+            Login(authTokenDao, accountPropertiesDao, authService, emailDataStore),
+            Registration(authTokenDao, accountPropertiesDao, authService, emailDataStore),
+            CheckPreviousUser(authTokenDao, accountPropertiesDao, emailDataStore)
         )
     }
 

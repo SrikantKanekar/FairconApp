@@ -18,17 +18,18 @@
             android:title="Notification" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="OTHER SETTINGS">
-        <ListPreference
-            android:defaultValue="default"
-            android:entries="@array/theme_preference_array_entries"
-            android:entryValues="@array/theme_preference_array_entry_values"
+    <PreferenceCategory android:title="THEME">
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:summaryOn="Light"
+            android:summaryOff="Dark"
             android:icon="@drawable/ic_baseline_brightness_4_24"
-            android:key="theme_preference"
+            android:key="APP_THEME"
             android:title="Theme"
-            app:useSimpleSummaryProvider="true"
-            android:enabled="false" />
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="OTHER SETTINGS">
         <Preference
             android:enabled="false"
             android:icon="@drawable/ic_baseline_help_24"

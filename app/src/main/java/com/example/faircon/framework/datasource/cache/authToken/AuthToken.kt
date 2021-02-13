@@ -1,10 +1,10 @@
-package com.example.faircon.framework.datasource.cache.auth.models
+package com.example.faircon.framework.datasource.cache.authToken
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
-import com.example.faircon.framework.datasource.cache.main.model.AccountProperties
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
 
 
 @Entity(
