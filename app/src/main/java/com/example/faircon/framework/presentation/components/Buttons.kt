@@ -24,7 +24,7 @@ fun LoadingButton(
 ) {
     if (isLoading) {
         CircularProgressIndicator(
-            modifier = modifier.padding(25.dp)
+            modifier = modifier
         )
     } else {
         MyButton(
@@ -45,7 +45,6 @@ fun MyButton(
 ) {
     Button(
         modifier = modifier
-            .padding(25.dp)
             .height(45.dp)
             .clip(CircleShape),
         enabled = enabled,
@@ -59,4 +58,3 @@ fun MyButton(
         )
     }
 }
-

@@ -6,8 +6,8 @@ import com.example.faircon.business.interactors.auth.Login
 import com.example.faircon.business.interactors.auth.Registration
 import com.example.faircon.business.interactors.main.account.AccountInteractors
 import com.example.faircon.business.interactors.main.account.GetAccountProperties
-import com.example.faircon.business.interactors.main.account.SaveAccountProperties
-import com.example.faircon.business.interactors.main.account.UpdatePassword
+import com.example.faircon.business.interactors.main.account.UpdateAccountProperties
+import com.example.faircon.business.interactors.main.account.ChangePassword
 import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
 import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
 import com.example.faircon.framework.datasource.network.auth.AuthService
@@ -46,8 +46,8 @@ object InteractorsModule {
     ): AccountInteractors {
         return AccountInteractors(
             GetAccountProperties(mainService, accountPropertiesDao),
-            SaveAccountProperties(mainService, accountPropertiesDao),
-            UpdatePassword(mainService)
+            UpdateAccountProperties(mainService, accountPropertiesDao),
+            ChangePassword(mainService)
         )
     }
 }

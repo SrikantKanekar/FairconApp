@@ -28,10 +28,10 @@ data class DataState<T>(
             stateEvent: StateEvent?
         ): DataState<T> {
             return DataState(
+                data = data,
                 stateMessage = response?.let {
                     StateMessage(it)
                 },
-                data = data,
                 stateEvent = stateEvent
             )
         }

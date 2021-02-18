@@ -2,10 +2,15 @@ package com.example.faircon.framework.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-val blue200 = Color(0xff8bf6ff)
-val blue300 = Color(0xff4fc3f7)
-val blue400 = Color(0xff0093c4)
-val graySurface = Color(0xFF2A2A2A)
+val blue300 = Color(0xFF59ADF0)
+val blue500 = Color(0xFF309EF7)
+val blue800 = Color(0xFF1A6DCA)
 
-val Red300 = Color(0xFFD00036)
-val Red800 = Color(0xFFEA6D7E)
+val teal200 = Color(0xFF03DAC6)
+val teal900 = Color(0xFF108786)
+
+val red300 = Color(0xFFCF6679)
+val red500 = Color(0xFFB00020)
+
+val darkBackground = Color(0xFF121212)
+val darkSurface = Color(0xFF121212)

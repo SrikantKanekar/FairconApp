@@ -1,19 +1,22 @@
 package com.example.faircon.business.domain.state
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.example.faircon.business.domain.util.printLogD
 
 class MessageStack: ArrayList<StateMessage>() {
 
-    private val _stateMessage: MutableLiveData<StateMessage?> = MutableLiveData()
-
-    val stateMessage: LiveData<StateMessage?>
-        get() = _stateMessage
+    val stateMessage: MutableState<StateMessage?> = mutableStateOf(null)
 
     private fun setStateMessage(message: StateMessage?){
-        _stateMessage.value = message
+        stateMessage.value = message
     }
+
+//    private val _stateMessage: MutableLiveData<StateMessage?> = MutableLiveData()
+//
+//    val stateMessage: LiveData<StateMessage?>
+//        get() = _stateMessage
+
 
     override fun add(element: StateMessage): Boolean {
         if (this.contains(element)) { // prevent duplicate errors added to stack
@@ -24,7 +27,7 @@ class MessageStack: ArrayList<StateMessage>() {
             "MessageStack",
             "Adding New StateMessage \n" +
                     "Message : ${element.response.message} \n" +
-                    "UiComponentType : ${element.response.uiComponentType} \n" +
+                    "UiComponentType : ${element.response.uiType} \n" +
                     "MessageType : ${element.response.messageType}"
         )
         if (this.size == 1) {
@@ -58,8 +61,8 @@ class MessageStack: ArrayList<StateMessage>() {
         return StateMessage( // this does nothing
             Response(
                 message = "does nothing",
-                uiComponentType = UIComponentType.None,
-                messageType = MessageType.None
+                uiType = UiType.None,
+                messageType = MessageType.Info
             )
         )
     }

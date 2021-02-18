@@ -2,7 +2,6 @@ package com.example.faircon.framework.presentation.components.textField
 
 import java.util.regex.Pattern
 
-// Consider an email valid if there's some text before and after a "@"
 private const val EMAIL_VALIDATION_REGEX = "^(.+)@(.+)\$"
 
 class EmailState(
@@ -13,13 +12,13 @@ class EmailState(
     errorFor = ::emailValidationError
 )
 
-/**
- * Returns an error to be displayed or null if no error was found
- */
-private fun emailValidationError(email: String): String {
-    return "Invalid email: $email"
+private fun isEmailValid(email: String): Boolean {
+    return Pattern.matches(EMAIL_VALIDATION_REGEX, email) && email.isNotBlank()
 }
 
-private fun isEmailValid(email: String): Boolean {
-    return Pattern.matches(EMAIL_VALIDATION_REGEX, email)
+private fun emailValidationError(email: String): String {
+    return when {
+        email.isBlank() -> "Email cannot be empty"
+        else -> "Invalid email: $email"
+    }
 }

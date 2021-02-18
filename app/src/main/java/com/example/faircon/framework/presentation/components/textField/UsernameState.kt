@@ -8,13 +8,13 @@ class UsernameState(
     errorFor = ::usernameValidationError
 )
 
-/**
- * Returns an error to be displayed or null if no error was found
- */
-private fun usernameValidationError(username: String): String {
-    return "Username cannot exceed 30 characters"
+private fun isUsernameValid(username: String): Boolean {
+    return username.length <= 20 && username.isNotBlank()
 }
 
-private fun isUsernameValid(username: String): Boolean {
-    return username.length <= 30
+private fun usernameValidationError(username: String): String {
+    return when{
+        username.length > 20 -> "Username cannot exceed 20 characters"
+        else -> "Username cannot be empty"
+    }
 }

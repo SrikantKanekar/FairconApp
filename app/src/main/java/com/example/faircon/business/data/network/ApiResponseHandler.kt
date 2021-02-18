@@ -14,11 +14,10 @@ abstract class ApiResponseHandler <ViewState, Data>(
         return when(response){
 
             is GenericError -> {
-                printLogD("ApiResponseHandler", "Code : ${response.code}")
                 DataState.error(
                     response = Response(
-                        message = "${stateEvent?.errorInfo()}\n\nReason: ${response.errorMessage.toString()}",
-                        uiComponentType = UIComponentType.Dialog,
+                        message = "${stateEvent?.errorInfo()}\n${response.errorMessage.toString()}",
+                        uiType = UiType.Dialog,
                         messageType = MessageType.Error
                     ),
                     stateEvent = stateEvent
@@ -28,8 +27,8 @@ abstract class ApiResponseHandler <ViewState, Data>(
             is NetworkError -> {
                 DataState.error(
                     response = Response(
-                        message = "${stateEvent?.errorInfo()}\n\nReason: $NETWORK_ERROR",
-                        uiComponentType = UIComponentType.Dialog,
+                        message = NETWORK_ERROR,
+                        uiType = UiType.SnackBar,
                         messageType = MessageType.Error
                     ),
                     stateEvent = stateEvent
@@ -40,8 +39,8 @@ abstract class ApiResponseHandler <ViewState, Data>(
                 if(response.value == null){
                     DataState.error(
                         response = Response(
-                            message = "${stateEvent?.errorInfo()}\n\nReason: ${NETWORK_DATA_NULL}.",
-                            uiComponentType = UIComponentType.Dialog,
+                            message = NETWORK_DATA_NULL,
+                            uiType = UiType.SnackBar,
                             messageType = MessageType.Error
                         ),
                         stateEvent = stateEvent

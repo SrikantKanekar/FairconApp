@@ -3,15 +3,14 @@ package com.example.faircon.business.interactors.auth
 import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.authToken.AuthToken
-import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
 import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
+import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.authToken.AuthToken
+import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
+import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.datasource.network.auth.AuthService
 import com.example.faircon.framework.datasource.network.auth.response.RegistrationResponse
-import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
-import com.example.faircon.framework.presentation.ui.auth.state.RegistrationFields
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,93 +29,78 @@ class Registration(
         password: String,
         confirmPassword: String
     ): Flow<DataState<AuthViewState>?> = flow {
-        val registrationFieldErrors =
-            RegistrationFields(email, username, password, confirmPassword).isValidForRegistration()
-        if (registrationFieldErrors == RegistrationFields.RegistrationError.none()) {
 
-            val apiResult = safeApiCall(Dispatchers.IO) {
-                authService.register(
-                    email,
-                    username,
-                    password,
-                    confirmPassword
-                )
-            }
-            emit(
-                object : ApiResponseHandler<AuthViewState, RegistrationResponse>(
-                    response = apiResult,
-                    stateEvent = stateEvent
-                ) {
-                    override suspend fun handleSuccess(resultObj: RegistrationResponse): DataState<AuthViewState> {
-                        if (resultObj.response == GENERIC_AUTH_ERROR) {
-                            return DataState.error(
-                                response = Response(
-                                    resultObj.errorMessage,
-                                    UIComponentType.Dialog,
-                                    MessageType.Error
-                                ),
-                                stateEvent = stateEvent
-                            )
-                        }
-                        val result1 = accountPropertiesDao.insertAndReplace(
-                            AccountProperties(
-                                resultObj.pk,
-                                resultObj.email,
-                                resultObj.username
-                            )
-                        )
-                        // will return -1 if failure
-                        if (result1 < 0) {
-                            return DataState.error(
-                                response = Response(
-                                    ERROR_SAVE_ACCOUNT_PROPERTIES,
-                                    UIComponentType.Dialog,
-                                    MessageType.Error
-                                ),
-                                stateEvent = stateEvent
-                            )
-                        }
-
-                        // will return -1 if failure
-                        val authToken = AuthToken(
-                            resultObj.pk,
-                            resultObj.token
-                        )
-                        val result2 = authTokenDao.insert(authToken)
-                        if (result2 < 0) {
-                            return DataState.error(
-                                response = Response(
-                                    ERROR_SAVE_AUTH_TOKEN,
-                                    UIComponentType.Dialog,
-                                    MessageType.Error
-                                ),
-                                stateEvent = stateEvent
-                            )
-                        }
-                        emailDataStore.updateAuthenticatedUserEmail(email)
-
-                        return DataState.data(
-                            data = AuthViewState(
-                                authToken = authToken
-                            ),
-                            stateEvent = stateEvent,
-                            response = null
-                        )
-                    }
-                }.getResult()
-            )
-        } else {
-            emit(
-                DataState.error<AuthViewState>(
-                    response = Response(
-                        message = "${stateEvent.errorInfo()}\n\nReason: $registrationFieldErrors",
-                        uiComponentType = UIComponentType.Dialog,
-                        messageType = MessageType.Error
-                    ),
-                    stateEvent = stateEvent
-                )
+        val apiResult = safeApiCall(Dispatchers.IO) {
+            authService.register(
+                email,
+                username,
+                password,
+                confirmPassword
             )
         }
+        emit(
+            object : ApiResponseHandler<AuthViewState, RegistrationResponse>(
+                response = apiResult,
+                stateEvent = stateEvent
+            ) {
+                override suspend fun handleSuccess(resultObj: RegistrationResponse): DataState<AuthViewState> {
+                    if (resultObj.response == GENERIC_AUTH_ERROR) {
+                        return DataState.error(
+                            response = Response(
+                                resultObj.errorMessage,
+                                UiType.Dialog,
+                                MessageType.Error
+                            ),
+                            stateEvent = stateEvent
+                        )
+                    }
+                    val result1 = accountPropertiesDao.insertAndReplace(
+                        AccountProperties(
+                            resultObj.pk,
+                            resultObj.email,
+                            resultObj.username
+                        )
+                    )
+                    // will return -1 if failure
+                    if (result1 < 0) {
+                        return DataState.error(
+                            response = Response(
+                                ERROR_SAVE_ACCOUNT_PROPERTIES,
+                                UiType.Dialog,
+                                MessageType.Error
+                            ),
+                            stateEvent = stateEvent
+                        )
+                    }
+
+                    // will return -1 if failure
+                    val authToken = AuthToken(
+                        resultObj.pk,
+                        resultObj.token
+                    )
+                    val result2 = authTokenDao.insert(authToken)
+                    if (result2 < 0) {
+                        return DataState.error(
+                            response = Response(
+                                ERROR_SAVE_AUTH_TOKEN,
+                                UiType.Dialog,
+                                MessageType.Error
+                            ),
+                            stateEvent = stateEvent
+                        )
+                    }
+                    emailDataStore.updateAuthenticatedUserEmail(email)
+
+                    return DataState.data(
+                        data = AuthViewState(
+                            authToken = authToken
+                        ),
+                        stateEvent = stateEvent,
+                        response = null
+                    )
+                }
+            }.getResult()
+        )
     }
 
     companion object{

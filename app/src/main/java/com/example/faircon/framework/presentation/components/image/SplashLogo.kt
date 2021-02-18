@@ -11,21 +11,20 @@ import com.example.faircon.R
 
 @Composable
 fun LauncherScreenLogo() {
-    AppLogo(isDisplayed = true)
+    AppLogo()
 }
 
 @Composable
 fun AppLogo(
-    isDisplayed: Boolean,
+    modifier: Modifier = Modifier,
     size: Dp = 110.dp
 ) {
-    if (isDisplayed) {
-        val painterResource = painterResource(R.mipmap.ic_launcher_round)
 
-        Image(
-            modifier = Modifier.preferredSize(size),
-            painter = painterResource,
-            contentDescription = "Logo"
-        )
-    }
+    val painterResource = painterResource(R.mipmap.ic_launcher_round)
+
+    Image(
+        modifier = modifier.preferredSize(size),
+        painter = painterResource,
+        contentDescription = "Logo"
+    )
 }

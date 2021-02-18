@@ -2,64 +2,112 @@ package com.example.faircon.framework.presentation.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.Observer
-import com.example.faircon.R
-import com.example.faircon.framework.presentation.ui.BaseActivity
-import com.example.faircon.framework.presentation.ui.main.MainActivity
-import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.*
-import com.example.faircon.business.domain.state.StateMessageCallback
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.faircon.business.interactors.auth.CheckPreviousUser.Companion.RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE
+import com.example.faircon.framework.presentation.components.image.AppLogo
+import com.example.faircon.framework.presentation.navigation.AuthScreen
+import com.example.faircon.framework.presentation.theme.FairconTheme
+import com.example.faircon.framework.presentation.ui.BaseActivity
+import com.example.faircon.framework.presentation.ui.auth.passwordReset.PasswordResetScreen
+import com.example.faircon.framework.presentation.ui.auth.passwordReset.PasswordResetSuccessScreen
+import com.example.faircon.framework.presentation.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
-    lateinit var splashLogo: ImageView
-    lateinit var fragmentContainerView: FragmentContainerView
-
     val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+        setContent {
 
-        splashLogo = findViewById(R.id.splash_logo)
-        fragmentContainerView = findViewById(R.id.auth_nav_host_fragment)
+            val viewModel: AuthViewModel = viewModel()
 
-        subscribeObservers()
+            val stateMessage = viewModel.stateMessage.value
+
+            if (stateMessage?.response?.message.equals(RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE)) {
+                onFinishCheckPreviousUser()
+            }
+
+            val navController = rememberNavController()
+
+            val scaffoldState = rememberScaffoldState()
+
+            FairconTheme(
+                darkTheme = isDark.value,
+                isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+                scaffoldState = scaffoldState,
+                stateMessage = stateMessage,
+                removeStateMessage = { viewModel.removeStateMessage() }
+            ) {
+
+                if (viewModel.checkPreviousUser.value) {
+                    Scaffold(
+                        scaffoldState = scaffoldState,
+                        snackbarHost = { scaffoldState.snackbarHostState }
+                    ) {
+
+                        NavHost(
+                            navController = navController,
+                            startDestination = AuthScreen.LauncherScreen.route
+                        ) {
+
+                            composable(route = AuthScreen.LauncherScreen.route) {
+                                LauncherScreen(navController = navController)
+                            }
+
+                            composable(route = AuthScreen.LoginScreen.route) {
+                                LoginScreen(viewModel = viewModel)
+                            }
+
+                            composable(route = AuthScreen.RegisterScreen.route) {
+                                RegisterScreen(viewModel = viewModel)
+                            }
+
+                            composable(route = AuthScreen.PasswordResetScreen.route) {
+                                PasswordResetScreen(
+                                    navController = navController,
+                                    viewModel = viewModel
+                                )
+                            }
+
+                            composable(route = AuthScreen.PasswordResetSuccessScreen.route) {
+                                PasswordResetSuccessScreen(navController = navController)
+                            }
+                        }
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        AppLogo(modifier = Modifier.align(Alignment.Center))
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.setStateEvent(CheckPreviousAuthEvent)
+        subscribeObservers()
     }
 
     private fun subscribeObservers() {
-        viewModel.viewState.observe(this, Observer { viewState ->
+        viewModel.viewState.observe(this, { viewState ->
             viewState.authToken?.let {
                 sessionManager.login(it)
-            }
-        })
-
-        viewModel.stateMessage.observe(this, { stateMessage ->
-            stateMessage?.let {
-
-                if (stateMessage.response.message.equals(RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE)) {
-                    onFinishCheckPreviousAuthUser()
-                }
-
-                onResponseReceived(
-                    response = it.response,
-                    stateMessageCallback = object : StateMessageCallback {
-                        override fun removeMessageFromStack() {
-                            viewModel.removeStateMessage()
-                        }
-                    }
-                )
             }
         })
 
@@ -72,9 +120,8 @@ class AuthActivity : BaseActivity() {
         })
     }
 
-    private fun onFinishCheckPreviousAuthUser() {
-        fragmentContainerView.visibility = View.VISIBLE
-        splashLogo.visibility = View.INVISIBLE
+    private fun onFinishCheckPreviousUser() {
+        viewModel.checkPreviousUser.value = true
     }
 
     private fun navMainActivity() {

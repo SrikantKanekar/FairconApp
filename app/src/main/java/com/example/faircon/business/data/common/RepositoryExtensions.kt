@@ -92,8 +92,8 @@ private fun convertErrorBody(throwable: HttpException): String? {
 }
 
 object TIMEOUTS {
-    const val NETWORK_TIMEOUT = 6000L
-    const val CACHE_TIMEOUT = 2000L
+    const val NETWORK_TIMEOUT = 15000L
+    const val CACHE_TIMEOUT = 3000L
 }
 
 object ERRORS {

@@ -2,7 +2,6 @@ package com.example.faircon.business.data.common
 
 import com.example.faircon.business.data.network.ApiResult.*
 import com.example.faircon.business.data.cache.CacheResponseHandler
-import com.example.faircon.business.data.network.ApiResult
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.business.domain.util.printLogD
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,7 +34,7 @@ constructor(
                     DataState.error<ViewState>(
                         response = Response(
                             message = "${stateEvent.errorInfo()}\n\nReason: ${apiResult.errorMessage}",
-                            uiComponentType = UIComponentType.Toast,
+                            uiType = UiType.None,
                             messageType = MessageType.Error
                         ),
                         stateEvent = stateEvent
@@ -48,7 +47,7 @@ constructor(
                     DataState.error<ViewState>(
                         response = Response(
                             message = "${stateEvent.errorInfo()}\n\nReason: $NETWORK_ERROR",
-                            uiComponentType = UIComponentType.None,
+                            uiType = UiType.None,
                             messageType = MessageType.Error
                         ),
                         stateEvent = stateEvent
@@ -62,7 +61,7 @@ constructor(
                         DataState.error<ViewState>(
                             response = Response(
                                 message = "${stateEvent.errorInfo()}\n\nReason: $UNKNOWN_ERROR",
-                                uiComponentType = UIComponentType.None,
+                                uiType = UiType.None,
                                 messageType = MessageType.Error
                             ),
                             stateEvent = stateEvent

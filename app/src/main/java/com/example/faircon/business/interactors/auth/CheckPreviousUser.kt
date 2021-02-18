@@ -22,6 +22,7 @@ class CheckPreviousUser(
     fun checkPreviousAuthUser(
         stateEvent: StateEvent
     ): Flow<DataState<AuthViewState>?> = flow {
+
         val previousAuthUserEmail = emailDataStore.preferenceFlow.first()
 
         if (previousAuthUserEmail.isNullOrBlank()) {
@@ -41,10 +42,12 @@ class CheckPreviousUser(
                             authTokenDao.searchByPk(resultObj.pk)?.let { authToken ->
                                 if (authToken.token != null) {
                                     return DataState.data(
-                                        data = AuthViewState(
-                                            authToken = authToken
+                                        data = AuthViewState(authToken = authToken),
+                                        response = Response(
+                                            message = "Previous User found",
+                                            uiType = UiType.None,
+                                            messageType = MessageType.Success
                                         ),
-                                        response = null,
                                         stateEvent = stateEvent
                                     )
                                 }
@@ -53,7 +56,7 @@ class CheckPreviousUser(
                         return DataState.error(
                             response = Response(
                                 RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE,
-                                UIComponentType.None,
+                                UiType.None,
                                 MessageType.Error
                             ),
                             stateEvent = stateEvent
@@ -71,7 +74,7 @@ class CheckPreviousUser(
         return DataState.error(
             response = Response(
                 RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE,
-                UIComponentType.None,
+                UiType.None,
                 MessageType.Error
             ),
             stateEvent = stateEvent

@@ -79,7 +79,7 @@ abstract class DataChannelManager<ViewState> {
 
 
     // MessageStack Functions
-    private fun addNewStateMessage(stateMessage: StateMessage) {
+    fun addNewStateMessage(stateMessage: StateMessage) {
         messageStack.add(stateMessage)
     }
 

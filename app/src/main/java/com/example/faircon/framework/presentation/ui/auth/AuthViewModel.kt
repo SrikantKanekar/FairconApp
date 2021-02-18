@@ -1,10 +1,12 @@
 package com.example.faircon.framework.presentation.ui.auth
 
-import com.example.faircon.business.domain.state.DataState
-import com.example.faircon.business.domain.state.StateEvent
+import androidx.compose.runtime.mutableStateOf
+import com.example.faircon.business.domain.state.*
+import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.business.interactors.auth.AuthInteractors
 import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 import com.example.faircon.framework.presentation.ui.BaseViewModel
+import com.example.faircon.framework.presentation.ui.auth.passwordReset.WebAppInterface
 import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.*
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,13 @@ class AuthViewModel
 constructor(
     private val authInteractors: AuthInteractors
 ) : BaseViewModel<AuthViewState>() {
+
+    val checkPreviousUser = mutableStateOf(false)
+    val resetPasswordSuccess = mutableStateOf(false)
+
+    init {
+        setStateEvent(CheckPreviousAuthEvent)
+    }
 
     override fun handleNewData(data: AuthViewState) {
         data.authToken?.let { authToken ->
@@ -58,46 +67,30 @@ constructor(
         return AuthViewState()
     }
 
-
-    // Login Setters
-    fun setLoginEmail(email: String) {
-        val update = getCurrentViewStateOrNew()
-        update.loginFields.login_email = email
-        setViewState(update)
+    fun login(
+        email: String,
+        password: String
+    ) {
+        setStateEvent(
+            LoginAttemptEvent(email, password)
+        )
     }
 
-    fun setLoginPassword(password: String) {
-        val update = getCurrentViewStateOrNew()
-        update.loginFields.login_password = password
-        setViewState(update)
+    fun register(
+        email: String,
+        username: String,
+        password: String,
+        confirmPassword: String,
+    ) {
+        setStateEvent(
+            RegisterAttemptEvent(
+                email,
+                username,
+                password,
+                confirmPassword
+            )
+        )
     }
-
-
-    // Registration Setters
-    fun setRegistrationEmail(email: String) {
-        val update = getCurrentViewStateOrNew()
-        update.registrationFields.registration_email = email
-        setViewState(update)
-    }
-
-    fun setRegistrationUsername(username: String) {
-        val update = getCurrentViewStateOrNew()
-        update.registrationFields.registration_username = username
-        setViewState(update)
-    }
-
-    fun setRegistrationPassword(password: String) {
-        val update = getCurrentViewStateOrNew()
-        update.registrationFields.registration_password = password
-        setViewState(update)
-    }
-
-    fun setRegistrationConfirmPassword(password: String) {
-        val update = getCurrentViewStateOrNew()
-        update.registrationFields.registration_confirm_password = password
-        setViewState(update)
-    }
-
 
     // AuthToken Setter
     private fun setAuthToken(authToken: AuthToken) {
@@ -107,6 +100,37 @@ constructor(
             setViewState(update)
         }
     }
+
+
+
+    val webInteractionCallback = object : WebAppInterface.OnWebInteractionCallback {
+
+        override fun onError(errorMessage: String) {
+            printLogD("AuthViewModel", "onError: $errorMessage")
+
+            addNewStateMessage(
+                StateMessage(
+                    response = Response(
+                        message = errorMessage,
+                        uiType = UiType.Dialog,
+                        messageType = MessageType.Error
+                    )
+                )
+            )
+        }
+
+        override fun onSuccess(email: String) {
+            printLogD("AuthViewModel", "onSuccess: a reset link will be sent to $email.")
+            resetPasswordSuccess.value = true
+        }
+
+        override fun onLoading(isLoading: Boolean) {
+            printLogD("AuthViewModel", "onLoading... ")
+            //Removed because the website has its progress bar
+            shouldDisplayProgressBar.value = true
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

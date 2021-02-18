@@ -29,6 +29,7 @@ fun MyUsernameTextField(
     MyOutlinedTextField(
         modifier = modifier,
         textFieldState = usernameState,
+        onValueChange = { usernameState.enableShowErrors() },
         label = "Username",
         leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = imeAction),
@@ -69,6 +70,7 @@ fun MyPasswordTextField(
     MyOutlinedTextField(
         modifier = modifier,
         textFieldState = passwordState,
+        onValueChange = { passwordState.enableShowErrors() },
         label = label,
         placeholder = "password",
         leadingIcon = { Icon(imageVector = Icons.Default.VpnKey, contentDescription = "") },
@@ -95,6 +97,7 @@ fun MyPasswordTextField(
 fun MyOutlinedTextField(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState,
+    onValueChange: () -> Unit = {},
     label: String,
     placeholder: String = "",
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -111,6 +114,7 @@ fun MyOutlinedTextField(
         value = state.text,
         onValueChange = {
             state.text = it
+            onValueChange()
         },
         modifier = modifier
             .fillMaxWidth()

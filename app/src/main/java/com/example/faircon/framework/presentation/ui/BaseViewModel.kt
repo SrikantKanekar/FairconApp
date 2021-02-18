@@ -61,7 +61,7 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
             DataState.error<ViewState>(
                 response = Response(
                     message = INVALID_STATE_EVENT,
-                    uiComponentType = UIComponentType.None,
+                    uiType = UiType.None,
                     messageType = MessageType.Error
                 ),
                 stateEvent = stateEvent
@@ -79,6 +79,9 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
     // MessageStack Functions
     val stateMessage = dataChannelManager.messageStack.stateMessage
 
+    fun addNewStateMessage(stateMessage: StateMessage) =
+        dataChannelManager.addNewStateMessage(stateMessage)
+
     fun removeStateMessage(index: Int = 0) = dataChannelManager.removeStateMessage(index)
 
     fun clearAllStateMessages() = dataChannelManager.clearAllStateMessages()
@@ -92,7 +95,7 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
     fun cancelActiveJobs() = dataChannelManager.cancelActiveJobs()
 
 
-    companion object{
+    companion object {
         const val INVALID_STATE_EVENT = "Invalid state event"
     }
 }

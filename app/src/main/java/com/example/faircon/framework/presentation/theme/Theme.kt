@@ -8,42 +8,53 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.faircon.framework.presentation.components.*
-import com.example.faircon.framework.presentation.components.snackbar.DefaultSnackbar
-import java.util.*
+import com.example.faircon.business.domain.state.StateMessage
+import com.example.faircon.framework.presentation.components.ConnectivityMonitor
+import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
+import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
+import com.example.faircon.framework.presentation.components.stateMessageHandler.HandleMessageUiType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
 
 private val LightColorPalette = lightColors(
-    primary = blue300,
-    primaryVariant = blue400,
-    secondary = blue300,
-    secondaryVariant = blue400,
-    onPrimary = Color.Black,
+    primary = blue500,
+    primaryVariant = blue800,
+    secondary = blue500,
+    secondaryVariant = blue800,
+    background = Color.White,
+    surface = Color.White,
+    error = red500,
+    onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    onError = Red800
+    onError = Color.White
 )
 
 private val DarkColorPalette = darkColors(
     primary = blue300,
-    primaryVariant = blue400,
+    primaryVariant = blue800,
     secondary = blue300,
-    background = Color.Black,
-    surface = graySurface,
+    background = darkBackground,
+    surface = darkSurface,
+    error = red300,
     onPrimary = Color.Black,
+    onSecondary = Color.Black,
     onBackground = Color.White,
     onSurface = Color.White,
-    onError = Red300
+    onError = Color.Black
 )
+
+val snackbarController = SnackbarController(CoroutineScope(Main))
 
 @Composable
 fun FairconTheme(
     darkTheme: Boolean,
     isNetworkAvailable: Boolean = true,
-    displayProgressBar: Boolean,
+    displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    messageQueue: Queue<GenericDialogInfo>? = null,
-    onDismiss: () -> Unit = {},
+    stateMessage: StateMessage? = null,
+    removeStateMessage: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
@@ -55,7 +66,7 @@ fun FairconTheme(
             modifier = Modifier.fillMaxSize()
         ) {
 
-            Column{
+            Column {
                 ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
                 content()
             }
@@ -65,33 +76,11 @@ fun FairconTheme(
                 modifier = Modifier.align(Alignment.Center)
             )
 
-            DefaultSnackbar(
-                snackbarHostState = scaffoldState.snackbarHostState,
-                onDismiss = {
-                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                },
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
-            ProcessMessageStack(
-                messageQueue = messageQueue,
-                onDismiss = onDismiss,
+            HandleMessageUiType(
+                stateMessage = stateMessage,
+                scaffoldState = scaffoldState,
+                removeStateMessage = removeStateMessage
             )
         }
-    }
-}
-
-@Composable
-fun ProcessMessageStack(
-    messageQueue: Queue<GenericDialogInfo>?,
-    onDismiss: () -> Unit,
-) {
-    messageQueue?.peek()?.let { dialogInfo ->
-        GenericDialog(
-            onDismiss = onDismiss,
-            title = dialogInfo.title,
-            description = dialogInfo.description,
-            positiveAction = dialogInfo.positiveAction,
-            negativeAction = dialogInfo.negativeAction
-        )
     }
 }
