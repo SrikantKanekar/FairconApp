@@ -31,7 +31,6 @@ constructor(
         actionLabel: String,
         removeStateMessage: () -> Unit
     ) {
-        removeStateMessage()
 
         if (snackbarJob == null) {
             snackbarJob = scope.launch {
@@ -39,6 +38,7 @@ constructor(
                     message = message,
                     actionLabel = actionLabel
                 )
+                removeStateMessage()
                 cancelActiveJob()
             }
         } else {
@@ -48,6 +48,7 @@ constructor(
                     message = message,
                     actionLabel = actionLabel
                 )
+                removeStateMessage()
                 cancelActiveJob()
             }
         }

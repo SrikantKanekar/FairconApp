@@ -55,9 +55,9 @@ abstract class DataChannelManager<ViewState> {
             return false
         }
         // if a dialog is showing, do not allow new StateEvents
-        if (!isMessageStackEmpty()) {
-            return false
-        }
+        // if (!isMessageStackEmpty()) {
+        //     return false
+        // }
         return true
     }
 

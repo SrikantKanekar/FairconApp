@@ -20,9 +20,7 @@ fun PasswordResetScreen(
 ) {
     WebViewComposable(
         webInteractionCallback = viewModel.webInteractionCallback,
-        showProgressbar = {
-            viewModel.shouldDisplayProgressBar.value = it
-        }
+        showProgressbar = { viewModel.shouldDisplayProgressBar.value = it }
     )
 
     if (viewModel.resetPasswordSuccess.value){
