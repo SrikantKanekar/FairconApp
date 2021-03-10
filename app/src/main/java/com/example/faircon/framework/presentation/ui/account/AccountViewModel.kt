@@ -82,7 +82,7 @@ constructor(
         username: String
     ) {
         setStateEvent(
-            AccountStateEvent.UpdateAccountPropertiesEvent(
+            UpdateAccountPropertiesEvent(
                 email,
                 username
             )
@@ -95,7 +95,7 @@ constructor(
         confirm: String
     ) {
         setStateEvent(
-            AccountStateEvent.ChangePasswordEvent(
+            ChangePasswordEvent(
                 current,
                 new,
                 confirm
