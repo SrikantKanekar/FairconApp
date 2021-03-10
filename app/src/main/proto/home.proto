@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.example.faircon";
+option java_multiple_files = true;
+
+message HomePreferences {
+  int32 fan_speed = 1;
+  float ambient_temperature = 2;
+  float tec_voltage = 3;
+  int32 mode = 4;
+}

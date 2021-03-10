@@ -1,9 +1,11 @@
 package com.example.faircon.framework.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.faircon.framework.datasource.dataStore.ThemeDataStore
-import com.example.faircon.framework.datasource.network.connectivity.ConnectivityManager
+import com.example.faircon.framework.datasource.network.connectivity.WiFiConnectivityManager
 import com.example.faircon.framework.datasource.session.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -17,27 +19,27 @@ abstract class BaseActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
 
     @Inject
-    lateinit var connectivityManager: ConnectivityManager
+    lateinit var wiFiConnectivityManager: WiFiConnectivityManager
 
     @Inject
-    lateinit var dataStore: ThemeDataStore
+    lateinit var themeDataStore: ThemeDataStore
 
-    val isDark = mutableStateOf(true)
+    var isDark by mutableStateOf(true)
 
     override fun onStart() {
         super.onStart()
         observeTheme()
-        connectivityManager.registerConnectionObserver(this)
+        wiFiConnectivityManager.registerWiFiObserver(this)
     }
 
     private fun observeTheme() {
-        dataStore.preferenceFlow.onEach {
-            isDark.value = it
+        themeDataStore.preferenceFlow.onEach {
+            isDark = it
         }.launchIn(CoroutineScope(Main))
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        connectivityManager.unregisterConnectionObserver(this)
+        wiFiConnectivityManager.unregisterWiFiObserver(this)
     }
 }

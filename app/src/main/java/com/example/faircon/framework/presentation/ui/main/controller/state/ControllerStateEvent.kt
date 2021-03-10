@@ -4,21 +4,7 @@ import com.example.faircon.business.domain.state.StateEvent
 
 sealed class ControllerStateEvent : StateEvent {
 
-    object GetSliderValueEvent : ControllerStateEvent() {
-        override fun errorInfo(): String {
-            return "failed to retrieve Values"
-        }
-
-        override fun eventName(): String {
-            return "GetSliderValueEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
-    }
-
-    object SetFanSpeedEvent : ControllerStateEvent() {
+    class SetFanSpeedEvent(val fanSpeed: Int) : ControllerStateEvent() {
         override fun errorInfo(): String {
             return "Failed to set Fan Speed"
         }
@@ -32,7 +18,7 @@ sealed class ControllerStateEvent : StateEvent {
         }
     }
 
-    object SetTemperatureEvent : ControllerStateEvent() {
+    class SetTemperatureEvent(val temperature: Float) : ControllerStateEvent() {
         override fun errorInfo(): String {
             return "Failed to set Temperature"
         }
@@ -46,7 +32,7 @@ sealed class ControllerStateEvent : StateEvent {
         }
     }
 
-    object SetTecVoltageEvent : ControllerStateEvent() {
+    class SetTecVoltageEvent(val voltage: Float) : ControllerStateEvent() {
         override fun errorInfo(): String {
             return "Failed to set Tec Voltage"
         }

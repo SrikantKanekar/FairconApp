@@ -9,10 +9,10 @@ class StateEventManager {
     val shouldDisplayProgressbar = mutableStateOf(false)
 
     fun isStateEventActive(stateEvent: StateEvent): Boolean {
-        printLogD(
-            "StateEventManager", "Is StateEvent Active? : " +
-                    "${activeStateEvents.containsKey(stateEvent.eventName())}"
-        )
+//        printLogD(
+//            "StateEventManager", "Is StateEvent Active? : " +
+//                    "${activeStateEvents.containsKey(stateEvent.eventName())}"
+//        )
         return activeStateEvents.containsKey(stateEvent.eventName())
     }
 
@@ -36,7 +36,7 @@ class StateEventManager {
     }
 
     fun clearActiveStateEvents() {
-        printLogD("StateEventManager", "Clearing active state events")
+//        printLogD("StateEventManager", "Clearing active state events")
         activeStateEvents.clear()
         syncProgressbar()
     }
@@ -49,6 +49,6 @@ class StateEventManager {
             }
         }
         shouldDisplayProgressbar.value = progressBar
-        printLogD("StateEventManager", "ProgressBar $progressBar ")
+//        printLogD("StateEventManager", "ProgressBar $progressBar ")
     }
 }

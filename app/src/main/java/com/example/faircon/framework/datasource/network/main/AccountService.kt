@@ -6,25 +6,21 @@ import retrofit2.http.*
 import javax.inject.Singleton
 
 @Singleton
-interface MainService {
+interface AccountService {
 
     @GET("account/properties")
-    suspend fun getAccountProperties(
-        @Header("Authorization") authorization: String
-    ): AccountProperties
+    suspend fun getAccountProperties(): AccountProperties
 
     @PUT("account/properties/update")
     @FormUrlEncoded
-    suspend fun saveAccountProperties(
-        @Header("Authorization") authorization: String,
+    suspend fun updateAccountProperties(
         @Field("email") email: String,
         @Field("username") username: String
     ): GenericResponse
 
     @PUT("account/change_password")
     @FormUrlEncoded
-    suspend fun updatePassword(
-        @Header("Authorization") authorization: String,
+    suspend fun changePassword(
         @Field("old_password") currentPassword: String,
         @Field("new_password") newPassword: String,
         @Field("confirm_new_password") confirmNewPassword: String

@@ -12,25 +12,35 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-
+/**
+ * Checks if user is logged in during app startUp.
+ *
+ *  - Check [EmailDataStore] for currently logged in user email
+ *  - If No email found, user is navigated to login screen
+ *  - If email is found, [AccountProperties] Database is scanned for that email.
+ *  - If the user exists, then AuthToken Database is scanned corresponding to primary key and authToken is returned
+ *  - If the user doesn't exist, user is navigated to login screen
+ */
 class CheckPreviousUser(
     private val authTokenDao: AuthTokenDao,
     private val accountPropertiesDao: AccountPropertiesDao,
     private val emailDataStore: EmailDataStore
 ) {
 
-    fun checkPreviousAuthUser(
+    fun execute(
         stateEvent: StateEvent
     ): Flow<DataState<AuthViewState>?> = flow {
 
-        val previousAuthUserEmail = emailDataStore.preferenceFlow.first()
+        val email = emailDataStore.preferenceFlow.first()
 
-        if (previousAuthUserEmail.isNullOrBlank()) {
+        if (email.isNullOrBlank()) {
             emit(returnNoTokenFound(stateEvent))
         } else {
+
             val cacheResult = safeCacheCall(Dispatchers.IO) {
-                accountPropertiesDao.searchByEmail(previousAuthUserEmail)
+                accountPropertiesDao.searchByEmail(email)
             }
+
             emit(
                 object : CacheResponseHandler<AuthViewState, AccountProperties>(
                     response = cacheResult,
@@ -53,6 +63,7 @@ class CheckPreviousUser(
                                 }
                             }
                         }
+
                         return DataState.error(
                             response = Response(
                                 RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE,
@@ -81,7 +92,8 @@ class CheckPreviousUser(
         )
     }
 
-    companion object{
-        const val RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE = "Done checking for previously authenticated user."
+    companion object {
+        const val RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE =
+            "Done checking for previously authenticated user."
     }
 }

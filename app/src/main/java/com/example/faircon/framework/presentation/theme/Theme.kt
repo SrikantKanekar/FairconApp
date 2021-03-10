@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.faircon.business.domain.state.StateMessage
-import com.example.faircon.framework.presentation.components.ConnectivityMonitor
 import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
+import com.example.faircon.framework.presentation.components.WiFiMonitor
 import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
 import com.example.faircon.framework.presentation.components.stateMessageHandler.HandleMessageUiType
 import kotlinx.coroutines.CoroutineScope
@@ -49,16 +49,16 @@ val snackbarController = SnackbarController(CoroutineScope(Main))
 
 @Composable
 fun FairconTheme(
-    darkTheme: Boolean,
-    isNetworkAvailable: Boolean = true,
+    isDark: Boolean,
+    isWiFiAvailable: Boolean = true,
     displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    stateMessage: StateMessage? = null,
+    stateMessage: StateMessage?,
     removeStateMessage: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colors = if (darkTheme) DarkColorPalette else LightColorPalette,
+        colors = if (isDark) DarkColorPalette else LightColorPalette,
         typography = typography,
         shapes = shapes
     ) {
@@ -67,7 +67,7 @@ fun FairconTheme(
         ) {
 
             Column {
-                ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
+                WiFiMonitor(isWiFiAvailable = isWiFiAvailable)
                 content()
             }
 

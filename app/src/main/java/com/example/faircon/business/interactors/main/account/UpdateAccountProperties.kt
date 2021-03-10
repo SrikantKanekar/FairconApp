@@ -4,27 +4,31 @@ import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
-import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 import com.example.faircon.framework.datasource.network.GenericResponse
-import com.example.faircon.framework.datasource.network.main.MainService
-import com.example.faircon.framework.presentation.ui.main.account.state.AccountViewState
+import com.example.faircon.framework.datasource.network.main.AccountService
+import com.example.faircon.framework.presentation.ui.account.state.AccountViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Called to Update user Email and Username
+ * - Network request to Update
+ * - Network request to get updated values
+ * - AccountProperties database is updated
+ * - updated values are returned to user
+ */
 class UpdateAccountProperties(
-    private val mainService: MainService,
+    private val accountService: AccountService,
     private val accountPropertiesDao: AccountPropertiesDao
 ) {
-    fun update(
-        authToken: AuthToken,
+    fun execute(
         email: String,
         username: String,
         stateEvent: StateEvent
     ) = flow {
 
         val apiResult = safeApiCall(Dispatchers.IO) {
-            mainService.saveAccountProperties(
-                authorization = "Token ${authToken.token!!}",
+            accountService.updateAccountProperties(
                 email = email,
                 username = username
             )
@@ -36,8 +40,7 @@ class UpdateAccountProperties(
             ) {
                 override suspend fun handleSuccess(resultObj: GenericResponse): DataState<AccountViewState> {
 
-                    val updatedAccountProperties = mainService
-                        .getAccountProperties("Token ${authToken.token!!}")
+                    val updatedAccountProperties = accountService.getAccountProperties()
 
                     accountPropertiesDao.updateAccountProperties(
                         pk = updatedAccountProperties.pk,

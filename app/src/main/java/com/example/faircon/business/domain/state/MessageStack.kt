@@ -12,12 +12,6 @@ class MessageStack: ArrayList<StateMessage>() {
         stateMessage.value = message
     }
 
-//    private val _stateMessage: MutableLiveData<StateMessage?> = MutableLiveData()
-//
-//    val stateMessage: LiveData<StateMessage?>
-//        get() = _stateMessage
-
-
     override fun add(element: StateMessage): Boolean {
         if (this.contains(element)) { // prevent duplicate errors added to stack
             return false
@@ -46,7 +40,7 @@ class MessageStack: ArrayList<StateMessage>() {
     override fun removeAt(index: Int): StateMessage {
         try {
             val transaction = super.removeAt(index)
-            printLogD("MessageStack", "Removed State message at index $index")
+//            printLogD("MessageStack", "Removed State message at index $index")
             if (this.size > 0) {
                 setStateMessage(message = this[0])
             } else {
@@ -68,7 +62,7 @@ class MessageStack: ArrayList<StateMessage>() {
     }
 
     fun isStackEmpty(): Boolean {
-        printLogD("MessageStack", "Is StateMessage Empty? : ${size == 0}")
+//        printLogD("MessageStack", "Is StateMessage Empty? : ${size == 0}")
         return size == 0
     }
 }

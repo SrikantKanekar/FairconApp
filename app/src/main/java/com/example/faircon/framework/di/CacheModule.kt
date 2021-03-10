@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CacheModule {
 
-    @Singleton
     @Provides
     fun provideAppDatabase(app: BaseApplication): AppDatabase {
         return Room
@@ -26,13 +25,11 @@ object CacheModule {
             .build()
     }
 
-    @Singleton
     @Provides
     fun provideAuthTokenDao(db: AppDatabase): AuthTokenDao {
         return db.getAuthTokenDao()
     }
 
-    @Singleton
     @Provides
     fun provideAccountPropertiesDao(db: AppDatabase): AccountPropertiesDao {
         return db.getAccountPropertiesDao()

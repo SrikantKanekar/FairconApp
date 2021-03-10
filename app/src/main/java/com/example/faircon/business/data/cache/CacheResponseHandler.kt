@@ -1,6 +1,7 @@
 package com.example.faircon.business.data.cache
 
 import com.example.faircon.business.domain.state.*
+import com.example.faircon.business.domain.util.printLogD
 
 abstract class CacheResponseHandler <ViewState, Data>(
     private val response: CacheResult<Data?>,
@@ -11,6 +12,11 @@ abstract class CacheResponseHandler <ViewState, Data>(
         return when(response){
 
             is CacheResult.GenericError -> {
+                printLogD(
+                    className = "CacheResponseHandler",
+                    message = "----------Cache Error-----------\n" +
+                            "Error Message : ${response.errorMessage}"
+                )
                 DataState.error(
                     response = Response(
                         message = "${stateEvent?.errorInfo()}\n\nReason: ${response.errorMessage}",
@@ -23,6 +29,11 @@ abstract class CacheResponseHandler <ViewState, Data>(
 
             is CacheResult.Success -> {
                 if(response.value == null){
+                    printLogD(
+                        className = "CacheResponseHandler",
+                        message = "----------Cache Error-----------\n" +
+                                "Error : Cache data is null"
+                    )
                     DataState.error(
                         response = Response(
                             message = "${stateEvent?.errorInfo()}\n\nReason: ${CACHE_DATA_NULL}.",

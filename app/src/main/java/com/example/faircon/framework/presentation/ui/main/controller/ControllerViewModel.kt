@@ -1,65 +1,58 @@
 package com.example.faircon.framework.presentation.ui.main.controller
 
+import androidx.lifecycle.asLiveData
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
+import com.example.faircon.business.interactors.main.controller.ControllerInteractors
+import com.example.faircon.framework.datasource.dataStore.ControllerDataStore
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerStateEvent.*
 import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerViewState
-import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerViewState.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ControllerViewModel : BaseViewModel<ControllerViewState>() {
+@HiltViewModel
+class ControllerViewModel @Inject constructor(
+    private val controllerInteractors: ControllerInteractors,
+    controllerDataStore: ControllerDataStore
+) : BaseViewModel<ControllerViewState>() {
+
+    val controller = controllerDataStore.controllerFlow.asLiveData()
 
     override fun initNewViewState(): ControllerViewState {
         return ControllerViewState()
     }
 
     override fun handleNewData(data: ControllerViewState) {
-        data.sliderValues.let { sliderValues ->
-            setSliderValues(sliderValues)
-        }
+        // NA
     }
 
     override fun setStateEvent(stateEvent: StateEvent) {
-        val job: Flow<DataState<ControllerViewState>?> = when (stateEvent) {
-            is GetSliderValueEvent -> {
-                TODO()
+        val job: Flow<DataState<ControllerViewState>?> =
+
+            when (stateEvent) {
+
+                is SetFanSpeedEvent -> {
+                    controllerInteractors.setFanSpeed.execute(
+                        fanSpeed = stateEvent.fanSpeed,
+                        stateEvent = stateEvent
+                    )
+                }
+                is SetTemperatureEvent -> {
+                    controllerInteractors.setRequiredTemperature.execute(
+                        temperature = stateEvent.temperature,
+                        stateEvent = stateEvent
+                    )
+                }
+                is SetTecVoltageEvent -> {
+                    controllerInteractors.setTecVoltage.execute(
+                        voltage = stateEvent.voltage,
+                        stateEvent = stateEvent
+                    )
+                }
+                else -> emitInvalidStateEvent(stateEvent)
             }
-            is SetFanSpeedEvent -> {
-                TODO()
-            }
-            is SetTemperatureEvent -> {
-                TODO()
-            }
-            is SetTecVoltageEvent -> {
-                TODO()
-            }
-            else -> emitInvalidStateEvent(stateEvent)
-        }
         launchJob(stateEvent, job)
-    }
-
-    private fun setSliderValues(sliderValues: SliderValues) {
-        val update = getCurrentViewStateOrNew()
-        update.sliderValues = sliderValues
-        setViewState(update)
-    }
-
-    fun setFanSpeed(value: Float) {
-        val update = getCurrentViewStateOrNew()
-        update.sliderValues.fanSpeed = value
-        setViewState(update)
-    }
-
-    fun setTemperature(value: Float) {
-        val update = getCurrentViewStateOrNew()
-        update.sliderValues.temperature = value
-        setViewState(update)
-    }
-
-    fun setTecVoltage(value: Float) {
-        val update = getCurrentViewStateOrNew()
-        update.sliderValues.tecVoltage = value
-        setViewState(update)
     }
 }

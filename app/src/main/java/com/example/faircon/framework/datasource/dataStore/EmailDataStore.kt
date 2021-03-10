@@ -18,7 +18,7 @@ constructor(
     app: BaseApplication
 ) {
 
-    private val dataStore = app.createDataStore(DATASTORE_FILE_NAME)
+    private val dataStore = app.createDataStore(DataStoreFiles.EMAIL_DATASTORE_FILE)
 
     val preferenceFlow = dataStore.data
         .catch { exception ->
@@ -41,9 +41,5 @@ constructor(
 
     private object PreferenceKeys {
         val AUTHENTICATED_USER_EMAIL = stringPreferencesKey("AUTHENTICATED_USER_EMAIL")
-    }
-
-    companion object {
-        const val DATASTORE_FILE_NAME = "DATASTORE_FILE_NAME"
     }
 }

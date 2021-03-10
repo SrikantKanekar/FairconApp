@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.faircon.business.domain.state.StateMessage
 import com.example.faircon.business.domain.state.UiType
+import com.example.faircon.business.domain.util.printLogD
 
 
 @Composable
@@ -15,6 +16,8 @@ fun HandleMessageUiType(
     scaffoldState: ScaffoldState,
     removeStateMessage: () -> Unit = {}
 ) {
+    printLogD("HandleMessageUiType", stateMessage.toString())
+
     if (stateMessage?.response?.message != null) {
         stateMessage.response.let { response ->
             Box(

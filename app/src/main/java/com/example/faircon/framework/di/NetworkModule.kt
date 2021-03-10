@@ -1,14 +1,19 @@
 package com.example.faircon.framework.di
 
 import com.example.faircon.framework.datasource.network.auth.AuthService
-import com.example.faircon.framework.datasource.network.main.MainService
+import com.example.faircon.framework.datasource.network.main.AccountService
 import com.example.faircon.business.domain.util.Urls
+import com.example.faircon.framework.datasource.network.TokenInterceptor
+import com.example.faircon.framework.datasource.network.main.ControllerService
+import com.example.faircon.framework.datasource.network.main.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -16,24 +21,82 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit =
+    fun provideOkhttpClient(
+        tokenInterceptor: TokenInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(tokenInterceptor)
+            .build()
+    }
+
+    @Provides
+    @TokenRetrofit
+    fun provideTokenRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(Urls.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    @NormalRetrofit
+    fun provideNormalRetrofit(): Retrofit =
         Retrofit.Builder()
             .baseUrl(Urls.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     @Provides
-    @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService {
+    @ESP8266AP
+    fun provideESP8266APRetrofit(): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(Urls.ESP8266_AP_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    fun provideAuthService(
+        @NormalRetrofit retrofit: Retrofit
+    ): AuthService {
         return retrofit
             .create(AuthService::class.java)
     }
 
     @Provides
-    @Singleton
-    fun provideMainService(retrofit: Retrofit): MainService {
+    fun provideAccountService(
+        @TokenRetrofit retrofit: Retrofit
+    ): AccountService {
         return retrofit
-            .create(MainService::class.java)
+            .create(AccountService::class.java)
+    }
+
+    @Provides
+    fun provideControllerService(
+        @ESP8266AP retrofit: Retrofit
+    ): ControllerService {
+        return retrofit
+            .create(ControllerService::class.java)
+    }
+
+    @Provides
+    fun provideHomeService(
+        @ESP8266AP retrofit: Retrofit
+    ): HomeService {
+        return retrofit
+            .create(HomeService::class.java)
     }
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NormalRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ESP8266AP

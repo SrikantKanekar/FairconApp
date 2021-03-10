@@ -37,7 +37,7 @@ constructor(
         val job: Flow<DataState<AuthViewState>?> = when (stateEvent) {
 
             is LoginAttemptEvent -> {
-                authInteractors.login.attemptLogin(
+                authInteractors.attemptLogin.execute(
                     stateEvent = stateEvent,
                     email = stateEvent.email,
                     password = stateEvent.password
@@ -45,7 +45,7 @@ constructor(
             }
 
             is RegisterAttemptEvent -> {
-                authInteractors.registration.attemptRegistration(
+                authInteractors.attemptRegistration.execute(
                     stateEvent = stateEvent,
                     email = stateEvent.email,
                     username = stateEvent.username,
@@ -55,7 +55,7 @@ constructor(
             }
 
             is CheckPreviousAuthEvent -> {
-                authInteractors.checkPreviousUser.checkPreviousAuthUser(stateEvent)
+                authInteractors.checkPreviousUser.execute(stateEvent)
             }
 
             else -> emitInvalidStateEvent(stateEvent)

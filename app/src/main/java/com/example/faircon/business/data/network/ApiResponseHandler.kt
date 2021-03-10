@@ -4,16 +4,21 @@ import com.example.faircon.business.data.network.ApiResult.*
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.business.domain.util.printLogD
 
-abstract class ApiResponseHandler <ViewState, Data>(
+abstract class ApiResponseHandler<ViewState, Data>(
     private val response: ApiResult<Data?>,
     private val stateEvent: StateEvent?
-){
+) {
 
     suspend fun getResult(): DataState<ViewState>? {
 
-        return when(response){
-
+        return when (response) {
             is GenericError -> {
+                printLogD(
+                    className = "ApiResponseHandler",
+                    message = "----------Network Error-----------\n" +
+                            "Error Code : ${response.code} \n" +
+                            "Error Message : ${response.errorMessage}"
+                )
                 DataState.error(
                     response = Response(
                         message = "${stateEvent?.errorInfo()}\n${response.errorMessage.toString()}",
@@ -25,6 +30,11 @@ abstract class ApiResponseHandler <ViewState, Data>(
             }
 
             is NetworkError -> {
+                printLogD(
+                    className = "ApiResponseHandler",
+                    message = "----------Network Error-----------\n" +
+                            "Error : No network connection"
+                )
                 DataState.error(
                     response = Response(
                         message = NETWORK_ERROR,
@@ -36,7 +46,12 @@ abstract class ApiResponseHandler <ViewState, Data>(
             }
 
             is Success -> {
-                if(response.value == null){
+                if (response.value == null) {
+                    printLogD(
+                        className = "ApiResponseHandler",
+                        message = "----------Network Error-----------\n" +
+                                "Error : Network Data is null"
+                    )
                     DataState.error(
                         response = Response(
                             message = NETWORK_DATA_NULL,
@@ -45,8 +60,7 @@ abstract class ApiResponseHandler <ViewState, Data>(
                         ),
                         stateEvent = stateEvent
                     )
-                }
-                else{
+                } else {
                     handleSuccess(resultObj = response.value)
                 }
             }
@@ -56,7 +70,7 @@ abstract class ApiResponseHandler <ViewState, Data>(
 
     abstract suspend fun handleSuccess(resultObj: Data): DataState<ViewState>?
 
-    companion object{
+    companion object {
         const val NETWORK_ERROR = "Network error"
         const val NETWORK_DATA_NULL = "Network data is null"
     }

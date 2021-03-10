@@ -19,17 +19,20 @@ constructor(
     val result: Flow<DataState<ViewState>?> = flow {
 
         // ****** STEP 1: VIEW CACHE ******
-        printLogD("NetworkBoundResource", "-------VIEW CACHE-------")
         emit(returnCache(markJobComplete = false))
 
 
         // ****** STEP 2: MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
-        printLogD("NetworkBoundResource", "-------MAKE NETWORK CALL, SAVE RESULT TO CACHE-------")
         val apiResult = safeApiCall(dispatcher) { apiCall.invoke() }
 
         when (apiResult) {
             is GenericError -> {
-                printLogD("NetworkBoundResource", "Code : ${apiResult.code}")
+                printLogD(
+                    className = "NetworkBoundResource",
+                    message = "----------Network Error-----------\n" +
+                            "Error Code : ${apiResult.code} \n" +
+                            "Error Message : ${apiResult.errorMessage}"
+                )
                 emit(
                     DataState.error<ViewState>(
                         response = Response(
@@ -43,6 +46,11 @@ constructor(
             }
 
             is NetworkError -> {
+                printLogD(
+                    className = "NetworkBoundResource",
+                    message = "----------Network Error-----------\n" +
+                            "Error : No network connection"
+                )
                 emit(
                     DataState.error<ViewState>(
                         response = Response(
@@ -57,6 +65,11 @@ constructor(
 
             is Success -> {
                 if (apiResult.value == null) {
+                    printLogD(
+                        className = "ApiResponseHandler",
+                        message = "----------Network Error-----------\n" +
+                                "Error : Network Data is null"
+                    )
                     emit(
                         DataState.error<ViewState>(
                             response = Response(
@@ -74,7 +87,6 @@ constructor(
         }
 
         // ****** STEP 3: VIEW CACHE and MARK JOB COMPLETED ******
-        printLogD("NetworkBoundResource", "-------VIEW CACHE and MARK JOB COMPLETED-------")
         emit(returnCache(markJobComplete = true))
     }
 

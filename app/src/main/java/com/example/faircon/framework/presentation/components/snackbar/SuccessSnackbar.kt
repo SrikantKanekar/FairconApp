@@ -18,7 +18,7 @@ fun SuccessSnackbar(
         snackbar = { data ->
             Snackbar(
                 modifier = Modifier.padding(16.dp),
-                text = { Text(text = data.message) },
+                content = { Text(text = data.message) },
                 action = {
                     data.actionLabel?.let { actionLabel ->
                         Text(

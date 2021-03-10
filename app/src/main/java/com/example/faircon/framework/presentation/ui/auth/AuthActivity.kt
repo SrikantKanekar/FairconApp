@@ -33,27 +33,26 @@ class AuthActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val viewModel: AuthViewModel = viewModel()
+            val navController = rememberNavController()
+            val scaffoldState = rememberScaffoldState()
 
-            val stateMessage = viewModel.stateMessage.value
+            val authViewModel: AuthViewModel = viewModel()
 
-            if (stateMessage?.response?.message.equals(RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE)) {
+            if (authViewModel.stateMessage.value?.response?.message.equals(
+                    RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE
+                )
+            ) {
                 onFinishCheckPreviousUser()
             }
 
-            val navController = rememberNavController()
-
-            val scaffoldState = rememberScaffoldState()
-
             FairconTheme(
-                darkTheme = isDark.value,
-                isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+                isDark = isDark,
                 scaffoldState = scaffoldState,
-                stateMessage = stateMessage,
-                removeStateMessage = { viewModel.removeStateMessage() }
+                stateMessage = authViewModel.stateMessage.value,
+                removeStateMessage = { authViewModel.removeStateMessage() }
             ) {
 
-                if (viewModel.checkPreviousUser.value) {
+                if (authViewModel.checkPreviousUser.value) {
                     Scaffold(
                         scaffoldState = scaffoldState,
                         snackbarHost = { scaffoldState.snackbarHostState }
@@ -69,17 +68,17 @@ class AuthActivity : BaseActivity() {
                             }
 
                             composable(route = AuthScreen.LoginScreen.route) {
-                                LoginScreen(viewModel = viewModel)
+                                LoginScreen(viewModel = authViewModel)
                             }
 
                             composable(route = AuthScreen.RegisterScreen.route) {
-                                RegisterScreen(viewModel = viewModel)
+                                RegisterScreen(viewModel = authViewModel)
                             }
 
                             composable(route = AuthScreen.PasswordResetScreen.route) {
                                 PasswordResetScreen(
                                     navController = navController,
-                                    viewModel = viewModel
+                                    viewModel = authViewModel
                                 )
                             }
 

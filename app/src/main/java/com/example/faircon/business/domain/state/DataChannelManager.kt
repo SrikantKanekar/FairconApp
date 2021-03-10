@@ -23,10 +23,10 @@ abstract class DataChannelManager<ViewState> {
         jobFunction: Flow<DataState<ViewState>?>
     ) {
         val canExecute = canExecuteNewStateEvent(stateEvent)
-        printLogD(
-            "DataChannelManager",
-            "Can Execute New StateEvent : $canExecute"
-        )
+//        printLogD(
+//            "DataChannelManager",
+//            "Can Execute New StateEvent : $canExecute"
+//        )
         if (canExecute) {
             addStateEvent(stateEvent)
             jobFunction
@@ -93,7 +93,7 @@ abstract class DataChannelManager<ViewState> {
 
     fun clearAllStateMessages() {
         messageStack.clear()
-        printLogD("DataChannelManager", "Cleared All State Messages")
+//        printLogD("DataChannelManager", "Cleared All State Messages")
     }
 
     fun printAllStateMessages() {
@@ -110,7 +110,7 @@ abstract class DataChannelManager<ViewState> {
 
     private fun setupNewChannelScope(coroutineScope: CoroutineScope): CoroutineScope {
         channelScope = coroutineScope
-        printLogD("DataChannelManager", "Setting up New IO ChannelScope")
+//        printLogD("DataChannelManager", "Setting up New IO ChannelScope")
         return channelScope as CoroutineScope
     }
 

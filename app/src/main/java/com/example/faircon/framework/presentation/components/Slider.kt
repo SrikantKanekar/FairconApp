@@ -4,6 +4,8 @@ import androidx.compose.material.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
@@ -12,19 +14,21 @@ fun MySlider(
     initialPosition: Float,
     valueRange: ClosedFloatingPointRange<Float>,
     steps: Int,
-    onValueChangeEnd: (Float) -> Unit
+    onValueChange: (Float) -> Unit,
+    onValueChangeFinished: (() -> Unit)? = null,
 ) {
 
-    val sliderPosition = remember { mutableStateOf(initialPosition) }
+    var position by remember { mutableStateOf(initialPosition) }
 
     Slider(
         modifier = modifier,
-        value = sliderPosition.value,
-        onValueChange = { sliderPosition.value = it },
-        onValueChangeEnd = {
-            onValueChangeEnd(sliderPosition.value)
-        },
+        value = position,
         valueRange = valueRange,
-        steps = steps
+        steps = steps,
+        onValueChange = { value ->
+            position = value
+            onValueChange(value)
+        },
+        onValueChangeFinished = onValueChangeFinished
     )
 }

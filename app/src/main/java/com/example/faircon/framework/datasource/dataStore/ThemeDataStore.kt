@@ -18,7 +18,7 @@ constructor(
     app: BaseApplication
 ) {
 
-    private val dataStore = app.createDataStore(THEME_DATASTORE)
+    private val dataStore = app.createDataStore(DataStoreFiles.THEME_DATASTORE_FILE)
 
     val preferenceFlow = dataStore.data
         .catch { exception ->
@@ -47,16 +47,11 @@ constructor(
     }
 
     private object PreferenceKeys {
-        val THEME = booleanPreferencesKey(APP_THEME)
+        val THEME = booleanPreferencesKey("APP_THEME")
     }
 
     object THEME{
         const val DARK = true
         const val LIGHT = false
-    }
-
-    companion object {
-        const val THEME_DATASTORE = "THEME_DATASTORE_FILE"
-        const val APP_THEME = "APP_THEME"
     }
 }

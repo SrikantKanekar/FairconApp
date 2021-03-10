@@ -1,16 +1,14 @@
-package com.example.faircon.framework.presentation.ui.main.account
+package com.example.faircon.framework.presentation.ui.account
 
-import androidx.lifecycle.viewModelScope
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.main.account.AccountInteractors
 import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
 import com.example.faircon.framework.datasource.session.SessionManager
-import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
 import com.example.faircon.framework.presentation.ui.BaseViewModel
-import com.example.faircon.framework.presentation.ui.main.account.state.AccountStateEvent
-import com.example.faircon.framework.presentation.ui.main.account.state.AccountStateEvent.*
-import com.example.faircon.framework.presentation.ui.main.account.state.AccountViewState
+import com.example.faircon.framework.presentation.ui.account.state.AccountStateEvent
+import com.example.faircon.framework.presentation.ui.account.state.AccountStateEvent.*
+import com.example.faircon.framework.presentation.ui.account.state.AccountViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -27,8 +25,6 @@ constructor(
         setStateEvent(GetAccountPropertiesEvent)
     }
 
-    val snackbarController = SnackbarController(viewModelScope)
-
     override fun initNewViewState(): AccountViewState {
         return AccountViewState()
     }
@@ -38,16 +34,15 @@ constructor(
             val job: Flow<DataState<AccountViewState>?> = when (stateEvent) {
 
                 is GetAccountPropertiesEvent -> {
-                    accountInteractors.getAccountProperties.getAccountProperties(
+                    accountInteractors.getAccountProperties.execute(
                         stateEvent = stateEvent,
                         authToken = authToken
                     )
                 }
 
                 is UpdateAccountPropertiesEvent -> {
-                    accountInteractors.updateAccountProperties.update(
+                    accountInteractors.updateAccountProperties.execute(
                         stateEvent = stateEvent,
-                        authToken = authToken,
                         email = stateEvent.email,
                         username = stateEvent.username
                     )
@@ -56,7 +51,6 @@ constructor(
                 is ChangePasswordEvent -> {
                     accountInteractors.changePassword.execute(
                         stateEvent = stateEvent,
-                        authToken = authToken,
                         currentPassword = stateEvent.currentPassword,
                         newPassword = stateEvent.newPassword,
                         confirmNewPassword = stateEvent.confirmNewPassword

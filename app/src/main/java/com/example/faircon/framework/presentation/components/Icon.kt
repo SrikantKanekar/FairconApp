@@ -1,6 +1,6 @@
 package com.example.faircon.framework.presentation.components
 
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +15,7 @@ fun MyIcon(
     size: Dp = 20.dp
 ) {
     Icon(
-        modifier = modifier.preferredSize(size),
+        modifier = modifier.requiredSize(size),
         imageVector = imageVector,
         contentDescription = ""
     )

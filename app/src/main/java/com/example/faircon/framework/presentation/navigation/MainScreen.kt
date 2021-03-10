@@ -7,7 +7,5 @@ sealed class MainScreen(
 
     object Controller: MainScreen("Controller")
 
-    object Account: MainScreen("Account")
-
     object Setting: MainScreen("Setting")
 }

@@ -25,11 +25,9 @@ suspend fun <T> safeApiCall(
     return withContext(dispatcher) {
         try {
             withTimeout(NETWORK_TIMEOUT) {
-                printLogD("safeApiCall", "Executing Network Request")
                 Success(apiCall.invoke())
             }
         } catch (throwable: Throwable) {
-            printLogD("safeApiCall", "Error in executing Network Request")
             throwable.printStackTrace()
             when (throwable) {
                 is TimeoutCancellationException -> {
@@ -65,11 +63,9 @@ suspend fun <T> safeCacheCall(
     return withContext(dispatcher) {
         try {
             withTimeout(CACHE_TIMEOUT) {
-                printLogD("safeApiCall", "Executing Cache Request")
                 CacheResult.Success(cacheCall.invoke())
             }
         } catch (throwable: Throwable) {
-            printLogD("safeApiCall", "Error in executing Cache Request")
             throwable.printStackTrace()
             when (throwable) {
                 is TimeoutCancellationException -> {

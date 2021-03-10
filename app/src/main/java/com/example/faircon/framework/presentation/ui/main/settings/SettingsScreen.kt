@@ -1,8 +1,7 @@
 package com.example.faircon.framework.presentation.ui.main.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
@@ -12,23 +11,43 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.faircon.framework.presentation.components.MyIcon
+import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    isDark: Boolean,
+    isWiFiAvailable: Boolean,
+    scaffoldState: ScaffoldState
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(8.dp)
-    ){
 
-        SwitchSetting(
-            imageVector = Icons.Default.Person,
-            isDark = viewModel.isDark,
-            value = if (viewModel.isDark) "Dark" else "Light",
-            onCheckedChange = { boolean ->
-                viewModel.setTheme(boolean)
+    FairconTheme(
+        isDark = isDark,
+        isWiFiAvailable = isWiFiAvailable,
+        scaffoldState = scaffoldState,
+        stateMessage = null,
+        removeStateMessage = {  }
+    ) {
+
+        Scaffold(
+            scaffoldState = scaffoldState,
+            snackbarHost = { scaffoldState.snackbarHostState },
+        ) {
+
+            Column(
+                modifier = Modifier.fillMaxSize().padding(8.dp)
+            ) {
+
+                SwitchSetting(
+                    imageVector = Icons.Default.Person,
+                    isDark = settingsViewModel.isDark,
+                    value = if (settingsViewModel.isDark) "Dark" else "Light",
+                    onCheckedChange = { boolean ->
+                        settingsViewModel.setTheme(boolean)
+                    }
+                )
             }
-        )
+        }
     }
 }
 

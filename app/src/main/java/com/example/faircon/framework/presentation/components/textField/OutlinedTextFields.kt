@@ -6,14 +6,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.text.SoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,12 +105,12 @@ fun MyOutlinedTextField(
 ) {
 
     val state = remember { textFieldState }
-    var softwareKeyboardController: SoftwareKeyboardController? = null
+    val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
         value = state.text,
-        onValueChange = {
-            state.text = it
+        onValueChange = { value ->
+            state.text = value
             onValueChange()
         },
         modifier = modifier
@@ -127,7 +124,7 @@ fun MyOutlinedTextField(
             },
         textStyle = MaterialTheme.typography.body2,
         label = {
-            Providers(LocalContentAlpha provides ContentAlpha.medium) {
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     text = label,
                     style = MaterialTheme.typography.body2
@@ -137,17 +134,16 @@ fun MyOutlinedTextField(
         placeholder = { Text(text = placeholder) },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        isErrorValue = state.showErrors(),
+        isError = state.showErrors(),
         singleLine = true,
         visualTransformation = visualTransformation,
-        onTextInputStarted = { softwareKeyboardController = it },
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(
-            onDone = {
-                softwareKeyboardController?.hideSoftwareKeyboard()
-                onImeAction()
-            },
             onNext = { onImeAction() },
+            onDone = {
+                focusManager.clearFocus(true)
+                onImeAction()
+            }
         )
     )
     state.getError()?.let { error -> TextFieldError(textError = error) }
@@ -160,7 +156,7 @@ fun MyOutlinedTextField(
 @Composable
 fun TextFieldError(textError: String) {
     Row(modifier = Modifier.fillMaxWidth().padding(bottom = 2.dp)) {
-        Spacer(modifier = Modifier.preferredWidth(16.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = textError,
             modifier = Modifier.fillMaxWidth(),

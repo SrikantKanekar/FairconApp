@@ -3,26 +3,28 @@ package com.example.faircon.business.interactors.main.account
 import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 import com.example.faircon.framework.datasource.network.GenericResponse
-import com.example.faircon.framework.datasource.network.main.MainService
-import com.example.faircon.framework.presentation.ui.main.account.state.AccountViewState
+import com.example.faircon.framework.datasource.network.main.AccountService
+import com.example.faircon.framework.presentation.ui.account.state.AccountViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Called to change the password of the user
+ * - Network request to change password
+ * - response is returned to the Ui
+ */
 class ChangePassword(
-    private val mainService: MainService
+    private val accountService: AccountService
 ) {
     fun execute(
-        authToken: AuthToken,
         currentPassword: String,
         newPassword: String,
         confirmNewPassword: String,
         stateEvent: StateEvent
     ) = flow {
         val apiResult = safeApiCall(Dispatchers.IO) {
-            mainService.updatePassword(
-                authorization = "Token ${authToken.token!!}",
+            accountService.changePassword(
                 currentPassword = currentPassword,
                 newPassword = newPassword,
                 confirmNewPassword = confirmNewPassword

@@ -14,15 +14,24 @@ import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-
-class Login(
+/**
+ * Attempts to login the user
+ * - make login attempt
+ * - If the login credentials are Invalid, [GENERIC_AUTH_ERROR] string is returned from the server and [INVALID_CREDENTIALS] is returned
+ * - If the login credentials are correct, pk and email is inserted into [AccountProperties] database
+ * - Similarly, pk and token is inserted into [AuthToken] database
+ * - If -1 is returned, [ERROR_SAVE_AUTH_TOKEN] is shown to user
+ * - email is stored in [EmailDataStore]
+ * - [AuthToken] is returned to [AuthViewState]
+ */
+class AttemptLogin(
     private val authTokenDao: AuthTokenDao,
     private val accountPropertiesDao: AccountPropertiesDao,
     private val authService: AuthService,
     private val emailDataStore: EmailDataStore
 ) {
 
-    fun attemptLogin(
+    fun execute(
         stateEvent: StateEvent,
         email: String,
         password: String
@@ -58,7 +67,7 @@ class Login(
                         )
                     )
 
-                    // will return -1 if failure
+
                     val authToken = AuthToken(
                         resultObj.pk,
                         resultObj.token
@@ -75,7 +84,9 @@ class Login(
                         )
                     }
 
+
                     emailDataStore.updateAuthenticatedUserEmail(email)
+
 
                     return DataState.data(
                         data = AuthViewState(

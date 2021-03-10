@@ -37,7 +37,7 @@ fun WebViewComposable(
     webInteractionCallback: OnWebInteractionCallback,
     showProgressbar: (Boolean) -> Unit
 ) {
-    return AndroidView(viewBlock = { context ->
+    return AndroidView(factory = { context ->
         WebView(context).apply {
 
             layoutParams = ViewGroup.LayoutParams(

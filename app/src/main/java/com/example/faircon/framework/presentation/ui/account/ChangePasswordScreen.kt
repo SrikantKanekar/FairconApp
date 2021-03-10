@@ -1,4 +1,4 @@
-package com.example.faircon.framework.presentation.ui.main.account
+package com.example.faircon.framework.presentation.ui.account
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

@@ -2,7 +2,7 @@ package com.example.faircon.framework.presentation.components.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -17,7 +17,7 @@ fun MyCircularImage(
     imageVector: ImageVector
 ) {
     Card(
-        modifier = modifier.preferredSize(80.dp),
+        modifier = modifier.requiredSize(80.dp),
         shape = CircleShape,
         elevation = 8.dp
     ) {

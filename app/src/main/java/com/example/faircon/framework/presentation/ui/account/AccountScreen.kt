@@ -1,4 +1,4 @@
-package com.example.faircon.framework.presentation.ui.main.account
+package com.example.faircon.framework.presentation.ui.account
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.getValue
@@ -110,7 +110,7 @@ fun ProfileDetail(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Icon(
-            modifier = Modifier.padding(10.dp).preferredSize(40.dp),
+            modifier = Modifier.padding(10.dp).size(40.dp),
             imageVector = imageVector,
             contentDescription = ""
         )
