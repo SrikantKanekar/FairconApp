@@ -3,11 +3,9 @@ package com.example.faircon.framework.presentation.ui.main.home
 import android.content.Context
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
-import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.business.interactors.main.home.HomeInteractors
 import com.example.faircon.framework.datasource.dataStore.HomeDataStore
 import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
@@ -31,16 +29,14 @@ constructor(
     homeDataStore: HomeDataStore
 ) : BaseViewModel<HomeViewState>() {
 
-    val homeFlow = homeDataStore.homeFlow.asLiveData()
+    val homeFlow = homeDataStore.homeFlow
 
     init {
-
         viewModelScope.launch {
             if (wiFiLiveData.value == true) {
                 setStateEvent(SyncControllerEvent)
             }
             while (true) {
-                printLogD("HomeViewModel", "wifi enabled : ${wiFiLiveData.value}")
                 if (wiFiLiveData.value == true) {
                     setStateEvent(GetParametersEvent)
                 }
@@ -49,7 +45,7 @@ constructor(
         }
     }
 
-    override fun initNewViewState(): HomeViewState {
+    override fun initViewState(): HomeViewState {
         return HomeViewState()
     }
 

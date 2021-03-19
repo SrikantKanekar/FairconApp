@@ -4,11 +4,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.example.faircon.business.domain.util.printLogD
 
-class MessageStack: ArrayList<StateMessage>() {
+class MessageStack : ArrayList<StateMessage>() {
 
     val stateMessage: MutableState<StateMessage?> = mutableStateOf(null)
 
-    private fun setStateMessage(message: StateMessage?){
+    private fun setStateMessage(message: StateMessage?) {
         stateMessage.value = message
     }
 
@@ -18,10 +18,9 @@ class MessageStack: ArrayList<StateMessage>() {
         }
         val transaction = super.add(element)
         printLogD(
-            "MessageStack",
-            "Adding New StateMessage \n" +
-                    "Message : ${element.response.message} \n" +
-                    "UiComponentType : ${element.response.uiType} \n" +
+            className = "MessageStack",
+            message = "Message : ${element.response.message} \n" +
+                    "UiType : ${element.response.uiType} \n" +
                     "MessageType : ${element.response.messageType}"
         )
         if (this.size == 1) {
@@ -34,35 +33,31 @@ class MessageStack: ArrayList<StateMessage>() {
         for (element in elements) {
             add(element)
         }
-        return true // always return true. We don't care about result bool.
+        // always return true. We don't care about result
+        return true
     }
 
     override fun removeAt(index: Int): StateMessage {
         try {
-            val transaction = super.removeAt(index)
-//            printLogD("MessageStack", "Removed State message at index $index")
-            if (this.size > 0) {
-                setStateMessage(message = this[0])
-            } else {
-                printLogD("MessageStack", "Message stack is empty")
-                setStateMessage(null)
+            if (this.isNotEmpty()) {
+                val transaction = super.removeAt(index)
+                if (this.size > 0) {
+                    setStateMessage(message = this[0])
+                } else {
+                    setStateMessage(null)
+                }
+                return transaction
             }
-            return transaction
         } catch (e: IndexOutOfBoundsException) {
-            setStateMessage(null)
             e.printStackTrace()
+            setStateMessage(null)
         }
-        return StateMessage( // this does nothing
+        return StateMessage(
             Response(
-                message = "does nothing",
+                message = "MessageStack is already empty",
                 uiType = UiType.None,
                 messageType = MessageType.Info
             )
         )
-    }
-
-    fun isStackEmpty(): Boolean {
-//        printLogD("MessageStack", "Is StateMessage Empty? : ${size == 0}")
-        return size == 0
     }
 }

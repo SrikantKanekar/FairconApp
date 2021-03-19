@@ -3,10 +3,8 @@ package com.example.faircon.framework.presentation.ui.account
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.main.account.AccountInteractors
-import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
 import com.example.faircon.framework.datasource.session.SessionManager
 import com.example.faircon.framework.presentation.ui.BaseViewModel
-import com.example.faircon.framework.presentation.ui.account.state.AccountStateEvent
 import com.example.faircon.framework.presentation.ui.account.state.AccountStateEvent.*
 import com.example.faircon.framework.presentation.ui.account.state.AccountViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +23,7 @@ constructor(
         setStateEvent(GetAccountPropertiesEvent)
     }
 
-    override fun initNewViewState(): AccountViewState {
+    override fun initViewState(): AccountViewState {
         return AccountViewState()
     }
 
@@ -65,15 +63,7 @@ constructor(
 
     override fun handleNewData(data: AccountViewState) {
         data.accountProperties?.let { accountProperties ->
-            setAccountPropertiesData(accountProperties)
-        }
-    }
-
-    private fun setAccountPropertiesData(accountProperties: AccountProperties) {
-        val update = viewState.value!!
-        if (update.accountProperties != accountProperties) {
-            update.accountProperties = accountProperties
-            setViewState(update)
+            setViewState(viewState.value.copy(accountProperties = accountProperties))
         }
     }
 
@@ -81,12 +71,7 @@ constructor(
         email: String,
         username: String
     ) {
-        setStateEvent(
-            UpdateAccountPropertiesEvent(
-                email,
-                username
-            )
-        )
+        setStateEvent(UpdateAccountPropertiesEvent(email, username))
     }
 
     fun changePassword(
@@ -95,11 +80,7 @@ constructor(
         confirm: String
     ) {
         setStateEvent(
-            ChangePasswordEvent(
-                current,
-                new,
-                confirm
-            )
+            ChangePasswordEvent(current, new, confirm)
         )
     }
 

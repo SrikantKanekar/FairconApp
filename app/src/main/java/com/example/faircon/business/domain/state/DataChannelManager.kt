@@ -88,7 +88,7 @@ abstract class DataChannelManager<ViewState> {
     }
 
     private fun isMessageStackEmpty(): Boolean {
-        return messageStack.isStackEmpty()
+        return messageStack.isEmpty()
     }
 
     fun clearAllStateMessages() {
@@ -121,7 +121,7 @@ abstract class DataChannelManager<ViewState> {
             }
             channelScope = null
         }
-        printLogD("DataChannelManager", "Cleared active ChannelScope")
+//        printLogD("DataChannelManager", "Cleared active ChannelScope")
     }
 
     fun cancelActiveJobs() {

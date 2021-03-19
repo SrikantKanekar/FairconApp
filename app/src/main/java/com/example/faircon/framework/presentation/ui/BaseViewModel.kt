@@ -1,27 +1,22 @@
 package com.example.faircon.framework.presentation.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.faircon.business.domain.state.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 
 abstract class BaseViewModel<ViewState> : ViewModel() {
 
-    private val _viewState: MutableLiveData<ViewState> by lazy { MutableLiveData(initNewViewState()) }
+    private val _viewState by lazy { MutableStateFlow(initViewState()) }
 
-    val viewState: LiveData<ViewState>
-        get() = _viewState
+    val viewState = _viewState.asStateFlow()
+
+    abstract fun initViewState(): ViewState
 
     fun setViewState(viewState: ViewState) {
         _viewState.value = viewState
-    }
-
-    abstract fun initNewViewState(): ViewState
-
-    fun getCurrentViewStateOrNew(): ViewState {
-        return viewState.value ?: initNewViewState()
     }
 
     private val dataChannelManager: DataChannelManager<ViewState> =

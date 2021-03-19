@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
@@ -18,12 +19,14 @@ fun PasswordResetScreen(
     navController: NavHostController,
     viewModel: AuthViewModel
 ) {
+    val viewState = viewModel.viewState.collectAsState()
+
     WebViewComposable(
         webInteractionCallback = viewModel.webInteractionCallback,
         showProgressbar = { viewModel.shouldDisplayProgressBar.value = it }
     )
 
-    if (viewModel.resetPasswordSuccess.value){
+    if (viewState.value.resetPasswordSuccess == true){
         navController.navigate(AuthScreen.PasswordResetSuccessScreen.route){
             popUpTo = navController.graph.startDestination
             launchSingleTop = true

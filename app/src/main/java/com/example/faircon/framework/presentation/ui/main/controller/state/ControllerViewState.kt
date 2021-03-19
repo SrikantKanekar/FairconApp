@@ -4,6 +4,4 @@ import com.example.spotifyclone.business.domain.state.ViewState
 
 class ControllerViewState(
     var nothing: Nothing? = null
-): ViewState{
-
-}
+) : ViewState

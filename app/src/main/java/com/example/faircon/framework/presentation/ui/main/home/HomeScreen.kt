@@ -8,13 +8,13 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsRemote
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.example.faircon.business.domain.model.MODE
+import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.components.*
 import com.example.faircon.framework.presentation.navigation.MainScreen
 import com.example.faircon.framework.presentation.theme.FairconTheme
@@ -23,16 +23,16 @@ import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEv
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
-    isDark: Boolean,
+    theme: Int,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     navController: NavHostController,
     navAccountActivity: () -> Unit
 ) {
-    val parameter by homeViewModel.homeFlow.observeAsState()
+    val parameter = homeViewModel.homeFlow.collectAsState(initial = Parameter())
 
     FairconTheme(
-        isDark = isDark,
+        theme = theme,
         isWiFiAvailable = isWiFiAvailable,
         scaffoldState = scaffoldState,
         stateMessage = homeViewModel.stateMessage.value,
@@ -53,7 +53,7 @@ fun HomeScreen(
 
                     IconButton(
                         onClick = {
-                            navController.navigate(MainScreen.Setting.route) {
+                            navController.navigate(MainScreen.Settings.route) {
                                 popUpTo = navController.graph.startDestination
                                 launchSingleTop = true
                             }
@@ -73,59 +73,55 @@ fun HomeScreen(
             isFloatingActionButtonDocked = true
         ) {
 
-            if (parameter != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp)
-                ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
 
-                    Spacer(modifier = Modifier.height(120.dp))
+                Spacer(modifier = Modifier.height(120.dp))
 
-                    ShowData(
-                        name = Parameters.FAN_SPEED,
-                        value = parameter!!.fanSpeed.toFloat(),
-                        unit = "RPM",
-                    )
+                ShowData(
+                    name = Parameters.FAN_SPEED,
+                    value = parameter.value.fanSpeed.toFloat(),
+                    unit = "RPM",
+                )
 
-                    ShowData(
-                        name = Parameters.TEMPERATURE,
-                        value = parameter!!.temperature,
-                        unit = "C",
-                    )
+                ShowData(
+                    name = Parameters.TEMPERATURE,
+                    value = parameter.value.temperature,
+                    unit = "C",
+                )
 
-                    ShowData(
-                        name = Parameters.TEC_VOLTAGE,
-                        value = parameter!!.tecVoltage,
-                        unit = "V",
-                    )
+                ShowData(
+                    name = Parameters.TEC_VOLTAGE,
+                    value = parameter.value.tecVoltage,
+                    unit = "V",
+                )
 
-                    HomeSwitch(
-                        text = "Mode",
-                        onCheckedChange = {
-                            homeViewModel.setStateEvent(
-                                SetModeEvent(
-                                    when (it) {
-                                        true -> MODE.COOLING
-                                        false -> MODE.ON
-                                    }
-                                )
+                HomeSwitch(
+                    text = "Mode",
+                    onCheckedChange = {
+                        homeViewModel.setStateEvent(
+                            SetModeEvent(
+                                when (it) {
+                                    true -> MODE.COOLING
+                                    false -> MODE.ON
+                                }
                             )
-                        }
-                    )
+                        )
+                    }
+                )
 
-                    HomeSwitch(
-                        text = "Connect",
-                        onCheckedChange = { value ->
-                            when (value) {
-                                true -> homeViewModel.connectToFaircon()
-                                false -> homeViewModel.disconnectFromFaircon()
-                            }
+                HomeSwitch(
+                    text = "Connect",
+                    onCheckedChange = { value ->
+                        when (value) {
+                            true -> homeViewModel.connectToFaircon()
+                            false -> homeViewModel.disconnectFromFaircon()
                         }
-                    )
-                }
-            } else {
-                MyCircularProgressIndicator(isDisplayed = true)
+                    }
+                )
             }
         }
     }

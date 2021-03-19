@@ -10,61 +10,23 @@ sealed class AuthStateEvent : StateEvent {
         val password: String,
         val confirm_password: String
     ) : AuthStateEvent() {
-        override fun errorInfo(): String {
-            return "Register attempt failed."
-        }
-
-        override fun eventName(): String {
-            return "RegisterAttemptEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
+        override fun errorInfo() = "Registration attempt failed"
+        override fun eventName() = "RegisterAttemptEvent"
+        override fun shouldDisplayProgressBar() = true
     }
 
     data class LoginAttemptEvent(
         val email: String,
         val password: String
     ) : AuthStateEvent() {
-        override fun errorInfo(): String {
-            return "Login attempt failed."
-        }
-
-        override fun eventName(): String {
-            return "LoginAttemptEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
+        override fun errorInfo() = "Login attempt failed"
+        override fun eventName() = "LoginAttemptEvent"
+        override fun shouldDisplayProgressBar() = true
     }
 
     object CheckPreviousAuthEvent : AuthStateEvent() {
-        override fun errorInfo(): String {
-            return "Error checking for previously authenticated user."
-        }
-
-        override fun eventName(): String {
-            return "CheckPreviousAuthEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
-    }
-
-    object None : AuthStateEvent() {
-        override fun errorInfo(): String {
-            return "None"
-        }
-
-        override fun eventName(): String {
-            return "None"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return false
-        }
+        override fun errorInfo() = "Error checking for previously authenticated user"
+        override fun eventName() = "CheckPreviousAuthEvent"
+        override fun shouldDisplayProgressBar() = false
     }
 }

@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+
 /**
  * Checks if user is logged in during app startUp.
  *
@@ -34,7 +35,7 @@ class CheckPreviousUser(
         val email = emailDataStore.preferenceFlow.first()
 
         if (email.isNullOrBlank()) {
-            emit(returnNoTokenFound(stateEvent))
+            emit(userNotFound(stateEvent))
         } else {
 
             val cacheResult = safeCacheCall(Dispatchers.IO) {
@@ -47,14 +48,13 @@ class CheckPreviousUser(
                     stateEvent = stateEvent
                 ) {
                     override suspend fun handleSuccess(resultObj: AccountProperties): DataState<AuthViewState> {
-
                         if (resultObj.pk > -1) {
                             authTokenDao.searchByPk(resultObj.pk)?.let { authToken ->
                                 if (authToken.token != null) {
                                     return DataState.data(
                                         data = AuthViewState(authToken = authToken),
                                         response = Response(
-                                            message = "Previous User found",
+                                            message = USER_FOUND,
                                             uiType = UiType.None,
                                             messageType = MessageType.Success
                                         ),
@@ -63,28 +63,20 @@ class CheckPreviousUser(
                                 }
                             }
                         }
-
-                        return DataState.error(
-                            response = Response(
-                                RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE,
-                                UiType.None,
-                                MessageType.Error
-                            ),
-                            stateEvent = stateEvent
-                        )
+                        return userNotFound(stateEvent)
                     }
                 }.getResult()
             )
         }
     }
 
-    private fun returnNoTokenFound(
+    private fun userNotFound(
         stateEvent: StateEvent
     ): DataState<AuthViewState> {
-
-        return DataState.error(
+        return DataState.data(
+            data = AuthViewState(previousUserCheck = true),
             response = Response(
-                RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE,
+                USER_NOT_FOUND,
                 UiType.None,
                 MessageType.Error
             ),
@@ -93,7 +85,7 @@ class CheckPreviousUser(
     }
 
     companion object {
-        const val RESPONSE_CHECK_PREVIOUS_AUTH_USER_DONE =
-            "Done checking for previously authenticated user."
+        const val USER_FOUND = "previously authenticated user found"
+        const val USER_NOT_FOUND = "No previously authenticated user found"
     }
 }

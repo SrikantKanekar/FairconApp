@@ -2,37 +2,21 @@ package com.example.faircon.framework.presentation.ui.account.state
 
 import com.example.faircon.business.domain.state.StateEvent
 
-sealed class AccountStateEvent: StateEvent {
+sealed class AccountStateEvent : StateEvent {
 
     object GetAccountPropertiesEvent : AccountStateEvent() {
-        override fun errorInfo(): String {
-            return "Error retrieving account properties."
-        }
-
-        override fun eventName(): String {
-            return "GetAccountPropertiesEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
+        override fun errorInfo() = "Error retrieving account Info"
+        override fun eventName() = "GetAccountPropertiesEvent"
+        override fun shouldDisplayProgressBar() = true
     }
 
     data class UpdateAccountPropertiesEvent(
         val email: String,
         val username: String
-    ): AccountStateEvent() {
-        override fun errorInfo(): String {
-            return "Error updating account properties."
-        }
-
-        override fun eventName(): String {
-            return "UpdateAccountPropertiesEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
+    ) : AccountStateEvent() {
+        override fun errorInfo() = "Error updating account properties"
+        override fun eventName() = "UpdateAccountPropertiesEvent"
+        override fun shouldDisplayProgressBar() = true
     }
 
     data class ChangePasswordEvent(
@@ -40,30 +24,8 @@ sealed class AccountStateEvent: StateEvent {
         val newPassword: String,
         val confirmNewPassword: String
     ) : AccountStateEvent() {
-        override fun errorInfo(): String {
-            return "Error changing password."
-        }
-
-        override fun eventName(): String {
-            return "ChangePasswordEvent"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return true
-        }
-    }
-
-    object None : AccountStateEvent() {
-        override fun errorInfo(): String {
-            return "None"
-        }
-
-        override fun eventName(): String {
-            return "None"
-        }
-
-        override fun shouldDisplayProgressBar(): Boolean {
-            return false
-        }
+        override fun errorInfo() = "Error changing password"
+        override fun eventName() = "ChangePasswordEvent"
+        override fun shouldDisplayProgressBar() = true
     }
 }

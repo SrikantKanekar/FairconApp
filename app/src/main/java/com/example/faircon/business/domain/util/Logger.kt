@@ -26,7 +26,7 @@ fun printLogNetwork(className: String?, message: String ) {
 }
 
 object Constant {
-    const val TAG = "APP_DEBUG"
+    const val TAG = "DEBUG"
     const val TAG_NETWORK = "NETWORK_DEBUG"
     const val DEBUG = true
 }

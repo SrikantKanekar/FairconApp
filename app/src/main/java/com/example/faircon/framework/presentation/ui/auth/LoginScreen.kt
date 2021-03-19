@@ -36,7 +36,6 @@ fun LoginScreen(
 
         val focusRequester = remember { FocusRequester() }
 
-
         val emailState = remember { EmailState() }
         MyEmailTextField(
             emailState = emailState,

@@ -50,8 +50,8 @@ class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
             val networkCapabilities = cm.getNetworkCapabilities(network)
             val hasInternetCapability = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
             printLogNetwork(
-                "ConnectionLiveData",
-                "onAvailable: ${network}, $hasInternetCapability"
+                className = "ConnectionLiveData",
+                message = "onAvailable: network:${network}, hasInternet:$hasInternetCapability"
             )
 
             if (hasInternetCapability == true) {
@@ -61,8 +61,8 @@ class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
                     if (hasInternet) {
                         withContext(Dispatchers.Main) {
                             printLogNetwork(
-                                "ConnectionLiveData",
-                                "onAvailable: adding network. $network"
+                                className = "ConnectionLiveData",
+                                message = "onAvailable: adding network. $network"
                             )
                             validNetworks.add(network)
                             checkValidNetworks()

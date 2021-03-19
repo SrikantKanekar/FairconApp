@@ -1,10 +1,8 @@
 package com.example.faircon.framework.presentation.ui.auth
 
-import androidx.compose.runtime.mutableStateOf
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.business.interactors.auth.AuthInteractors
-import com.example.faircon.framework.datasource.cache.authToken.AuthToken
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.auth.passwordReset.WebAppInterface
 import com.example.faircon.framework.presentation.ui.auth.state.AuthStateEvent.*
@@ -20,16 +18,19 @@ constructor(
     private val authInteractors: AuthInteractors
 ) : BaseViewModel<AuthViewState>() {
 
-    val checkPreviousUser = mutableStateOf(false)
-    val resetPasswordSuccess = mutableStateOf(false)
-
     init {
         setStateEvent(CheckPreviousAuthEvent)
     }
 
     override fun handleNewData(data: AuthViewState) {
         data.authToken?.let { authToken ->
-            setAuthToken(authToken)
+            setViewState(viewState.value.copy(authToken = authToken))
+        }
+        data.previousUserCheck?.let { checked ->
+            setViewState(viewState.value.copy(previousUserCheck = checked))
+        }
+        data.resetPasswordSuccess?.let { success ->
+            setViewState(viewState.value.copy(resetPasswordSuccess = success))
         }
     }
 
@@ -63,7 +64,7 @@ constructor(
         launchJob(stateEvent, job)
     }
 
-    override fun initNewViewState(): AuthViewState {
+    override fun initViewState(): AuthViewState {
         return AuthViewState()
     }
 
@@ -71,9 +72,7 @@ constructor(
         email: String,
         password: String
     ) {
-        setStateEvent(
-            LoginAttemptEvent(email, password)
-        )
+        setStateEvent(LoginAttemptEvent(email, password))
     }
 
     fun register(
@@ -91,17 +90,6 @@ constructor(
             )
         )
     }
-
-    // AuthToken Setter
-    private fun setAuthToken(authToken: AuthToken) {
-        val update = getCurrentViewStateOrNew()
-        if (update.authToken != authToken) {
-            update.authToken = authToken
-            setViewState(update)
-        }
-    }
-
-
 
     val webInteractionCallback = object : WebAppInterface.OnWebInteractionCallback {
 
@@ -121,16 +109,14 @@ constructor(
 
         override fun onSuccess(email: String) {
             printLogD("AuthViewModel", "onSuccess: a reset link will be sent to $email.")
-            resetPasswordSuccess.value = true
+            setViewState(viewState.value.copy(resetPasswordSuccess = true))
         }
 
         override fun onLoading(isLoading: Boolean) {
             printLogD("AuthViewModel", "onLoading... ")
-            //Removed because the website has its progress bar
             shouldDisplayProgressBar.value = true
         }
     }
-
 
     override fun onCleared() {
         super.onCleared()

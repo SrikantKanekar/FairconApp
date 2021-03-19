@@ -1,10 +1,10 @@
 package com.example.faircon.business.domain.model
 
 data class Parameter(
-    val fanSpeed: Int,
-    val temperature: Float,
-    val tecVoltage: Float,
-    val mode : Int
+    val fanSpeed: Int = 300,
+    val temperature: Float = 15F,
+    val tecVoltage: Float = 0F,
+    val mode : Int = 0
 )
 
 object MODE {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,14 +16,14 @@ import com.example.faircon.framework.presentation.ui.main.controller.state.Contr
 @Composable
 fun ControllerScreen(
     controllerViewModel: ControllerViewModel,
-    isDark: Boolean,
+    theme: Int,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
-    val controller by controllerViewModel.controller.observeAsState()
+    val controller by controllerViewModel.controller.collectAsState(initial = null)
 
     FairconTheme(
-        isDark = isDark,
+        theme = theme,
         isWiFiAvailable = isWiFiAvailable,
         scaffoldState = scaffoldState,
         stateMessage = controllerViewModel.stateMessage.value,

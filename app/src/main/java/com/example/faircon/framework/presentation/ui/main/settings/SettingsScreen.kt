@@ -5,47 +5,55 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.framework.presentation.components.MyIcon
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
 fun SettingsScreen(
     settingsViewModel: SettingsViewModel,
-    isDark: Boolean,
+    theme: Int,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
 
     FairconTheme(
-        isDark = isDark,
+        theme = theme,
         isWiFiAvailable = isWiFiAvailable,
         scaffoldState = scaffoldState,
         stateMessage = null,
-        removeStateMessage = {  }
+        removeStateMessage = { }
     ) {
+
+        val settings = settingsViewModel.settingFlow.collectAsState(initial = null)
 
         Scaffold(
             scaffoldState = scaffoldState,
             snackbarHost = { scaffoldState.snackbarHostState },
         ) {
 
-            Column(
-                modifier = Modifier.fillMaxSize().padding(8.dp)
-            ) {
+            if (settings.value != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
 
-                SwitchSetting(
-                    imageVector = Icons.Default.Person,
-                    isDark = settingsViewModel.isDark,
-                    value = if (settingsViewModel.isDark) "Dark" else "Light",
-                    onCheckedChange = { boolean ->
-                        settingsViewModel.setTheme(boolean)
-                    }
-                )
+                    SwitchSetting(
+                        imageVector = Icons.Default.Person,
+                        theme = settings.value!!.theme,
+                        value = if (settings.value!!.theme == Theme.DARK_VALUE) "Dark" else "Light",
+                        onCheckedChange = { theme ->
+                            settingsViewModel.setTheme(theme)
+                        }
+                    )
+                }
             }
         }
     }
@@ -55,9 +63,9 @@ fun SettingsScreen(
 fun SwitchSetting(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
-    isDark: Boolean,
+    theme: Int,
     value: String,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Int) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -67,7 +75,7 @@ fun SwitchSetting(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Row{
+        Row {
             MyIcon(
                 modifier = Modifier.padding(5.dp),
                 imageVector = imageVector
@@ -91,8 +99,10 @@ fun SwitchSetting(
 
         Switch(
             modifier = Modifier.padding(5.dp),
-            checked = isDark,
-            onCheckedChange = onCheckedChange
+            checked = theme == 1,
+            onCheckedChange = { isDark ->
+                onCheckedChange(if (isDark) 1 else 0)
+            }
         )
     }
 }

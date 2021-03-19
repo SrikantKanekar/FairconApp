@@ -9,15 +9,12 @@ import com.example.faircon.business.domain.state.StateMessage
 import com.example.faircon.business.domain.state.UiType
 import com.example.faircon.business.domain.util.printLogD
 
-
 @Composable
 fun HandleMessageUiType(
     stateMessage: StateMessage?,
     scaffoldState: ScaffoldState,
     removeStateMessage: () -> Unit = {}
 ) {
-    printLogD("HandleMessageUiType", stateMessage.toString())
-
     if (stateMessage?.response?.message != null) {
         stateMessage.response.let { response ->
             Box(

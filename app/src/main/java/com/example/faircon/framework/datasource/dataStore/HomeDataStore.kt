@@ -29,9 +29,9 @@ constructor(
         .createDataStore(DataStoreFiles.HOME_DATASTORE_FILE, HomeSerializer)
 
     private val default: HomePreferences = HomePreferences.newBuilder()
-        .setFanSpeed(350)
-        .setAmbientTemperature(25F)
-        .setTecVoltage(10F)
+        .setFanSpeed(300)
+        .setAmbientTemperature(15F)
+        .setTecVoltage(0F)
         .setMode(MODE.ON)
         .build()
 

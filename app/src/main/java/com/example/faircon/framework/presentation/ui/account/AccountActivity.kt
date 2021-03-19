@@ -29,7 +29,7 @@ class AccountActivity : BaseActivity() {
             val accountViewModel: AccountViewModel = viewModel()
 
             FairconTheme(
-                isDark = isDark,
+                theme = appTheme.value,
                 scaffoldState = scaffoldState,
                 stateMessage = accountViewModel.stateMessage.value,
                 removeStateMessage = { accountViewModel.removeStateMessage() }
@@ -57,10 +57,7 @@ class AccountActivity : BaseActivity() {
                         }
 
                         composable(route = ResetPassword.route) {
-                            ChangePasswordScreen(
-                                navController = navController,
-                                viewModel = accountViewModel
-                            )
+                            ChangePasswordScreen(viewModel = accountViewModel)
                         }
                     }
                 }

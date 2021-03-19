@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -38,12 +36,11 @@ class MainActivity : BaseActivity() {
             ) {
 
                 composable(route = Home.route) { navBackStackEntry ->
-                    val factory =
-                        HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-                    val homeViewModel: HomeViewModel = viewModel("HomeViewModel", factory)
+                    val homeViewModel: HomeViewModel =
+                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
                     HomeScreen(
                         homeViewModel = homeViewModel,
-                        isDark = isDark,
+                        theme = appTheme.value,
                         isWiFiAvailable = wiFiConnectivityManager.isWiFiAvailable,
                         scaffoldState = scaffoldState,
                         navController = navController,
@@ -52,26 +49,22 @@ class MainActivity : BaseActivity() {
                 }
 
                 composable(route = Controller.route) { navBackStackEntry ->
-                    val factory =
-                        HiltViewModelFactory(LocalContext.current, navBackStackEntry)
                     val controllerViewModel: ControllerViewModel =
-                        viewModel("ControllerViewModel", factory)
+                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
                     ControllerScreen(
                         controllerViewModel = controllerViewModel,
-                        isDark = isDark,
+                        theme = appTheme.value,
                         isWiFiAvailable = wiFiConnectivityManager.isWiFiAvailable,
                         scaffoldState = scaffoldState,
                     )
                 }
 
-                composable(route = Setting.route) { navBackStackEntry ->
-                    val factory =
-                        HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                composable(route = Settings.route) { navBackStackEntry ->
                     val settingsViewModel: SettingsViewModel =
-                        viewModel("SettingsViewModel", factory)
+                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
                     SettingsScreen(
                         settingsViewModel = settingsViewModel,
-                        isDark = isDark,
+                        theme = appTheme.value,
                         isWiFiAvailable = wiFiConnectivityManager.isWiFiAvailable,
                         scaffoldState = scaffoldState,
                     )

@@ -1,6 +1,5 @@
 package com.example.faircon.framework.presentation.ui.main.controller
 
-import androidx.lifecycle.asLiveData
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.main.controller.ControllerInteractors
@@ -18,9 +17,9 @@ class ControllerViewModel @Inject constructor(
     controllerDataStore: ControllerDataStore
 ) : BaseViewModel<ControllerViewState>() {
 
-    val controller = controllerDataStore.controllerFlow.asLiveData()
+    val controller = controllerDataStore.controllerFlow
 
-    override fun initNewViewState(): ControllerViewState {
+    override fun initViewState(): ControllerViewState {
         return ControllerViewState()
     }
 

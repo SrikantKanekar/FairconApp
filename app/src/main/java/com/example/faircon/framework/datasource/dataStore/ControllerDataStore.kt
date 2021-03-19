@@ -1,12 +1,12 @@
 package com.example.faircon.framework.datasource.dataStore
 
 import androidx.datastore.core.CorruptionException
-import com.google.protobuf.InvalidProtocolBufferException
 import androidx.datastore.core.Serializer
 import androidx.datastore.createDataStore
 import com.example.faircon.ControllerPreferences
 import com.example.faircon.business.domain.model.Controller
 import com.example.faircon.framework.presentation.ui.BaseApplication
+import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -27,15 +27,21 @@ constructor(
     private val dataStore = app
         .createDataStore(DataStoreFiles.CONTROLLER_DATASTORE_FILE, ControllerSerializer)
 
+    private val default: ControllerPreferences = ControllerPreferences.newBuilder()
+        .setFanSpeed(300)
+        .setRequiredTemperature(15F)
+        .setTecVoltage(0F)
+        .build()
+
     val controllerFlow: Flow<Controller> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
-                emit(ControllerPreferences.getDefaultInstance())
+                emit(default)
             } else {
                 throw exception
             }
         }
-        .map{
+        .map {
             Controller(it.fanSpeed, it.requiredTemperature, it.tecVoltage)
         }
 
@@ -44,7 +50,7 @@ constructor(
             dataStore.data.first()
         } catch (e: Exception) {
             e.printStackTrace()
-            ControllerPreferences.getDefaultInstance()
+            default
         }
         return Controller(
             fanSpeed = controllerPreference.fanSpeed,
@@ -90,8 +96,12 @@ constructor(
 
 
 object ControllerSerializer : Serializer<ControllerPreferences> {
-    override val defaultValue: ControllerPreferences
-        get() = ControllerPreferences.getDefaultInstance()
+    override val defaultValue: ControllerPreferences =
+        ControllerPreferences.newBuilder()
+            .setFanSpeed(300)
+            .setRequiredTemperature(15F)
+            .setTecVoltage(0F)
+            .build()
 
     override fun readFrom(input: InputStream): ControllerPreferences {
         try {

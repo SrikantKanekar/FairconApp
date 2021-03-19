@@ -9,7 +9,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.faircon.framework.presentation.components.LoadingButton
 import com.example.faircon.framework.presentation.components.MyFormTitle
 import com.example.faircon.framework.presentation.components.textField.ConfirmPasswordState
@@ -18,7 +17,6 @@ import com.example.faircon.framework.presentation.components.textField.PasswordS
 
 @Composable
 fun ChangePasswordScreen(
-    navController: NavHostController,
     viewModel: AccountViewModel
 ) {
 

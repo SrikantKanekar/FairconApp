@@ -1,35 +1,23 @@
 package com.example.faircon.framework.presentation.ui.main.settings
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.faircon.framework.datasource.dataStore.ThemeDataStore
+import com.example.faircon.framework.datasource.dataStore.SettingDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
 
 @HiltViewModel
 class SettingsViewModel
 @Inject constructor(
-    private val themeDataStore: ThemeDataStore
+    private val settingDataStore: SettingDataStore
 ) : ViewModel() {
 
-    var isDark by mutableStateOf(true)
+    val settingFlow = settingDataStore.settingFlow
 
-    init {
-        themeDataStore.preferenceFlow.onEach {
-            isDark = it
-        }.launchIn(CoroutineScope(Main))
-    }
-
-    fun setTheme(isDark: Boolean) {
+    fun setTheme(theme: Int) {
         viewModelScope.launch {
-            themeDataStore.updateAppTheme(isDark)
+            settingDataStore.updateTheme(theme)
         }
     }
 }

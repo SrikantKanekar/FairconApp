@@ -1,16 +1,13 @@
 package com.example.faircon.framework.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import com.example.faircon.framework.datasource.dataStore.ThemeDataStore
+import androidx.lifecycle.lifecycleScope
+import com.example.faircon.SettingPreferences.*
+import com.example.faircon.framework.datasource.dataStore.SettingDataStore
 import com.example.faircon.framework.datasource.network.connectivity.WiFiConnectivityManager
 import com.example.faircon.framework.datasource.session.SessionManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -22,20 +19,19 @@ abstract class BaseActivity : AppCompatActivity() {
     lateinit var wiFiConnectivityManager: WiFiConnectivityManager
 
     @Inject
-    lateinit var themeDataStore: ThemeDataStore
+    lateinit var settingDataStore: SettingDataStore
 
-    var isDark by mutableStateOf(true)
+    val appTheme = mutableStateOf(Theme.DEFAULT_VALUE)
 
     override fun onStart() {
         super.onStart()
-        observeTheme()
         wiFiConnectivityManager.registerWiFiObserver(this)
-    }
 
-    private fun observeTheme() {
-        themeDataStore.preferenceFlow.onEach {
-            isDark = it
-        }.launchIn(CoroutineScope(Main))
+        lifecycleScope.launchWhenStarted {
+            settingDataStore.settingFlow.collect { setting ->
+                appTheme.value = setting.theme
+            }
+        }
     }
 
     override fun onDestroy() {

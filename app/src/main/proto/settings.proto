@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.example.faircon";
+option java_multiple_files = true;
+
+message SettingPreferences {
+  enum Theme {
+    DEFAULT = 0;
+    DARK = 1;
+    LIGHT = 2;
+  }
+  Theme theme = 1;
+}
