@@ -1,15 +1,14 @@
 package com.example.faircon.business.domain.model
 
+import com.example.faircon.HomePreferences.Mode
+import com.example.faircon.HomePreferences.Mode.IDLE
+import com.example.faircon.HomePreferences.Status
+import com.example.faircon.HomePreferences.Status.STABLE
+
 data class Parameter(
     val fanSpeed: Int = 300,
     val temperature: Float = 15F,
     val tecVoltage: Float = 0F,
-    val mode : Int = 0
+    val mode : Mode = IDLE,
+    val status: Status = STABLE
 )
-
-object MODE {
-    const val ON = 0
-    const val FAN = 1
-    const val COOLING = 2
-    const val HEATING = 3
-}

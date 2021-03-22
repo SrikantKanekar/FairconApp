@@ -1,5 +1,6 @@
 package com.example.faircon.business.interactors.main.home
 
+import com.example.faircon.HomePreferences.Mode
 import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
 import com.example.faircon.business.domain.state.*
@@ -8,7 +9,6 @@ import com.example.faircon.framework.datasource.network.GenericResponse
 import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
 import com.example.faircon.framework.datasource.network.main.HomeService
 import com.example.faircon.framework.datasource.network.main.ModeRequest
-import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerViewState
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -25,7 +25,7 @@ class SetMode(
 ) {
 
     fun execute(
-        mode: Int,
+        mode: Mode,
         stateEvent: StateEvent
     ) = flow {
 
@@ -34,7 +34,7 @@ class SetMode(
                 DataState.error<HomeViewState>(
                     response = Response(
                         message = "Not Connected to FAIRCON",
-                        uiType = UiType.SnackBar,
+                        uiType = UiType.None,
                         messageType = MessageType.Error
                     ),
                     stateEvent = stateEvent
@@ -43,7 +43,7 @@ class SetMode(
         } else {
 
             val apiResult = safeApiCall(Dispatchers.IO) {
-                homeService.setMode(ModeRequest(mode))
+                homeService.setMode(ModeRequest(mode.number))
             }
 
             emit(
@@ -51,7 +51,7 @@ class SetMode(
                     response = apiResult,
                     stateEvent = stateEvent
                 ) {
-                    override suspend fun handleSuccess(resultObj: GenericResponse): DataState<HomeViewState>? {
+                    override suspend fun handleSuccess(resultObj: GenericResponse): DataState<HomeViewState> {
 
                         if (resultObj.response == SUCCESS) {
                             homeDataStore.updateMode(mode)

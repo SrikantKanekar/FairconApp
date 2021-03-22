@@ -9,10 +9,7 @@ import com.example.faircon.business.interactors.main.account.GetAccountPropertie
 import com.example.faircon.business.interactors.main.account.UpdateAccountProperties
 import com.example.faircon.business.interactors.main.account.ChangePassword
 import com.example.faircon.business.interactors.main.controller.*
-import com.example.faircon.business.interactors.main.home.GetParameters
-import com.example.faircon.business.interactors.main.home.HomeInteractors
-import com.example.faircon.business.interactors.main.home.SetMode
-import com.example.faircon.business.interactors.main.home.SyncController
+import com.example.faircon.business.interactors.main.home.*
 import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
 import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
 import com.example.faircon.framework.datasource.dataStore.ControllerDataStore
@@ -23,6 +20,7 @@ import com.example.faircon.framework.datasource.dataStore.HomeDataStore
 import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
 import com.example.faircon.framework.datasource.network.main.ControllerService
 import com.example.faircon.framework.datasource.network.main.HomeService
+import com.example.faircon.framework.presentation.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,6 +71,7 @@ object InteractorsModule {
 
     @Provides
     fun provideHomeInteractors(
+        app: BaseApplication,
         controllerService: ControllerService,
         controllerDataStore: ControllerDataStore,
         homeService: HomeService,
@@ -82,7 +81,9 @@ object InteractorsModule {
         return HomeInteractors(
             SyncController(controllerService, controllerDataStore),
             GetParameters(homeService, homeDataStore),
-            SetMode(homeService, homeDataStore, wiFiLiveData)
+            SetMode(homeService, homeDataStore, wiFiLiveData),
+            ConnectToFaircon(app),
+            DisconnectFromFaircon(app)
         )
     }
 }

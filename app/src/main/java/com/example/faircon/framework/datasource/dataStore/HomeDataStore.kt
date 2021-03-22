@@ -5,7 +5,7 @@ import com.google.protobuf.InvalidProtocolBufferException
 import androidx.datastore.core.Serializer
 import androidx.datastore.createDataStore
 import com.example.faircon.HomePreferences
-import com.example.faircon.business.domain.model.MODE
+import com.example.faircon.HomePreferences.*
 import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import kotlinx.coroutines.flow.Flow
@@ -28,11 +28,12 @@ constructor(
     private val dataStore = app
         .createDataStore(DataStoreFiles.HOME_DATASTORE_FILE, HomeSerializer)
 
-    private val default: HomePreferences = HomePreferences.newBuilder()
+    private val default: HomePreferences = newBuilder()
         .setFanSpeed(300)
         .setAmbientTemperature(15F)
         .setTecVoltage(0F)
-        .setMode(MODE.ON)
+        .setMode(Mode.IDLE)
+        .setStatus(Status.STABLE)
         .build()
 
     val homeFlow: Flow<Parameter> = dataStore.data
@@ -48,7 +49,8 @@ constructor(
                 fanSpeed = preferences.fanSpeed,
                 temperature = preferences.ambientTemperature,
                 tecVoltage = preferences.tecVoltage,
-                mode = preferences.mode
+                mode = preferences.mode,
+                status = preferences.status
             )
         }
 
@@ -63,7 +65,8 @@ constructor(
             fanSpeed = homePreference.fanSpeed,
             temperature = homePreference.ambientTemperature,
             tecVoltage = homePreference.tecVoltage,
-            mode = homePreference.mode
+            mode = homePreference.mode,
+            status = homePreference.status
         )
     }
 
@@ -74,11 +77,12 @@ constructor(
                 .setAmbientTemperature(parameter.temperature)
                 .setTecVoltage(parameter.tecVoltage)
                 .setMode(parameter.mode)
+                .setStatus(parameter.status)
                 .build()
         }
     }
 
-    suspend fun updateMode(mode: Int) {
+    suspend fun updateMode(mode: Mode) {
         dataStore.updateData { homePreferences ->
             homePreferences.toBuilder()
                 .setMode(mode)
@@ -89,17 +93,18 @@ constructor(
 
 object HomeSerializer : Serializer<HomePreferences> {
     override val defaultValue: HomePreferences =
-        HomePreferences.newBuilder()
-            .setFanSpeed(350)
-            .setAmbientTemperature(25F)
-            .setTecVoltage(10F)
-            .setMode(MODE.ON)
+        newBuilder()
+            .setFanSpeed(300)
+            .setAmbientTemperature(15F)
+            .setTecVoltage(0F)
+            .setMode(Mode.IDLE)
+            .setStatus(Status.STABLE)
             .build()
 
 
     override fun readFrom(input: InputStream): HomePreferences {
         try {
-            return HomePreferences.parseFrom(input)
+            return parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto", exception)
         }

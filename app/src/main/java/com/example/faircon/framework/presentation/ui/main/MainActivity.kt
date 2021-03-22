@@ -13,11 +13,9 @@ import com.example.faircon.framework.presentation.ui.BaseActivity
 import com.example.faircon.framework.presentation.ui.account.AccountActivity
 import com.example.faircon.framework.presentation.ui.auth.AuthActivity
 import com.example.faircon.framework.presentation.ui.main.controller.ControllerScreen
-import com.example.faircon.framework.presentation.ui.main.controller.ControllerViewModel
 import com.example.faircon.framework.presentation.ui.main.home.HomeScreen
 import com.example.faircon.framework.presentation.ui.main.home.HomeViewModel
 import com.example.faircon.framework.presentation.ui.main.settings.SettingsScreen
-import com.example.faircon.framework.presentation.ui.main.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,9 +33,8 @@ class MainActivity : BaseActivity() {
                 startDestination = Home.route
             ) {
 
-                composable(route = Home.route) { navBackStackEntry ->
-                    val homeViewModel: HomeViewModel =
-                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
+                composable(route = Home.route) { backStackEntry ->
+                    val homeViewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry)
                     HomeScreen(
                         homeViewModel = homeViewModel,
                         theme = appTheme.value,
@@ -48,22 +45,16 @@ class MainActivity : BaseActivity() {
                     )
                 }
 
-                composable(route = Controller.route) { navBackStackEntry ->
-                    val controllerViewModel: ControllerViewModel =
-                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
+                composable(route = Controller.route) {
                     ControllerScreen(
-                        controllerViewModel = controllerViewModel,
                         theme = appTheme.value,
                         isWiFiAvailable = wiFiConnectivityManager.isWiFiAvailable,
                         scaffoldState = scaffoldState,
                     )
                 }
 
-                composable(route = Settings.route) { navBackStackEntry ->
-                    val settingsViewModel: SettingsViewModel =
-                        hiltNavGraphViewModel(backStackEntry = navBackStackEntry)
+                composable(route = Settings.route) {
                     SettingsScreen(
-                        settingsViewModel = settingsViewModel,
                         theme = appTheme.value,
                         isWiFiAvailable = wiFiConnectivityManager.isWiFiAvailable,
                         scaffoldState = scaffoldState,

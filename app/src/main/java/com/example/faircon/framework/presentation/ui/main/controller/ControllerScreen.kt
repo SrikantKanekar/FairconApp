@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
 import com.example.faircon.framework.presentation.components.MyOverlineText
 import com.example.faircon.framework.presentation.components.MySlider
@@ -15,11 +16,12 @@ import com.example.faircon.framework.presentation.ui.main.controller.state.Contr
 
 @Composable
 fun ControllerScreen(
-    controllerViewModel: ControllerViewModel,
     theme: Int,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
+
+    val controllerViewModel = hiltNavGraphViewModel<ControllerViewModel>()
     val controller by controllerViewModel.controller.collectAsState(initial = null)
 
     FairconTheme(

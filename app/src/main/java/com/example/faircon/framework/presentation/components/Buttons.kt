@@ -3,14 +3,12 @@ package com.example.faircon.framework.presentation.components
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.example.faircon.HomePreferences
 import com.example.faircon.framework.presentation.theme.typography
 import java.util.*
 
@@ -33,6 +31,26 @@ fun LoadingButton(
             enabled = enabled,
             onClick = onClick
         )
+    }
+}
+
+@Composable
+fun SelectableButton(
+    isSelected: Boolean,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (isSelected){
+                MaterialTheme.colors.primaryVariant
+            } else {
+                MaterialTheme.colors.primary
+            }
+        )
+    ) {
+        Text(text = text)
     }
 }
 

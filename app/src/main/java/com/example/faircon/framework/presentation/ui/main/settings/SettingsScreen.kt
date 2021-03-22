@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.framework.presentation.components.MyIcon
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
 fun SettingsScreen(
-    settingsViewModel: SettingsViewModel,
     theme: Int,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
@@ -31,6 +31,7 @@ fun SettingsScreen(
         removeStateMessage = { }
     ) {
 
+        val settingsViewModel = hiltNavGraphViewModel<SettingsViewModel>()
         val settings = settingsViewModel.settingFlow.collectAsState(initial = null)
 
         Scaffold(

@@ -64,7 +64,6 @@ abstract class ApiResponseHandler<ViewState, Data>(
                     handleSuccess(resultObj = response.value)
                 }
             }
-
         }
     }
 

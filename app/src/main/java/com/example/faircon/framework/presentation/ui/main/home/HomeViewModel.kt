@@ -1,15 +1,11 @@
 package com.example.faircon.framework.presentation.ui.main.home
 
-import android.content.Context
-import android.net.wifi.WifiConfiguration
-import android.net.wifi.WifiManager
 import androidx.lifecycle.viewModelScope
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.main.home.HomeInteractors
 import com.example.faircon.framework.datasource.dataStore.HomeDataStore
 import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
-import com.example.faircon.framework.presentation.ui.BaseApplication
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.*
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeViewState
@@ -23,7 +19,6 @@ import javax.inject.Inject
 class HomeViewModel
 @Inject
 constructor(
-    private val app: BaseApplication,
     private val homeInteractors: HomeInteractors,
     private val wiFiLiveData: WiFiLiveData,
     homeDataStore: HomeDataStore
@@ -50,7 +45,9 @@ constructor(
     }
 
     override fun handleNewData(data: HomeViewState) {
-        // NA
+        data.connected?.let { isConnected ->
+            setViewState(viewState.value.copy(connected = isConnected))
+        }
     }
 
     override fun setStateEvent(stateEvent: StateEvent) {
@@ -64,29 +61,14 @@ constructor(
             is SetModeEvent -> {
                 homeInteractors.setMode.execute(stateEvent.mode, stateEvent)
             }
+            is ConnectToFairconEvent -> {
+                homeInteractors.connectToFaircon.execute(stateEvent)
+            }
+            is DisconnectFromFairconEvent -> {
+                homeInteractors.disconnectFromFaircon.execute(stateEvent)
+            }
             else -> emitInvalidStateEvent(stateEvent)
         }
         launchJob(stateEvent, job)
-    }
-
-    fun connectToFaircon() {
-        val wifiConfiguration = WifiConfiguration()
-        wifiConfiguration.apply {
-            SSID = "\"FAIRCON\""
-            preSharedKey = "\"12345678\""
-        }
-        val wifiManager = app.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiManager.apply {
-            isWifiEnabled = true
-            val netId = addNetwork(wifiConfiguration)
-            disconnect()
-            enableNetwork(netId, true)
-            reconnect()
-        }
-    }
-
-    fun disconnectFromFaircon() {
-        val wifiManager = app.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiManager.isWifiEnabled = false
     }
 }

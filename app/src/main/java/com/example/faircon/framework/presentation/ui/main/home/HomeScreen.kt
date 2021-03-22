@@ -7,18 +7,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsRemote
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
-import com.example.faircon.business.domain.model.MODE
+import com.example.faircon.HomePreferences.Mode
+import com.example.faircon.HomePreferences.Mode.*
 import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.components.*
 import com.example.faircon.framework.presentation.navigation.MainScreen
 import com.example.faircon.framework.presentation.theme.FairconTheme
-import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.SetModeEvent
+import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.*
 
 @Composable
 fun HomeScreen(
@@ -29,6 +31,7 @@ fun HomeScreen(
     navController: NavHostController,
     navAccountActivity: () -> Unit
 ) {
+    val viewState = homeViewModel.viewState.collectAsState()
     val parameter = homeViewModel.homeFlow.collectAsState(initial = Parameter())
 
     FairconTheme(
@@ -52,12 +55,7 @@ fun HomeScreen(
                     }
 
                     IconButton(
-                        onClick = {
-                            navController.navigate(MainScreen.Settings.route) {
-                                popUpTo = navController.graph.startDestination
-                                launchSingleTop = true
-                            }
-                        }
+                        onClick = { navController.navigate(MainScreen.Settings.route) }
                     ) {
                         MyIcon(imageVector = Icons.Default.Settings)
                     }
@@ -99,27 +97,18 @@ fun HomeScreen(
                     unit = "V",
                 )
 
-                HomeSwitch(
-                    text = "Mode",
-                    onCheckedChange = {
-                        homeViewModel.setStateEvent(
-                            SetModeEvent(
-                                when (it) {
-                                    true -> MODE.COOLING
-                                    false -> MODE.ON
-                                }
-                            )
-                        )
-                    }
+                ModeSwitch(
+                    mode = parameter.value.mode,
+                    setMode = { homeViewModel.setStateEvent(SetModeEvent(it)) }
                 )
 
-                HomeSwitch(
-                    text = "Connect",
-                    onCheckedChange = { value ->
-                        when (value) {
-                            true -> homeViewModel.connectToFaircon()
-                            false -> homeViewModel.disconnectFromFaircon()
-                        }
+                ConnectionButtons(
+                    connected = viewState.value.connected ?: false,
+                    connect = {
+                        homeViewModel.setStateEvent(ConnectToFairconEvent)
+                    },
+                    disConnect = {
+                        homeViewModel.setStateEvent(DisconnectFromFairconEvent)
                     }
                 )
             }
@@ -177,12 +166,49 @@ fun ShowData(
 }
 
 @Composable
-fun HomeSwitch(
-    text: String,
-    onCheckedChange: (Boolean) -> Unit
+fun ModeSwitch(
+    mode: Mode,
+    setMode: (Mode) -> Unit
 ) {
-    var mode by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
+        SelectableButton(
+            isSelected = mode == IDLE,
+            text = "Idle",
+            onClick = { setMode(IDLE) }
+        )
+
+        SelectableButton(
+            isSelected = mode == FAN,
+            text = "Fan",
+            onClick = { setMode(FAN) }
+        )
+
+        SelectableButton(
+            isSelected = mode == COOLING,
+            text = "Cooling",
+            onClick = { setMode(COOLING) }
+        )
+
+        SelectableButton(
+            isSelected = mode == HEATING,
+            text = "Heating",
+            onClick = { setMode(HEATING) }
+        )
+    }
+}
+
+@Composable
+fun ConnectionButtons(
+    connected: Boolean,
+    connect: () -> Unit,
+    disConnect: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -190,14 +216,13 @@ fun HomeSwitch(
         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = text)
-        Switch(
-            checked = mode,
-            onCheckedChange = { value ->
-                mode = value
-                onCheckedChange(value)
-            }
-        )
+        Button(onClick = connect, enabled = !connected) {
+            Text(text = "Connect")
+        }
+
+        Button(onClick = disConnect, enabled = connected) {
+            Text(text = "DisConnect")
+        }
     }
 }
 
