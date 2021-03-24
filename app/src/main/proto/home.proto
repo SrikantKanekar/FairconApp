@@ -5,15 +5,17 @@ option java_multiple_files = true;
 
 message HomePreferences {
     int32 fan_speed = 1;
-    float ambient_temperature = 2;
+    float room_temperature = 2;
     float tec_voltage = 3;
+    int32 power_consumption = 4;
+    int32 heat_expelling = 5;
+    float tec_temperature = 6;
     enum Mode {
         IDLE = 0;
         FAN = 1;
         COOLING = 2;
         HEATING = 3;
     }
-
     enum Status {
         STABLE = 0;
         TRANSITION_DEC = 1;
@@ -21,7 +23,7 @@ message HomePreferences {
         TEC_HEATING = 3;
         TEC_OVERHEATING = 4;
     }
-    Mode mode = 4;
-    Status status = 5;
+    Mode mode = 7;
+    Status status = 8;
 }
 

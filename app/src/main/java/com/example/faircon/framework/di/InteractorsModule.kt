@@ -4,22 +4,23 @@ import com.example.faircon.business.interactors.auth.AuthInteractors
 import com.example.faircon.business.interactors.auth.CheckPreviousUser
 import com.example.faircon.business.interactors.auth.AttemptLogin
 import com.example.faircon.business.interactors.auth.AttemptRegistration
-import com.example.faircon.business.interactors.main.account.AccountInteractors
-import com.example.faircon.business.interactors.main.account.GetAccountProperties
-import com.example.faircon.business.interactors.main.account.UpdateAccountProperties
-import com.example.faircon.business.interactors.main.account.ChangePassword
-import com.example.faircon.business.interactors.main.controller.*
-import com.example.faircon.business.interactors.main.home.*
-import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
+import com.example.faircon.business.interactors.account.AccountInteractors
+import com.example.faircon.business.interactors.account.GetAccountProperties
+import com.example.faircon.business.interactors.account.UpdateAccountProperties
+import com.example.faircon.business.interactors.account.ChangePassword
+import com.example.faircon.business.interactors.controller.*
+import com.example.faircon.business.interactors.home.*
+import com.example.faircon.framework.datasource.cache.dao.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.dao.AccountPropertiesDao
 import com.example.faircon.framework.datasource.dataStore.ControllerDataStore
-import com.example.faircon.framework.datasource.network.auth.AuthService
-import com.example.faircon.framework.datasource.network.main.AccountService
+import com.example.faircon.framework.datasource.network.services.AuthService
+import com.example.faircon.framework.datasource.network.services.AccountService
 import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.datasource.dataStore.HomeDataStore
-import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
-import com.example.faircon.framework.datasource.network.main.ControllerService
-import com.example.faircon.framework.datasource.network.main.HomeService
+import com.example.faircon.framework.datasource.connectivity.WiFiLiveData
+import com.example.faircon.framework.datasource.network.services.ControllerService
+import com.example.faircon.framework.datasource.network.services.HomeService
+import com.example.faircon.framework.datasource.network.mappers.ParameterMapper
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -76,11 +77,12 @@ object InteractorsModule {
         controllerDataStore: ControllerDataStore,
         homeService: HomeService,
         homeDataStore: HomeDataStore,
-        wiFiLiveData: WiFiLiveData
+        wiFiLiveData: WiFiLiveData,
+        parameterMapper: ParameterMapper
     ): HomeInteractors {
         return HomeInteractors(
             SyncController(controllerService, controllerDataStore),
-            GetParameters(homeService, homeDataStore),
+            GetParameters(homeService, homeDataStore, parameterMapper),
             SetMode(homeService, homeDataStore, wiFiLiveData),
             ConnectToFaircon(app),
             DisconnectFromFaircon(app)

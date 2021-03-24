@@ -22,7 +22,7 @@ fun WiFiMonitor(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
-                text = "Not Connected to FAIRCON",
+                text = "Not Connected to Faircon",
                 fontSize = 12.sp,
                 color = MaterialTheme.colors.onBackground
             )

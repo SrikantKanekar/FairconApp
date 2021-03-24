@@ -1,4 +1,4 @@
-package com.example.spotifyclone.business.domain.util
+package com.example.faircon.business.domain.util
 
 interface DomainMapper<T, DomainModel> {
 

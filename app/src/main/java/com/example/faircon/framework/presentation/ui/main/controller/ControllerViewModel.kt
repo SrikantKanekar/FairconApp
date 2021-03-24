@@ -2,7 +2,7 @@ package com.example.faircon.framework.presentation.ui.main.controller
 
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
-import com.example.faircon.business.interactors.main.controller.ControllerInteractors
+import com.example.faircon.business.interactors.controller.ControllerInteractors
 import com.example.faircon.framework.datasource.dataStore.ControllerDataStore
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerStateEvent.*

@@ -1,11 +1,11 @@
 package com.example.faircon.framework.di
 
-import com.example.faircon.framework.datasource.network.auth.AuthService
-import com.example.faircon.framework.datasource.network.main.AccountService
+import com.example.faircon.framework.datasource.network.services.AuthService
+import com.example.faircon.framework.datasource.network.services.AccountService
 import com.example.faircon.business.domain.util.Urls
-import com.example.faircon.framework.datasource.network.TokenInterceptor
-import com.example.faircon.framework.datasource.network.main.ControllerService
-import com.example.faircon.framework.datasource.network.main.HomeService
+import com.example.faircon.framework.datasource.network.interceptors.TokenInterceptor
+import com.example.faircon.framework.datasource.network.services.ControllerService
+import com.example.faircon.framework.datasource.network.services.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

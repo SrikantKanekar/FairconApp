@@ -1,7 +1,9 @@
 package com.example.faircon.framework.presentation.ui.main.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -16,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.example.faircon.HomePreferences.Mode
 import com.example.faircon.HomePreferences.Mode.*
+import com.example.faircon.SettingPreferences.*
 import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.components.*
 import com.example.faircon.framework.presentation.navigation.MainScreen
@@ -25,7 +28,7 @@ import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEv
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
-    theme: Int,
+    theme: Theme,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     navController: NavHostController,
@@ -75,29 +78,59 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
 
-                Spacer(modifier = Modifier.height(120.dp))
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(40.dp),
+                    text = parameter.value.status.name
+                )
 
-                ShowData(
-                    name = Parameters.FAN_SPEED,
-                    value = parameter.value.fanSpeed.toFloat(),
+                ShowParameter(
+                    name = "Fan Speed",
                     unit = "RPM",
+                    progress = parameter.value.fanSpeed.toFloat(),
+                    valueRange = 300F..400F
                 )
 
-                ShowData(
-                    name = Parameters.TEMPERATURE,
-                    value = parameter.value.temperature,
+                ShowParameter(
+                    name = "Room Temperature",
+                    progress = parameter.value.roomTemperature,
                     unit = "C",
+                    valueRange = 15F..25F
                 )
 
-                ShowData(
-                    name = Parameters.TEC_VOLTAGE,
-                    value = parameter.value.tecVoltage,
+                ShowParameter(
+                    name = "Tec Voltage",
+                    progress = parameter.value.tecVoltage,
                     unit = "V",
+                    valueRange = 0F..12F
                 )
 
-                ModeSwitch(
+                ShowParameter(
+                    name = "Power Consumption",
+                    progress = parameter.value.powerConsumption.toFloat(),
+                    unit = "Kwh",
+                    valueRange = 0F..1000F
+                )
+
+                ShowParameter(
+                    name = "Heat Expelling",
+                    progress = parameter.value.heatExpelling.toFloat(),
+                    unit = "W",
+                    valueRange = 0F..500F
+                )
+
+                ShowParameter(
+                    name = "Tec Temperature",
+                    progress = parameter.value.tecTemperature,
+                    unit = "C",
+                    valueRange = 25F..120F
+                )
+
+                ModeButtons(
                     mode = parameter.value.mode,
                     setMode = { homeViewModel.setStateEvent(SetModeEvent(it)) }
                 )
@@ -117,30 +150,19 @@ fun HomeScreen(
 }
 
 @Composable
-fun ShowData(
+fun ShowParameter(
     name: String,
-    value: Float,
-    unit: String
+    unit: String,
+    progress: Float,
+    valueRange: ClosedFloatingPointRange<Float>
 ) {
-    var progress: Float? = null
-    when (name) {
-        Parameters.FAN_SPEED -> {
-            progress = (value - 300) / 100
-        }
-        Parameters.TEMPERATURE -> {
-            progress = (value - 15) / 10
-        }
-        Parameters.TEC_VOLTAGE -> {
-            progress = value / 12
-        }
-    }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 50.dp),
+            .padding(bottom = 30.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(7.dp)
     ) {
 
         MyOverlineText(text = name)
@@ -152,21 +174,22 @@ fun ShowData(
 
             MyValueText(
                 modifier = Modifier.width(80.dp),
-                text = "$value $unit"
+                text = "$progress $unit"
             )
 
             MyLinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp),
-                progress = progress!!
+                progress = progress,
+                valueRange = valueRange
             )
         }
     }
 }
 
 @Composable
-fun ModeSwitch(
+fun ModeButtons(
     mode: Mode,
     setMode: (Mode) -> Unit
 ) {
@@ -212,7 +235,8 @@ fun ConnectionButtons(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(10.dp)
+            .padding(bottom = 50.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -224,10 +248,4 @@ fun ConnectionButtons(
             Text(text = "DisConnect")
         }
     }
-}
-
-object Parameters {
-    const val FAN_SPEED = "Fan Speed"
-    const val TEMPERATURE = "Temperature"
-    const val TEC_VOLTAGE = "Tec Voltage"
 }

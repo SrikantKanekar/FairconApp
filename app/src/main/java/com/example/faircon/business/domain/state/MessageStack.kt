@@ -19,9 +19,10 @@ class MessageStack : ArrayList<StateMessage>() {
         val transaction = super.add(element)
         printLogD(
             className = "MessageStack",
-            message = "Message : ${element.response.message} \n" +
-                    "UiType : ${element.response.uiType} \n" +
-                    "MessageType : ${element.response.messageType}"
+            message = "\n" +
+                    "Message : ${element.response.message} \n" +
+                    "UiType : ${element.response.uiType.javaClass} \n" +
+                    "MessageType : ${element.response.messageType.javaClass}"
         )
         if (this.size == 1) {
             setStateMessage(message = element)

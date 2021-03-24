@@ -3,9 +3,9 @@ package com.example.faircon.business.interactors.auth
 import com.example.faircon.business.data.cache.CacheResponseHandler
 import com.example.faircon.business.data.common.safeCacheCall
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.accountProperties.AccountPropertiesDao
-import com.example.faircon.framework.datasource.cache.accountProperties.AccountProperties
+import com.example.faircon.framework.datasource.cache.dao.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.dao.AccountPropertiesDao
+import com.example.faircon.framework.datasource.cache.entity.AccountProperties
 import com.example.faircon.framework.datasource.dataStore.EmailDataStore
 import com.example.faircon.framework.presentation.ui.auth.state.AuthViewState
 import kotlinx.coroutines.Dispatchers

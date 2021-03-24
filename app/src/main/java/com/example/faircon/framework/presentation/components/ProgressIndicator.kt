@@ -11,10 +11,13 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MyLinearProgressIndicator(
     modifier: Modifier = Modifier,
-    progress: Float
+    progress: Float,
+    valueRange: ClosedFloatingPointRange<Float>
 ) {
+    val value = (progress - valueRange.start) / (valueRange.endInclusive - valueRange.start)
+
     val animatedProgress = animateFloatAsState(
-        targetValue = progress,
+        targetValue = if (value < 0) 0F else if (value > 1) 1F else value,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
     LinearProgressIndicator(
@@ -28,7 +31,7 @@ fun MyCircularProgressIndicator(
     isDisplayed: Boolean,
     modifier: Modifier = Modifier
 ) {
-    if (isDisplayed){
+    if (isDisplayed) {
         CircularProgressIndicator(
             modifier = modifier
         )

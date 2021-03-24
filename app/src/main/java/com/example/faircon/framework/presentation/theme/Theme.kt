@@ -1,6 +1,5 @@
 package com.example.faircon.framework.presentation.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.SettingPreferences.Theme.*
 import com.example.faircon.business.domain.state.StateMessage
+import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
 import com.example.faircon.framework.presentation.components.WiFiMonitor
 import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
@@ -51,7 +52,7 @@ val snackbarController = SnackbarController(CoroutineScope(Main))
 
 @Composable
 fun FairconTheme(
-    theme: Int,
+    theme: Theme,
     isWiFiAvailable: Boolean = true,
     displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -59,12 +60,7 @@ fun FairconTheme(
     removeStateMessage: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-    val colour = when (theme) {
-        DEFAULT_VALUE -> if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette
-        DARK_VALUE -> DarkColorPalette
-        LIGHT_VALUE -> LightColorPalette
-        else -> DarkColorPalette
-    }
+    val colour = if (theme == DARK) DarkColorPalette else LightColorPalette
 
     MaterialTheme(
         colors = colour,

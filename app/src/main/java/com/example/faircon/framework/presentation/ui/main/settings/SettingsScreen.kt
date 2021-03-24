@@ -1,9 +1,12 @@
 package com.example.faircon.framework.presentation.ui.main.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Switch
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -13,12 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.example.faircon.SettingPreferences.Theme
+import com.example.faircon.SettingPreferences.Theme.DARK
+import com.example.faircon.SettingPreferences.Theme.LIGHT
+import com.example.faircon.business.domain.model.Setting
 import com.example.faircon.framework.presentation.components.MyIcon
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
 fun SettingsScreen(
-    theme: Int,
+    theme: Theme,
     isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
@@ -32,29 +38,27 @@ fun SettingsScreen(
     ) {
 
         val settingsViewModel = hiltNavGraphViewModel<SettingsViewModel>()
-        val settings = settingsViewModel.settingFlow.collectAsState(initial = null)
+        val settings = settingsViewModel.settingFlow.collectAsState(initial = Setting())
 
         Scaffold(
             scaffoldState = scaffoldState,
             snackbarHost = { scaffoldState.snackbarHostState },
         ) {
 
-            if (settings.value != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
 
-                    SwitchSetting(
-                        imageVector = Icons.Default.Person,
-                        theme = settings.value!!.theme,
-                        value = if (settings.value!!.theme == Theme.DARK_VALUE) "Dark" else "Light",
-                        onCheckedChange = { theme ->
-                            settingsViewModel.setTheme(theme)
-                        }
-                    )
-                }
+                SwitchSetting(
+                    imageVector = Icons.Default.Colorize,
+                    theme = settings.value.theme,
+                    value = if (settings.value.theme == DARK) "Dark" else "Light",
+                    onCheckedChange = { theme ->
+                        settingsViewModel.setTheme(theme)
+                    }
+                )
             }
         }
     }
@@ -64,9 +68,9 @@ fun SettingsScreen(
 fun SwitchSetting(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
-    theme: Int,
+    theme: Theme,
     value: String,
-    onCheckedChange: (Int) -> Unit
+    onCheckedChange: (Theme) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -100,9 +104,9 @@ fun SwitchSetting(
 
         Switch(
             modifier = Modifier.padding(5.dp),
-            checked = theme == 1,
+            checked = theme == DARK,
             onCheckedChange = { isDark ->
-                onCheckedChange(if (isDark) 1 else 0)
+                onCheckedChange(if (isDark) DARK else LIGHT)
             }
         )
     }

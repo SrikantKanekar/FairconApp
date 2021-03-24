@@ -3,9 +3,9 @@ package com.example.faircon.framework.presentation.ui.main.home
 import androidx.lifecycle.viewModelScope
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
-import com.example.faircon.business.interactors.main.home.HomeInteractors
+import com.example.faircon.business.interactors.home.HomeInteractors
+import com.example.faircon.framework.datasource.connectivity.WiFiLiveData
 import com.example.faircon.framework.datasource.dataStore.HomeDataStore
-import com.example.faircon.framework.datasource.network.connectivity.WiFiLiveData
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.*
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeViewState
@@ -20,20 +20,26 @@ class HomeViewModel
 @Inject
 constructor(
     private val homeInteractors: HomeInteractors,
-    private val wiFiLiveData: WiFiLiveData,
+    private val fairconConnection: WiFiLiveData,
     homeDataStore: HomeDataStore
 ) : BaseViewModel<HomeViewState>() {
 
     val homeFlow = homeDataStore.homeFlow
 
+
     init {
         viewModelScope.launch {
-            if (wiFiLiveData.value == true) {
-                setStateEvent(SyncControllerEvent)
-            }
             while (true) {
-                if (wiFiLiveData.value == true) {
+                if (fairconConnection.value == true) {
+                    if (viewState.value.syncedController != true) {
+                        setStateEvent(SyncControllerEvent)
+                    }
                     setStateEvent(GetParametersEvent)
+                } else {
+                    if (viewState.value.clearedHomeDatastore != true) {
+                        homeDataStore.clear()
+                        setViewState(viewState.value.copy(clearedHomeDatastore = true))
+                    }
                 }
                 delay(5000)
             }
@@ -45,8 +51,14 @@ constructor(
     }
 
     override fun handleNewData(data: HomeViewState) {
+        data.syncedController?.let { synced ->
+            setViewState(viewState.value.copy(syncedController = synced))
+        }
         data.connected?.let { isConnected ->
             setViewState(viewState.value.copy(connected = isConnected))
+        }
+        data.clearedHomeDatastore?.let { cleared ->
+            setViewState(viewState.value.copy(clearedHomeDatastore = cleared))
         }
     }
 

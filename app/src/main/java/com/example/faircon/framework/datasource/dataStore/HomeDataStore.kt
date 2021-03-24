@@ -10,7 +10,6 @@ import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.io.InputStream
@@ -29,9 +28,12 @@ constructor(
         .createDataStore(DataStoreFiles.HOME_DATASTORE_FILE, HomeSerializer)
 
     private val default: HomePreferences = newBuilder()
-        .setFanSpeed(300)
-        .setAmbientTemperature(15F)
+        .setFanSpeed(0)
+        .setRoomTemperature(15F)
         .setTecVoltage(0F)
+        .setPowerConsumption(0)
+        .setHeatExpelling(0)
+        .setTecTemperature(25F)
         .setMode(Mode.IDLE)
         .setStatus(Status.STABLE)
         .build()
@@ -47,37 +49,42 @@ constructor(
         .map { preferences ->
             Parameter(
                 fanSpeed = preferences.fanSpeed,
-                temperature = preferences.ambientTemperature,
+                roomTemperature = preferences.roomTemperature,
                 tecVoltage = preferences.tecVoltage,
+                powerConsumption = preferences.powerConsumption,
+                heatExpelling = preferences.heatExpelling,
+                tecTemperature = preferences.tecTemperature,
                 mode = preferences.mode,
                 status = preferences.status
             )
         }
 
-    suspend fun getParameter(): Parameter {
-        val homePreference = try {
-            dataStore.data.first()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            default
-        }
-        return Parameter(
-            fanSpeed = homePreference.fanSpeed,
-            temperature = homePreference.ambientTemperature,
-            tecVoltage = homePreference.tecVoltage,
-            mode = homePreference.mode,
-            status = homePreference.status
-        )
-    }
-
     suspend fun updateParameters(parameter: Parameter) {
         dataStore.updateData { homePreferences ->
             homePreferences.toBuilder()
                 .setFanSpeed(parameter.fanSpeed)
-                .setAmbientTemperature(parameter.temperature)
+                .setRoomTemperature(parameter.roomTemperature)
                 .setTecVoltage(parameter.tecVoltage)
+                .setPowerConsumption(parameter.powerConsumption)
+                .setHeatExpelling(parameter.heatExpelling)
+                .setTecTemperature(parameter.tecTemperature)
                 .setMode(parameter.mode)
                 .setStatus(parameter.status)
+                .build()
+        }
+    }
+
+    suspend fun clear() {
+        dataStore.updateData { homePreferences ->
+            homePreferences.toBuilder()
+                .setFanSpeed(0)
+                .setRoomTemperature(15F)
+                .setTecVoltage(0F)
+                .setPowerConsumption(0)
+                .setHeatExpelling(0)
+                .setTecTemperature(25F)
+                .setMode(Mode.IDLE)
+                .setStatus(Status.STABLE)
                 .build()
         }
     }
@@ -94,9 +101,12 @@ constructor(
 object HomeSerializer : Serializer<HomePreferences> {
     override val defaultValue: HomePreferences =
         newBuilder()
-            .setFanSpeed(300)
-            .setAmbientTemperature(15F)
+            .setFanSpeed(0)
+            .setRoomTemperature(15F)
             .setTecVoltage(0F)
+            .setPowerConsumption(0)
+            .setHeatExpelling(0)
+            .setTecTemperature(25F)
             .setMode(Mode.IDLE)
             .setStatus(Status.STABLE)
             .build()

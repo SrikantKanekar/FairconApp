@@ -31,7 +31,7 @@ constructor(
         .createDataStore(DataStoreFiles.SETTING_DATASTORE_FILE, SettingSerializer)
 
     private val default: SettingPreferences = newBuilder()
-        .setTheme(Theme.DEFAULT)
+        .setTheme(Theme.DARK)
         .build()
 
     val settingFlow: Flow<Setting> = dataStore.data
@@ -43,9 +43,7 @@ constructor(
             }
         }
         .map { preferences ->
-            Setting(
-                theme = preferences.themeValue,
-            )
+            Setting(theme = preferences.theme)
         }
 
     suspend fun get(): Setting {
@@ -55,16 +53,14 @@ constructor(
             e.printStackTrace()
             default
         }
-        return Setting(
-            theme = settingPreference.themeValue,
-        )
+        return Setting(theme = settingPreference.theme)
     }
 
-    suspend fun updateTheme(theme: Int) {
+    suspend fun updateTheme(theme: Theme) {
         withContext(IO){
             dataStore.updateData { settingPreferences ->
                 settingPreferences.toBuilder()
-                    .setThemeValue(theme)
+                    .setTheme(theme)
                     .build()
             }
         }
@@ -74,7 +70,7 @@ constructor(
 object SettingSerializer : Serializer<SettingPreferences> {
     override val defaultValue: SettingPreferences =
         newBuilder()
-            .setTheme(Theme.DEFAULT)
+            .setTheme(Theme.DARK)
             .build()
 
 

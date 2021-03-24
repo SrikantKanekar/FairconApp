@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import com.example.faircon.SettingPreferences.*
 import com.example.faircon.framework.datasource.dataStore.SettingDataStore
-import com.example.faircon.framework.datasource.network.connectivity.WiFiConnectivityManager
+import com.example.faircon.framework.datasource.connectivity.WiFiConnectivityManager
 import com.example.faircon.framework.datasource.session.SessionManager
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -21,7 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var settingDataStore: SettingDataStore
 
-    val appTheme = mutableStateOf(Theme.DEFAULT_VALUE)
+    val appTheme = mutableStateOf(Theme.DARK)
 
     override fun onStart() {
         super.onStart()

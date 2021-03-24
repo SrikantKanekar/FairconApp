@@ -3,8 +3,8 @@ package com.example.faircon.framework.datasource.session
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.faircon.business.domain.util.printLogD
-import com.example.faircon.framework.datasource.cache.authToken.AuthTokenDao
-import com.example.faircon.framework.datasource.cache.authToken.AuthToken
+import com.example.faircon.framework.datasource.cache.dao.AuthTokenDao
+import com.example.faircon.framework.datasource.cache.entity.AuthToken
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO

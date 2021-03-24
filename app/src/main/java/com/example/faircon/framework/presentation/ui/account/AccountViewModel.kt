@@ -2,7 +2,7 @@ package com.example.faircon.framework.presentation.ui.account
 
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
-import com.example.faircon.business.interactors.main.account.AccountInteractors
+import com.example.faircon.business.interactors.account.AccountInteractors
 import com.example.faircon.framework.datasource.session.SessionManager
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.account.state.AccountStateEvent.*
