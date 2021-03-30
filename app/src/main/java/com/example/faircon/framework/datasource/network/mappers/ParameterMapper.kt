@@ -1,8 +1,8 @@
 package com.example.faircon.framework.datasource.network.mappers
 
-import com.example.faircon.HomePreferences.Mode
-import com.example.faircon.HomePreferences.Status
+import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.model.Parameter
+import com.example.faircon.business.domain.model.Status
 import com.example.faircon.business.domain.util.DomainMapper
 import com.example.faircon.framework.datasource.network.response.ParameterResponse
 
@@ -15,8 +15,8 @@ class ParameterMapper: DomainMapper<ParameterResponse, Parameter> {
             powerConsumption = model.powerConsumption,
             heatExpelling = model.heatExpelling,
             tecTemperature = model.tecTemperature,
-            mode = Mode.forNumber(model.mode),
-            status = Status.forNumber(model.status)
+            mode = Mode.values()[model.mode] ,
+            status = Status.values()[model.status]
         )
     }
 
@@ -28,8 +28,8 @@ class ParameterMapper: DomainMapper<ParameterResponse, Parameter> {
             powerConsumption = domainModel.powerConsumption,
             heatExpelling = domainModel.heatExpelling,
             tecTemperature = domainModel.tecTemperature,
-            mode = domainModel.mode.number,
-            status = domainModel.status.number
+            mode = domainModel.mode.ordinal,
+            status = domainModel.status.ordinal
         )
     }
 }

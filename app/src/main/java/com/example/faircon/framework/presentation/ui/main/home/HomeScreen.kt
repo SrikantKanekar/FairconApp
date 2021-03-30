@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
-import com.example.faircon.HomePreferences.Mode
-import com.example.faircon.HomePreferences.Mode.*
-import com.example.faircon.SettingPreferences.*
+import com.example.faircon.SettingPreferences.Theme
+import com.example.faircon.business.domain.model.Mode
+import com.example.faircon.business.domain.model.Mode.*
 import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.components.*
 import com.example.faircon.framework.presentation.navigation.MainScreen
@@ -35,7 +35,7 @@ fun HomeScreen(
     navAccountActivity: () -> Unit
 ) {
     val viewState = homeViewModel.viewState.collectAsState()
-    val parameter = homeViewModel.homeFlow.collectAsState(initial = Parameter())
+    val parameter = viewState.value.parameter ?: Parameter()
 
     FairconTheme(
         theme = theme,
@@ -85,58 +85,58 @@ fun HomeScreen(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(40.dp),
-                    text = parameter.value.status.name
+                    text = parameter.status.name
                 )
 
                 ShowParameter(
                     name = "Fan Speed",
                     unit = "RPM",
-                    progress = parameter.value.fanSpeed.toFloat(),
+                    progress = parameter.fanSpeed.toFloat(),
                     valueRange = 300F..400F
                 )
 
                 ShowParameter(
                     name = "Room Temperature",
-                    progress = parameter.value.roomTemperature,
+                    progress = parameter.roomTemperature,
                     unit = "C",
                     valueRange = 15F..25F
                 )
 
                 ShowParameter(
                     name = "Tec Voltage",
-                    progress = parameter.value.tecVoltage,
+                    progress = parameter.tecVoltage,
                     unit = "V",
                     valueRange = 0F..12F
                 )
 
                 ShowParameter(
                     name = "Power Consumption",
-                    progress = parameter.value.powerConsumption.toFloat(),
+                    progress = parameter.powerConsumption.toFloat(),
                     unit = "Kwh",
                     valueRange = 0F..1000F
                 )
 
                 ShowParameter(
                     name = "Heat Expelling",
-                    progress = parameter.value.heatExpelling.toFloat(),
+                    progress = parameter.heatExpelling.toFloat(),
                     unit = "W",
                     valueRange = 0F..500F
                 )
 
                 ShowParameter(
                     name = "Tec Temperature",
-                    progress = parameter.value.tecTemperature,
+                    progress = parameter.tecTemperature,
                     unit = "C",
                     valueRange = 25F..120F
                 )
 
                 ModeButtons(
-                    mode = parameter.value.mode,
+                    mode = parameter.mode,
                     setMode = { homeViewModel.setStateEvent(SetModeEvent(it)) }
                 )
 
                 ConnectionButtons(
-                    connected = viewState.value.connected ?: false,
+                    connected = viewState.value.serverConnected ?: false,
                     connect = {
                         homeViewModel.setStateEvent(ConnectToFairconEvent)
                     },

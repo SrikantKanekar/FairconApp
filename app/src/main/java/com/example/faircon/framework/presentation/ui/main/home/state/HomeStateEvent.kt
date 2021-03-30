@@ -1,6 +1,6 @@
 package com.example.faircon.framework.presentation.ui.main.home.state
 
-import com.example.faircon.HomePreferences.Mode
+import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.state.StateEvent
 
 sealed class HomeStateEvent : StateEvent {
@@ -8,12 +8,6 @@ sealed class HomeStateEvent : StateEvent {
     object SyncControllerEvent : HomeStateEvent() {
         override fun errorInfo() = "Failed to Sync controller"
         override fun eventName() = "SyncControllerEvent"
-        override fun shouldDisplayProgressBar() = false
-    }
-
-    object GetParametersEvent : HomeStateEvent() {
-        override fun errorInfo() = "Failed to get Parameters"
-        override fun eventName() = "GetParametersEvent"
         override fun shouldDisplayProgressBar() = false
     }
 

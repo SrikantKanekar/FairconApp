@@ -1,5 +1,6 @@
 package com.example.faircon.framework.presentation.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,9 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.faircon.SettingPreferences.Theme
-import com.example.faircon.SettingPreferences.Theme.*
+import com.example.faircon.SettingPreferences.Theme.DARK
 import com.example.faircon.business.domain.state.StateMessage
-import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
 import com.example.faircon.framework.presentation.components.WiFiMonitor
 import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
@@ -19,6 +19,7 @@ import com.example.faircon.framework.presentation.components.stateMessageHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 
+@SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColors(
     primary = blue500,
     primaryVariant = blue800,

@@ -6,6 +6,7 @@ import com.example.faircon.business.domain.util.Urls
 import com.example.faircon.framework.datasource.network.interceptors.TokenInterceptor
 import com.example.faircon.framework.datasource.network.services.ControllerService
 import com.example.faircon.framework.datasource.network.services.HomeService
+import com.example.faircon.framework.datasource.network.webSocket.WebSocketListener
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,8 @@ import javax.inject.Qualifier
 object NetworkModule {
 
     @Provides
-    fun provideOkhttpClient(
+    @TokenOkHttp
+    fun provideTokenOkhttp(
         tokenInterceptor: TokenInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -29,9 +31,21 @@ object NetworkModule {
     }
 
     @Provides
+    @WebSocketOkHttp
+    fun provideWebSocketOkhttp(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .build()
+    }
+
+    @Provides
+    fun provideWebSocketListener(): WebSocketListener {
+        return WebSocketListener()
+    }
+
+    @Provides
     @TokenRetrofit
     fun provideTokenRetrofit(
-        okHttpClient: OkHttpClient
+        @TokenOkHttp okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(Urls.BASE_URL)
@@ -87,6 +101,15 @@ object NetworkModule {
             .create(HomeService::class.java)
     }
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenOkHttp
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class WebSocketOkHttp
+
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

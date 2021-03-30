@@ -19,7 +19,7 @@ class DisconnectFromFaircon(
 
         emit(
             DataState.data(
-                data = HomeViewState(connected = false),
+                data = HomeViewState(serverConnected = false),
                 response = Response(
                     message = "Disconnected from Faircon",
                     uiType = UiType.None,

@@ -1,12 +1,11 @@
 package com.example.faircon.business.interactors.home
 
-import com.example.faircon.HomePreferences.Mode
 import com.example.faircon.business.data.common.safeApiCall
 import com.example.faircon.business.data.network.ApiResponseHandler
+import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.state.*
-import com.example.faircon.framework.datasource.dataStore.HomeDataStore
-import com.example.faircon.framework.datasource.network.response.GenericResponse
 import com.example.faircon.framework.datasource.connectivity.WiFiLiveData
+import com.example.faircon.framework.datasource.network.response.GenericResponse
 import com.example.faircon.framework.datasource.network.services.HomeService
 import com.example.faircon.framework.datasource.network.services.ModeRequest
 import com.example.faircon.framework.presentation.ui.main.home.state.HomeViewState
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.flow
  */
 class SetMode(
     private val homeService: HomeService,
-    private val homeDataStore: HomeDataStore,
     private val wiFiLiveData: WiFiLiveData
 ) {
 
@@ -43,7 +41,7 @@ class SetMode(
         } else {
 
             val apiResult = safeApiCall(Dispatchers.IO) {
-                homeService.setMode(ModeRequest(mode.number))
+                homeService.setMode(ModeRequest(mode.ordinal))
             }
 
             emit(
@@ -52,10 +50,6 @@ class SetMode(
                     stateEvent = stateEvent
                 ) {
                     override suspend fun handleSuccess(resultObj: GenericResponse): DataState<HomeViewState> {
-
-                        if (resultObj.response == SUCCESS) {
-                            homeDataStore.updateMode(mode)
-                        }
 
                         return DataState.data(
                             data = null,
@@ -70,9 +64,5 @@ class SetMode(
                 }.getResult()
             )
         }
-    }
-
-    companion object {
-        const val SUCCESS = "SUCCESS"
     }
 }

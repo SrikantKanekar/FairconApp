@@ -5,9 +5,8 @@ option java_multiple_files = true;
 
 message SettingPreferences {
   enum Theme {
-    DEFAULT = 0;
-    DARK = 1;
-    LIGHT = 2;
+    DARK = 0;
+    LIGHT = 1;
   }
   Theme theme = 1;
 }

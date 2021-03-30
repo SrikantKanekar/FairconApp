@@ -1,9 +1,7 @@
 package com.example.faircon.business.domain.model
 
-import com.example.faircon.HomePreferences.Mode
-import com.example.faircon.HomePreferences.Mode.IDLE
-import com.example.faircon.HomePreferences.Status
-import com.example.faircon.HomePreferences.Status.STABLE
+import com.example.faircon.business.domain.model.Mode.*
+import com.example.faircon.business.domain.model.Status.*
 
 data class Parameter(
     val fanSpeed: Int = 0,

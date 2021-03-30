@@ -27,7 +27,7 @@ constructor(
             withTimeout(500) {
                 apiCall = homeService.testConnection()
             }
-            apiCall?.response == "SUCCESS"
+            apiCall?.response == "FAIRCON"
         } catch (throwable: Throwable) {
             when (throwable) {
                 is IOException -> false

@@ -30,7 +30,7 @@ class ConnectToFaircon(
         }
         emit(
             DataState.data(
-                data = HomeViewState(connected = true),
+                data = HomeViewState(serverConnected = true),
                 response = Response(
                     message = "Connected to Faircon",
                     uiType = UiType.None,
