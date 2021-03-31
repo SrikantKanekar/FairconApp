@@ -1,6 +1,6 @@
 package com.example.faircon.framework.di
 
-import com.example.faircon.framework.datasource.network.mappers.ParameterMapper
+import com.example.faircon.framework.datasource.network.mappers.FairconMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,5 +11,5 @@ import dagger.hilt.components.SingletonComponent
 object MapperModule {
 
     @Provides
-    fun provideParameterMapper() = ParameterMapper()
+    fun provideFairconMapper() = FairconMapper()
 }

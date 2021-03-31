@@ -18,7 +18,6 @@ class WebSocketListener : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d("APP_DEBUG", "onOpen: called")
-        webSocket.send("Hi from Faircon app")
         emit(WebSocketEvent(isConnected = true))
     }
 

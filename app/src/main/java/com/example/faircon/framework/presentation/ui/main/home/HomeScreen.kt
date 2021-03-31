@@ -17,13 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences.Theme
+import com.example.faircon.business.domain.model.Faircon
 import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.model.Mode.*
-import com.example.faircon.business.domain.model.Parameter
 import com.example.faircon.framework.presentation.components.*
 import com.example.faircon.framework.presentation.navigation.MainScreen
 import com.example.faircon.framework.presentation.theme.FairconTheme
-import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.*
+import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.ConnectToFairconEvent
+import com.example.faircon.framework.presentation.ui.main.home.state.HomeStateEvent.DisconnectFromFairconEvent
 
 @Composable
 fun HomeScreen(
@@ -35,7 +36,8 @@ fun HomeScreen(
     navAccountActivity: () -> Unit
 ) {
     val viewState = homeViewModel.viewState.collectAsState()
-    val parameter = viewState.value.parameter ?: Parameter()
+    val faircon = viewState.value.faircon ?: Faircon()
+    val parameter = faircon.parameter
 
     FairconTheme(
         theme = theme,
@@ -85,7 +87,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(40.dp),
-                    text = parameter.status.name
+                    text = faircon.status.name
                 )
 
                 ShowParameter(
@@ -131,8 +133,8 @@ fun HomeScreen(
                 )
 
                 ModeButtons(
-                    mode = parameter.mode,
-                    setMode = { homeViewModel.setStateEvent(SetModeEvent(it)) }
+                    mode = faircon.mode,
+                    setMode = { homeViewModel.setMode(it) }
                 )
 
                 ConnectionButtons(

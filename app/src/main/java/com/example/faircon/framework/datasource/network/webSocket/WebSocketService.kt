@@ -12,7 +12,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WebSocketService
 @Inject
 constructor(
@@ -33,10 +35,8 @@ constructor(
         }
     }
 
-    fun sendMessage() {
-//        val model = Controller()
-//        val message = Gson().toJson(model)
-//        _webSocket?.send(message)
+    fun sendMessage(message: String) {
+        _webSocket?.send(message)
     }
 
     fun reconnectSocket() {

@@ -1,8 +1,9 @@
-package com.example.faircon.business.interactors.home
+package com.example.faircon.framework.datasource.network.webSocket
 
-import com.example.faircon.framework.datasource.network.webSocket.WebSocketService
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WebSocketInteractor
 @Inject
 constructor(
@@ -12,7 +13,7 @@ constructor(
 
     fun subscribe() = webSocketService.subscribe()
 
-    fun sendMessage() = webSocketService.sendMessage()
+    fun sendMessage(message: String) = webSocketService.sendMessage(message)
 
     fun reconnectSocket() = webSocketService.reconnectSocket()
 

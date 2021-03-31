@@ -8,13 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import com.example.faircon.SettingPreferences
 import com.example.faircon.SettingPreferences.*
 import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
 import com.example.faircon.framework.presentation.components.MyOverlineText
 import com.example.faircon.framework.presentation.components.MySlider
 import com.example.faircon.framework.presentation.theme.FairconTheme
-import com.example.faircon.framework.presentation.ui.main.controller.state.ControllerStateEvent.*
 
 @Composable
 fun ControllerScreen(
@@ -29,9 +27,7 @@ fun ControllerScreen(
     FairconTheme(
         theme = theme,
         isWiFiAvailable = isWiFiAvailable,
-        scaffoldState = scaffoldState,
-        stateMessage = controllerViewModel.stateMessage.value,
-        removeStateMessage = { controllerViewModel.removeStateMessage() }
+        scaffoldState = scaffoldState
     ) {
 
         Scaffold(
@@ -55,7 +51,7 @@ fun ControllerScreen(
                         unit = "RPM",
                         valueRange = 300f..400f,
                         steps = 19,
-                        onValueChangeFinished = { controllerViewModel.setStateEvent(SetFanSpeedEvent(it.toInt())) }
+                        onValueChangeFinished = { controllerViewModel.updateFanSpeed(it.toInt()) }
                     )
 
                     ShowSlider(
@@ -64,16 +60,16 @@ fun ControllerScreen(
                         unit = "C",
                         valueRange = 15f..25f,
                         steps = 9,
-                        onValueChangeFinished = { controllerViewModel.setStateEvent(SetTemperatureEvent(it)) }
+                        onValueChangeFinished = { controllerViewModel.updateTemperature(it) }
                     )
 
                     ShowSlider(
                         name = "Tec Voltage",
-                        initialPosition = controller!!.tevVoltage,
+                        initialPosition = controller!!.tecVoltage,
                         unit = "V",
                         valueRange = 0f..12f,
                         steps = 23,
-                        onValueChangeFinished = { controllerViewModel.setStateEvent(SetTecVoltageEvent(it)) }
+                        onValueChangeFinished = { controllerViewModel.updateTecVoltage(it) }
                     )
                 }
 

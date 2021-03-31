@@ -1,10 +1,9 @@
 package com.example.faircon.framework.di
 
-import com.example.faircon.framework.datasource.network.services.AuthService
-import com.example.faircon.framework.datasource.network.services.AccountService
 import com.example.faircon.business.domain.util.Urls
 import com.example.faircon.framework.datasource.network.interceptors.TokenInterceptor
-import com.example.faircon.framework.datasource.network.services.ControllerService
+import com.example.faircon.framework.datasource.network.services.AccountService
+import com.example.faircon.framework.datasource.network.services.AuthService
 import com.example.faircon.framework.datasource.network.services.HomeService
 import com.example.faircon.framework.datasource.network.webSocket.WebSocketListener
 import dagger.Module
@@ -83,14 +82,6 @@ object NetworkModule {
     ): AccountService {
         return retrofit
             .create(AccountService::class.java)
-    }
-
-    @Provides
-    fun provideControllerService(
-        @ESP8266AP retrofit: Retrofit
-    ): ControllerService {
-        return retrofit
-            .create(ControllerService::class.java)
     }
 
     @Provides

@@ -57,7 +57,7 @@ fun FairconTheme(
     isWiFiAvailable: Boolean = true,
     displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    stateMessage: StateMessage?,
+    stateMessage: StateMessage? = null,
     removeStateMessage: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {

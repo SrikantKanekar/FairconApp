@@ -7,10 +7,13 @@ import com.example.faircon.ControllerPreferences
 import com.example.faircon.business.domain.model.Controller
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import com.google.protobuf.InvalidProtocolBufferException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -55,45 +58,22 @@ constructor(
         return Controller(
             fanSpeed = controllerPreference.fanSpeed,
             temperature = controllerPreference.requiredTemperature,
-            tevVoltage = controllerPreference.tecVoltage
+            tecVoltage = controllerPreference.tecVoltage
         )
     }
 
-    suspend fun updateController(controller: Controller) {
-        dataStore.updateData { controllerPreferences ->
-            controllerPreferences.toBuilder()
-                .setFanSpeed(controller.fanSpeed)
-                .setRequiredTemperature(controller.temperature)
-                .setTecVoltage(controller.tevVoltage)
-                .build()
-        }
-    }
-
-    suspend fun updateFanSpeed(fanSpeed: Int) {
-        dataStore.updateData { controllerPreferences ->
-            controllerPreferences.toBuilder()
-                .setFanSpeed(fanSpeed)
-                .build()
-        }
-    }
-
-    suspend fun updateTemperature(temperature: Float) {
-        dataStore.updateData { controllerPreferences ->
-            controllerPreferences.toBuilder()
-                .setRequiredTemperature(temperature)
-                .build()
-        }
-    }
-
-    suspend fun updateTecVoltage(voltage: Float) {
-        dataStore.updateData { controllerPreferences ->
-            controllerPreferences.toBuilder()
-                .setTecVoltage(voltage)
-                .build()
+    fun updateController(controller: Controller) {
+        CoroutineScope(IO).launch {
+            dataStore.updateData { controllerPreferences ->
+                controllerPreferences.toBuilder()
+                    .setFanSpeed(controller.fanSpeed)
+                    .setRequiredTemperature(controller.temperature)
+                    .setTecVoltage(controller.tecVoltage)
+                    .build()
+            }
         }
     }
 }
-
 
 object ControllerSerializer : Serializer<ControllerPreferences> {
     override val defaultValue: ControllerPreferences =
