@@ -20,7 +20,7 @@ fun AppLogo(
     size: Dp = 110.dp
 ) {
 
-    val painterResource = painterResource(R.mipmap.ic_launcher_round)
+    val painterResource = painterResource(R.mipmap.ic_launcher_foreground)
 
     Image(
         modifier = modifier.requiredSize(size),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "253528216070",
+    "project_id": "faircon-7b0bc",
+    "storage_bucket": "faircon-7b0bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253528216070:android:5f5d68a58ec2623d73a987",
+        "android_client_info": {
+          "package_name": "com.example.faircon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253528216070-iv0rh96mn4at4504c5akocv5e5j058tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk55XYskTpJxH-X4dsrV-U8wWN9aJNvpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253528216070-iv0rh96mn4at4504c5akocv5e5j058tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
