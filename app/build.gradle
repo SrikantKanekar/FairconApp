@@ -19,14 +19,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += [
-                        "room.schemaLocation": "$projectDir/schemas".toString(),
-                        "room.incremental"   : "true"]
-            }
-        }
     }
     buildTypes {
         release {
@@ -79,12 +71,6 @@ dependencies {
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
-
-    //Room
-    def room_version = '2.2.6'
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"

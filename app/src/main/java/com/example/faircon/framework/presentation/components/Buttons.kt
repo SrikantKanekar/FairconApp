@@ -12,28 +12,6 @@ import com.example.faircon.framework.presentation.theme.typography
 import java.util.*
 
 @Composable
-fun LoadingButton(
-    isLoading: Boolean,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    text: String,
-    onClick: () -> Unit
-) {
-    if (isLoading) {
-        CircularProgressIndicator(
-            modifier = modifier
-        )
-    } else {
-        MyButton(
-            modifier = modifier,
-            text = text,
-            enabled = enabled,
-            onClick = onClick
-        )
-    }
-}
-
-@Composable
 fun SelectableButton(
     isSelected: Boolean,
     text: String,

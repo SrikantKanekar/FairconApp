@@ -3,17 +3,13 @@ package com.example.faircon.framework.presentation.ui
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
-import com.example.faircon.SettingPreferences.*
-import com.example.faircon.framework.datasource.dataStore.SettingDataStore
+import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.framework.datasource.connectivity.WiFiConnectivityManager
-import com.example.faircon.framework.datasource.session.SessionManager
+import com.example.faircon.framework.datasource.dataStore.SettingDataStore
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var sessionManager: SessionManager
 
     @Inject
     lateinit var wiFiConnectivityManager: WiFiConnectivityManager

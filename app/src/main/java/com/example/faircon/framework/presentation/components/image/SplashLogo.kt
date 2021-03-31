@@ -10,11 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.example.faircon.R
 
 @Composable
-fun LauncherScreenLogo() {
-    AppLogo()
-}
-
-@Composable
 fun AppLogo(
     modifier: Modifier = Modifier,
     size: Dp = 110.dp

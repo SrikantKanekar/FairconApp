@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.framework.presentation.ui.BaseApplication
-import com.example.faircon.framework.presentation.ui.main.home.state.HomeViewState
+import com.example.faircon.framework.presentation.ui.home.state.HomeViewState
 import kotlinx.coroutines.flow.flow
 
 class DisconnectFromFaircon(

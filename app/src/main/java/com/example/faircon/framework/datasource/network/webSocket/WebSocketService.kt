@@ -1,9 +1,6 @@
 package com.example.faircon.framework.datasource.network.webSocket
 
 import android.util.Log
-import com.example.faircon.business.domain.model.Controller
-import com.example.faircon.framework.di.WebSocketOkHttp
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
@@ -18,7 +15,7 @@ import javax.inject.Singleton
 class WebSocketService
 @Inject
 constructor(
-    @WebSocketOkHttp private val okHttpClient: OkHttpClient,
+    private val okHttpClient: OkHttpClient,
     private val webSocketListener: WebSocketListener
 ) {
 

@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Faircon">
 
         <activity
-            android:name="com.example.faircon.framework.presentation.ui.auth.AuthActivity"
+            android:name="com.example.faircon.framework.presentation.ui.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,16 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.example.faircon.framework.presentation.ui.main.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.example.faircon.framework.presentation.ui.account.AccountActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
-
 
     </application>
 </manifest>
