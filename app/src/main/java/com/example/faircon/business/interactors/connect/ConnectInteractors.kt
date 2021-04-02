@@ -1,6 +1,6 @@
-package com.example.faircon.business.interactors.home
+package com.example.faircon.business.interactors.connect
 
-class HomeInteractors(
+class ConnectInteractors(
     val connectToFaircon: ConnectToFaircon,
     val disconnectFromFaircon: DisconnectFromFaircon
 )

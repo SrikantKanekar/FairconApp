@@ -5,6 +5,7 @@ import androidx.datastore.core.Serializer
 import androidx.datastore.createDataStore
 import com.example.faircon.ControllerPreferences
 import com.example.faircon.business.domain.model.Controller
+import com.example.faircon.business.domain.util.printLogD
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CoroutineScope
@@ -26,9 +27,10 @@ class ControllerDataStore
 constructor(
     app: BaseApplication
 ) {
-
     private val dataStore = app
         .createDataStore(DataStoreFiles.CONTROLLER_DATASTORE_FILE, ControllerSerializer)
+
+    var currentValue = Controller()
 
     private val default: ControllerPreferences = ControllerPreferences.newBuilder()
         .setFanSpeed(300)
@@ -64,13 +66,18 @@ constructor(
 
     fun updateController(controller: Controller) {
         CoroutineScope(IO).launch {
-            dataStore.updateData { controllerPreferences ->
-                controllerPreferences.toBuilder()
-                    .setFanSpeed(controller.fanSpeed)
-                    .setRequiredTemperature(controller.temperature)
-                    .setTecVoltage(controller.tecVoltage)
-                    .build()
+            if (currentValue != controller) {
+                currentValue = controller
+                dataStore.updateData { controllerPreferences ->
+                    controllerPreferences.toBuilder()
+                        .setFanSpeed(controller.fanSpeed)
+                        .setRequiredTemperature(controller.temperature)
+                        .setTecVoltage(controller.tecVoltage)
+                        .build()
+                }
+                printLogD("ControllerDataStore", "Updated controller datastore")
             }
+
         }
     }
 }

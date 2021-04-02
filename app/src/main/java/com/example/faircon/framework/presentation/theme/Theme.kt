@@ -54,7 +54,7 @@ val snackbarController = SnackbarController(CoroutineScope(Main))
 @Composable
 fun FairconTheme(
     theme: Theme,
-    isWiFiAvailable: Boolean = true,
+    isWifiAvailable: Boolean = true,
     displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     stateMessage: StateMessage? = null,
@@ -73,7 +73,7 @@ fun FairconTheme(
         ) {
 
             Column {
-                WiFiMonitor(isWiFiAvailable = isWiFiAvailable)
+                WiFiMonitor(isWiFiAvailable = isWifiAvailable)
                 content()
             }
 

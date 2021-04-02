@@ -1,8 +1,8 @@
 package com.example.faircon.business.domain.model
 
 enum class Mode {
-    IDLE,
-    FAN,
+    OFF,
     COOLING,
-    HEATING
+    HEATING,
+    FAN
 }

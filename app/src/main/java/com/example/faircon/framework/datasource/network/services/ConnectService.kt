@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import javax.inject.Singleton
 
 @Singleton
-interface HomeService {
+interface ConnectService {
 
     @GET("test")
     suspend fun testConnection(): GenericResponse

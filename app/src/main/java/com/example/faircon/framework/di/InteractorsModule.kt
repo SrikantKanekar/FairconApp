@@ -1,8 +1,8 @@
 package com.example.faircon.framework.di
 
-import com.example.faircon.business.interactors.home.ConnectToFaircon
-import com.example.faircon.business.interactors.home.DisconnectFromFaircon
-import com.example.faircon.business.interactors.home.HomeInteractors
+import com.example.faircon.business.interactors.connect.ConnectToFaircon
+import com.example.faircon.business.interactors.connect.DisconnectFromFaircon
+import com.example.faircon.business.interactors.connect.ConnectInteractors
 import com.example.faircon.framework.presentation.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -14,10 +14,10 @@ import dagger.hilt.android.components.ViewModelComponent
 object InteractorsModule {
 
     @Provides
-    fun provideHomeInteractors(
+    fun provideConnectInteractors(
         app: BaseApplication
-    ): HomeInteractors {
-        return HomeInteractors(
+    ): ConnectInteractors {
+        return ConnectInteractors(
             ConnectToFaircon(app),
             DisconnectFromFaircon(app)
         )

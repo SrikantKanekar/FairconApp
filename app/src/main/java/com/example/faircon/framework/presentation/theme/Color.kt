@@ -14,3 +14,9 @@ val red500 = Color(0xFFB00020)
 
 val darkBackground = Color(0xFF121212)
 val darkSurface = Color(0xFF121212)
+
+//Connect button colours
+val connect = Color(0xFF59ADF0)
+val connecting = Color(0xFFEBBE37)
+val connected = Color(0xFF4BE051)
+val retry = Color(0xFFCF6679)

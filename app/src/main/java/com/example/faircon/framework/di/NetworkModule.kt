@@ -1,7 +1,7 @@
 package com.example.faircon.framework.di
 
 import com.example.faircon.business.domain.util.Urls
-import com.example.faircon.framework.datasource.network.services.HomeService
+import com.example.faircon.framework.datasource.network.services.ConnectService
 import com.example.faircon.framework.datasource.network.webSocket.WebSocketListener
 import dagger.Module
 import dagger.Provides
@@ -34,10 +34,10 @@ object NetworkModule {
             .build()
 
     @Provides
-    fun provideHomeService(
+    fun provideConnectService(
         retrofit: Retrofit
-    ): HomeService {
+    ): ConnectService {
         return retrofit
-            .create(HomeService::class.java)
+            .create(ConnectService::class.java)
     }
 }

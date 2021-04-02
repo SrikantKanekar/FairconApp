@@ -19,7 +19,7 @@ import javax.inject.Singleton
  * Checks if FAIRCON is connected.
  */
 @Singleton
-class WiFiLiveData
+class WifiLiveData
 @Inject
 constructor(
     app: BaseApplication,

@@ -1,10 +1,10 @@
-package com.example.faircon.business.interactors.home
+package com.example.faircon.business.interactors.connect
 
 import android.content.Context
 import android.net.wifi.WifiManager
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.framework.presentation.ui.BaseApplication
-import com.example.faircon.framework.presentation.ui.home.state.HomeViewState
+import com.example.faircon.framework.presentation.ui.connect.state.ConnectViewState
 import kotlinx.coroutines.flow.flow
 
 class DisconnectFromFaircon(
@@ -19,7 +19,7 @@ class DisconnectFromFaircon(
 
         emit(
             DataState.data(
-                data = HomeViewState(serverConnected = false),
+                data = ConnectViewState(connecting = false),
                 response = Response(
                     message = "Disconnected from Faircon",
                     uiType = UiType.None,

@@ -1,11 +1,11 @@
-package com.example.faircon.business.interactors.home
+package com.example.faircon.business.interactors.connect
 
 import android.content.Context
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.framework.presentation.ui.BaseApplication
-import com.example.faircon.framework.presentation.ui.home.state.HomeViewState
+import com.example.faircon.framework.presentation.ui.connect.state.ConnectViewState
 import kotlinx.coroutines.flow.flow
 
 class ConnectToFaircon(
@@ -30,9 +30,9 @@ class ConnectToFaircon(
         }
         emit(
             DataState.data(
-                data = HomeViewState(serverConnected = true),
+                data = ConnectViewState(connecting = true),
                 response = Response(
-                    message = "Connected to Faircon",
+                    message = "Connecting to Faircon",
                     uiType = UiType.None,
                     messageType = MessageType.Info
                 ),

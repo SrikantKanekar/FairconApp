@@ -6,6 +6,7 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,7 +32,7 @@ fun SettingsScreen(
 
     FairconTheme(
         theme = theme,
-        isWiFiAvailable = isWiFiAvailable,
+        isWifiAvailable = isWiFiAvailable,
         scaffoldState = scaffoldState,
         stateMessage = null,
         removeStateMessage = { }
@@ -52,7 +53,7 @@ fun SettingsScreen(
             ) {
 
                 SwitchSetting(
-                    imageVector = Icons.Default.Colorize,
+                    imageVector = Icons.Default.ColorLens,
                     theme = settings.value.theme,
                     value = if (settings.value.theme == DARK) "Dark" else "Light",
                     onCheckedChange = { theme ->

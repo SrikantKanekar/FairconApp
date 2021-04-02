@@ -1,7 +1,7 @@
 package com.example.faircon.business.interactors.app
 
 import com.example.faircon.framework.datasource.network.response.GenericResponse
-import com.example.faircon.framework.datasource.network.services.HomeService
+import com.example.faircon.framework.datasource.network.services.ConnectService
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 import java.io.IOException
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class IsConnectedToFaircon
 @Inject
 constructor(
-    private val homeService: HomeService
+    private val homeService: ConnectService
 ) {
 
     suspend fun execute(): Boolean {

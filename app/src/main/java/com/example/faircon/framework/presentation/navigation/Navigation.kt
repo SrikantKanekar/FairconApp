@@ -3,9 +3,15 @@ package com.example.faircon.framework.presentation.navigation
 sealed class Navigation(
     val route: String,
 ){
-    object Home: Navigation("Home")
+    object Connect: Navigation("Connect")
 
-    object Controller: Navigation("Controller")
+    object Mode: Navigation("Mode")
 
-    object Settings: Navigation("Setting")
+    object Cooling: Navigation("Cooling")
+
+    object Heating: Navigation("Heating")
+
+    object Fan: Navigation("Fan")
+
+    object Settings: Navigation("Settings")
 }
