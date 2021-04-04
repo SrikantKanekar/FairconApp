@@ -28,7 +28,7 @@ constructor(
 ) {
 
     private val dataStore = app
-        .createDataStore(DataStoreFiles.SETTING_DATASTORE_FILE, SettingSerializer)
+        .createDataStore("SETTING_DATASTORE_FILE", SettingSerializer)
 
     private val default: SettingPreferences = newBuilder()
         .setTheme(Theme.DARK)

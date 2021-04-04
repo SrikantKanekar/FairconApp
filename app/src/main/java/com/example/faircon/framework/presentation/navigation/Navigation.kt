@@ -8,10 +8,13 @@ sealed class Navigation(
     object Mode: Navigation("Mode")
 
     object Cooling: Navigation("Cooling")
+    object CoolingDetail: Navigation("CoolingDetail")
 
     object Heating: Navigation("Heating")
+    object HeatingDetail: Navigation("HeatingDetail")
 
     object Fan: Navigation("Fan")
+    object FanDetail: Navigation("FanDetail")
 
     object Settings: Navigation("Settings")
 }

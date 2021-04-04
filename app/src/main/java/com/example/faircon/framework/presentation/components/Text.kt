@@ -26,7 +26,7 @@ fun MyOverlineText(
     Text(
         modifier = modifier,
         text = text,
-        fontSize = 18.sp,
+        fontSize = 17.sp,
         style = MaterialTheme.typography.overline
     )
 }

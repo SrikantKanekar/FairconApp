@@ -5,7 +5,6 @@ import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.model.WebSocketEvent
 import com.example.faircon.business.domain.model.WebSocketMessage
 import com.example.faircon.business.domain.util.printLogD
-import com.example.faircon.framework.datasource.dataStore.ControllerDataStore
 import com.example.faircon.framework.datasource.network.mappers.FairconMapper
 import com.example.faircon.framework.datasource.network.response.FairconResponse
 import com.google.gson.Gson
@@ -23,8 +22,7 @@ class WebSocket
 @Inject
 constructor(
     private val webSocketService: WebSocketService,
-    private val fairconMapper: FairconMapper,
-    private val controllerDataStore: ControllerDataStore
+    private val fairconMapper: FairconMapper
 ) {
 
     private val _faircon = MutableStateFlow(Faircon())
@@ -34,7 +32,6 @@ constructor(
     val isOpen: StateFlow<Boolean> = _isOpen
 
     init {
-        printLogD("WebSocket", "init : Called")
         webSocketService.startSocket()
         CoroutineScope(Default).launch {
             webSocketService.subscribe().collect { socketUpdate ->
@@ -51,7 +48,6 @@ constructor(
             val fairconResponse = Gson().fromJson(message, FairconResponse::class.java)
             val faircon = fairconMapper.mapToDomainModel(fairconResponse)
             _faircon.value = faircon
-            updateController(faircon)
             printLogD("WebSocket", "Raw : $message")
         }
         update.exception?.let { exception ->
@@ -83,9 +79,6 @@ constructor(
         val message = Gson().toJson(model)
         sendMessage(message)
     }
-
-    private fun updateController(faircon: Faircon) =
-        controllerDataStore.updateController(faircon.controller)
 
     private fun sendMessage(message: String) = webSocketService.sendMessage(message)
 

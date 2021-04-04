@@ -1,23 +1,24 @@
 package com.example.faircon.framework.presentation.ui.cooling
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences
-import com.example.faircon.framework.presentation.components.ModeButtons
-import com.example.faircon.framework.presentation.components.ShowParameter
-import com.example.faircon.framework.presentation.components.ShowSlider
+import com.example.faircon.business.domain.model.IndicatorSize.*
+import com.example.faircon.framework.presentation.components.ControllerSlider
+import com.example.faircon.framework.presentation.components.ParameterIndicator
+import com.example.faircon.framework.presentation.navigation.Navigation
+import com.example.faircon.framework.presentation.navigation.Navigation.*
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
@@ -25,11 +26,11 @@ fun CoolingScreen(
     theme: SettingPreferences.Theme,
     isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState,
-    viewModel: CoolingViewModel
+    viewModel: CoolingViewModel,
+    navController: NavHostController
 ) {
     FairconTheme(
-        theme = theme,
-        isWifiAvailable = isWifiAvailable
+        theme = theme
     ) {
 
         val faircon by viewModel.faircon.collectAsState()
@@ -40,92 +41,116 @@ fun CoolingScreen(
         ) {
 
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+                modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
 
-                Text(
+                Card(
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(40.dp),
-                    text = faircon.status.name
-                )
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .padding(top = 25.dp)
+                        .clickable { navController.navigate(CoolingDetail.route) },
+                    shape = MaterialTheme.shapes.large
+                ) {
 
-                ShowParameter(
-                    name = "Fan Speed",
-                    unit = "RPM",
-                    progress = faircon.parameter.fanSpeed.toFloat(),
-                    valueRange = 300F..400F
-                )
+                    Column(
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 30.dp)
+                    ) {
 
-                ShowParameter(
-                    name = "Room Temperature",
-                    progress = faircon.parameter.roomTemperature,
-                    unit = "C",
-                    valueRange = 15F..25F
-                )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.Bottom,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            ParameterIndicator(
+                                name = "Room",
+                                unit = "C",
+                                value = faircon.parameter.roomTemperature,
+                                valueRange = 15F..25F,
+                                size = LARGE
+                            )
+                            ParameterIndicator(
+                                modifier = Modifier.padding(bottom = 7.dp),
+                                name = "Power",
+                                unit = "Kwh",
+                                value = faircon.parameter.powerConsumption.toFloat(),
+                                valueRange = 0F..1000F,
+                                size = MEDIUM
+                            )
+                        }
 
-                ShowParameter(
-                    name = "Tec Voltage",
-                    progress = faircon.parameter.tecVoltage,
-                    unit = "V",
-                    valueRange = 0F..12F
-                )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 20.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            ParameterIndicator(
+                                name = "Speed",
+                                unit = "RPM",
+                                value = faircon.parameter.fanSpeed.toFloat(),
+                                valueRange = 300F..400F,
+                                size = SMALL
+                            )
+                            ParameterIndicator(
+                                name = "Tec",
+                                unit = "C",
+                                value = faircon.parameter.tecTemperature,
+                                valueRange = 25F..120F,
+                                size = SMALL
+                            )
+                            ParameterIndicator(
+                                name = "Heat",
+                                unit = "W",
+                                value = faircon.parameter.heatExpelling.toFloat(),
+                                valueRange = 0F..500F,
+                                size = SMALL
+                            )
+                            ParameterIndicator(
+                                name = "Voltage",
+                                unit = "V",
+                                value = faircon.parameter.tecVoltage,
+                                valueRange = 0F..12F,
+                                size = SMALL
+                            )
+                        }
+                    }
+                }
 
-                ShowParameter(
-                    name = "Power Consumption",
-                    progress = faircon.parameter.powerConsumption.toFloat(),
-                    unit = "Kwh",
-                    valueRange = 0F..1000F
-                )
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = MaterialTheme.shapes.large
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        ControllerSlider(
+                            name = "Fan Speed",
+                            unit = "RPM",
+                            newValue = faircon.controller.fanSpeed.toFloat(),
+                            valueRange = 300f..400f,
+                            onValueChangeFinished = { viewModel.updateFanSpeed(it.toInt()) }
+                        )
 
-                ShowParameter(
-                    name = "Heat Expelling",
-                    progress = faircon.parameter.heatExpelling.toFloat(),
-                    unit = "W",
-                    valueRange = 0F..500F
-                )
+                        ControllerSlider(
+                            name = "Temperature",
+                            unit = "C",
+                            newValue = faircon.controller.temperature,
+                            valueRange = 15f..25f,
+                            onValueChangeFinished = { viewModel.updateTemperature(it) }
+                        )
 
-                ShowParameter(
-                    name = "Tec Temperature",
-                    progress = faircon.parameter.tecTemperature,
-                    unit = "C",
-                    valueRange = 25F..120F
-                )
-
-                ModeButtons(
-                    mode = faircon.mode,
-                    setMode = { viewModel.updateMode(it) }
-                )
-
-                ShowSlider(
-                    name = "Fan Speed",
-                    initialPosition = faircon.controller.fanSpeed.toFloat(),
-                    unit = "RPM",
-                    valueRange = 300f..400f,
-                    steps = 19,
-                    onValueChangeFinished = { viewModel.updateFanSpeed(it.toInt()) }
-                )
-
-                ShowSlider(
-                    name = "Temperature",
-                    initialPosition = faircon.controller.temperature,
-                    unit = "C",
-                    valueRange = 15f..25f,
-                    steps = 9,
-                    onValueChangeFinished = { viewModel.updateTemperature(it) }
-                )
-
-                ShowSlider(
-                    name = "Tec Voltage",
-                    initialPosition = faircon.controller.tecVoltage,
-                    unit = "V",
-                    valueRange = 0f..12f,
-                    steps = 23,
-                    onValueChangeFinished = { viewModel.updateTecVoltage(it) }
-                )
+                        ControllerSlider(
+                            name = "Tec Voltage",
+                            unit = "V",
+                            newValue = faircon.controller.tecVoltage,
+                            valueRange = 0f..12f,
+                            onValueChangeFinished = { viewModel.updateTecVoltage(it) }
+                        )
+                    }
+                }
             }
         }
     }
