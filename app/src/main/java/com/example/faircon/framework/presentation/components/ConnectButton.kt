@@ -1,23 +1,23 @@
 package com.example.faircon.framework.presentation.components
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.faircon.framework.presentation.theme.connect
@@ -80,11 +80,11 @@ fun ConnectButton(
         }
     }
 
-    val radius = remember { Animatable(0F) }
+    val radius = remember { Animatable(0.dp, typeConverter = Dp.VectorConverter) }
     LaunchedEffect(Unit) {
         radius.animateTo(
-            targetValue = 260F,
-            animationSpec = tween(durationMillis = 800, delayMillis = 250)
+            targetValue = 86.dp,
+            animationSpec = tween(durationMillis = 600, delayMillis = 200)
         )
     }
 
@@ -103,15 +103,15 @@ fun ConnectButton(
         ) {
             drawCircle(
                 color = color.copy(alpha = 0.8F),
-                radius = radius.value
+                radius = radius.value.toPx()
             )
             drawCircle(
                 color = color.copy(alpha = 0.4F),
-                radius = radius.value * 0.8F
+                radius = (radius.value * 0.8f).toPx()
             )
 
             if (connectionState == CONNECTING) {
-                val stroke = Stroke(30f)
+                val stroke = Stroke(12.dp.toPx())
                 drawArc(
                     color = Color.Red,
                     startAngle = -90f,
@@ -126,8 +126,8 @@ fun ConnectButton(
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = connectionState.name,
-                fontSize = 17.sp,
-                color = textColor
+                color = textColor,
+                fontSize = 17.sp
             )
         }
     }

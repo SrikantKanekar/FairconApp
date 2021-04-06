@@ -1,6 +1,7 @@
 package com.example.faircon.framework.presentation.ui.cooling
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -47,9 +48,12 @@ fun CoolingScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
-                        .padding(top = 25.dp)
-                        .clickable { navController.navigate(CoolingDetail.route) },
+                        .padding(horizontal = 16.dp, vertical = 30.dp)
+                        .clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = { navController.navigate(CoolingDetail.route) }
+                        ),
                     shape = MaterialTheme.shapes.large
                 ) {
 
@@ -64,13 +68,13 @@ fun CoolingScreen(
                         ) {
                             ParameterIndicator(
                                 name = "Room",
-                                unit = "C",
+                                unit = "℃",
                                 value = faircon.parameter.roomTemperature,
                                 valueRange = 15F..25F,
                                 size = LARGE
                             )
                             ParameterIndicator(
-                                modifier = Modifier.padding(bottom = 7.dp),
+                                modifier = Modifier.padding(bottom = 6.dp),
                                 name = "Power",
                                 unit = "Kwh",
                                 value = faircon.parameter.powerConsumption.toFloat(),
@@ -87,14 +91,14 @@ fun CoolingScreen(
                         ) {
                             ParameterIndicator(
                                 name = "Speed",
-                                unit = "RPM",
+                                unit = "Rpm",
                                 value = faircon.parameter.fanSpeed.toFloat(),
                                 valueRange = 300F..400F,
                                 size = SMALL
                             )
                             ParameterIndicator(
                                 name = "Tec",
-                                unit = "C",
+                                unit = "℃",
                                 value = faircon.parameter.tecTemperature,
                                 valueRange = 25F..120F,
                                 size = SMALL
@@ -120,15 +124,17 @@ fun CoolingScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 30.dp),
                     shape = MaterialTheme.shapes.large
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         ControllerSlider(
                             name = "Fan Speed",
-                            unit = "RPM",
+                            unit = "Rpm",
                             newValue = faircon.controller.fanSpeed.toFloat(),
                             valueRange = 300f..400f,
                             onValueChangeFinished = { viewModel.updateFanSpeed(it.toInt()) }
@@ -136,7 +142,7 @@ fun CoolingScreen(
 
                         ControllerSlider(
                             name = "Temperature",
-                            unit = "C",
+                            unit = "℃",
                             newValue = faircon.controller.temperature,
                             valueRange = 15f..25f,
                             onValueChangeFinished = { viewModel.updateTemperature(it) }

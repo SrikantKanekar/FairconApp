@@ -1,7 +1,6 @@
 package com.example.faircon.framework.presentation.components
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.example.faircon.business.domain.model.IndicatorSize
 import com.example.faircon.business.domain.model.IndicatorSize.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -29,9 +29,7 @@ fun ControllerSlider(
     onValueChangeFinished: (Float) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
 
         var currentValue by remember { mutableStateOf(valueRange.start) }
@@ -41,14 +39,13 @@ fun ControllerSlider(
         }
 
         val textValue = when(unit){
-            "RPM" -> currentValue.roundToInt()
-            "C" -> currentValue.roundToHalf()
+            "℃" -> currentValue.roundToHalf()
             "V" -> currentValue.roundToOne()
-            else -> 0
+            else -> currentValue.roundToInt()
         }
         Text(
             text = "$name : $textValue $unit",
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             style = MaterialTheme.typography.overline
         )
 
@@ -116,19 +113,28 @@ fun ParameterIndicator(
     size: IndicatorSize
 ) {
     val sweepAngel = remember { Animatable(0f) }
-    var debugValue by remember { mutableStateOf(value.toInt()) }
+    val currentValue = remember { Animatable(value.toInt(), Int.VectorConverter) }
 
     LaunchedEffect(Unit) {
         while (true) {
-            debugValue = Random.nextInt(valueRange.start.toInt(), valueRange.endInclusive.toInt())
+            val randomValue = Random.nextInt(valueRange.start.toInt(), valueRange.endInclusive.toInt())
             var percent =
-                (debugValue - valueRange.start) / (valueRange.endInclusive - valueRange.start)
+                (randomValue - valueRange.start) / (valueRange.endInclusive - valueRange.start)
             if (percent > 1) percent = 1f else if (percent < 0) percent = 0f
-            sweepAngel.animateTo(
-                targetValue = 280 * percent,
-                animationSpec = tween(1500)
-            )
-            delay(500)
+
+            this.launch {
+                currentValue.animateTo(
+                    targetValue = randomValue,
+                    animationSpec = tween(1500, easing = FastOutSlowInEasing)
+                )
+            }
+            this.launch {
+                sweepAngel.animateTo(
+                    targetValue = 280 * percent,
+                    animationSpec = tween(1500, easing = FastOutSlowInEasing)
+                )
+            }
+            delay(1400)
         }
     }
 
@@ -139,17 +145,17 @@ fun ParameterIndicator(
                 .align(Alignment.Center)
                 .size(
                     when (size) {
-                        SMALL -> 60.dp
-                        MEDIUM -> 90.dp
-                        LARGE -> 150.dp
+                        SMALL -> 55.dp
+                        MEDIUM -> 85.dp
+                        LARGE -> 145.dp
                     }
                 )
         ) {
             val stroke = Stroke(
                 width = when (size) {
-                    SMALL -> 20f
-                    MEDIUM -> 25f
-                    LARGE -> 30f
+                    SMALL -> 6.dp.toPx()
+                    MEDIUM -> 8.dp.toPx()
+                    LARGE -> 13.dp.toPx()
                 }
             )
             drawArc(
@@ -176,18 +182,20 @@ fun ParameterIndicator(
             val fontSize = when (size) {
                 SMALL -> 10.sp
                 MEDIUM -> 12.sp
-                LARGE -> 15.sp
+                LARGE -> 28.sp
             }
             Text(
-                text = "$debugValue $unit",
+                text = "${currentValue.value} $unit",
                 fontSize = fontSize,
                 color = Color.White
             )
-            Text(
-                text = name,
-                fontSize = fontSize,
-                color = Color.White
-            )
+            if (size != LARGE){
+                Text(
+                    text = name,
+                    fontSize = fontSize,
+                    color = Color.White
+                )
+            }
         }
     }
 }

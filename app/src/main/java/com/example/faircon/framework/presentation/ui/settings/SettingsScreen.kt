@@ -32,7 +32,6 @@ fun SettingsScreen(
 
     FairconTheme(
         theme = theme,
-        isWifiAvailable = isWiFiAvailable,
         scaffoldState = scaffoldState,
         stateMessage = null,
         removeStateMessage = { }
@@ -50,6 +49,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)
+                    .padding(top = 25.dp)
             ) {
 
                 SwitchSetting(
@@ -81,7 +81,7 @@ fun SwitchSetting(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             MyIcon(
                 modifier = Modifier.padding(5.dp),
                 imageVector = imageVector

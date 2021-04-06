@@ -17,6 +17,6 @@ val darkSurface = Color(0xFF121212)
 
 //Connect button colours
 val connect = Color(0xFF59ADF0)
-val connecting = Color(0xFFEBBE37)
-val connected = Color(0xFF4BE051)
+val connecting = Color(0xFFECB25C)
+val connected = Color(0xFF59E95F)
 val retry = Color(0xFFCF6679)

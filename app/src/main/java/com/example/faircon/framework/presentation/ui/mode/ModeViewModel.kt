@@ -18,8 +18,8 @@ class ModeViewModel@Inject constructor(
     var navigate by mutableStateOf(false)
 
     fun updateMode(mode: Mode) {
-        webSocket.updateMode(mode)
         currentMode = mode
+        webSocket.updateMode(mode)
         navigate = true
     }
 }
