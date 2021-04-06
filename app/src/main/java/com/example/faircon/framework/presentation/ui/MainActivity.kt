@@ -16,6 +16,7 @@ import com.example.faircon.framework.presentation.ui.cooling.CoolingScreen
 import com.example.faircon.framework.presentation.ui.cooling.CoolingViewModel
 import com.example.faircon.framework.presentation.ui.fan.FanScreen
 import com.example.faircon.framework.presentation.ui.fan.FanViewModel
+import com.example.faircon.framework.presentation.ui.heating.HeatingDetailScreen
 import com.example.faircon.framework.presentation.ui.heating.HeatingScreen
 import com.example.faircon.framework.presentation.ui.heating.HeatingViewModel
 import com.example.faircon.framework.presentation.ui.mode.ModeScreen
@@ -86,14 +87,31 @@ class MainActivity : BaseActivity() {
                     }
                 }
 
-                composable(route = Heating.route) { backStackEntry ->
-                    val heatingViewModel = hiltNavGraphViewModel<HeatingViewModel>(backStackEntry)
-                    HeatingScreen(
-                        theme = appTheme.value,
-                        isWifiAvailable = faircon.isAvailable.value == true,
-                        scaffoldState = scaffoldState,
-                        viewModel = heatingViewModel
-                    )
+                navigation(
+                    startDestination = Heating.route,
+                    route = "HeatingRoute"
+                ) {
+                    composable(route = Heating.route) {
+                        val heatingViewModel =
+                            navController.hiltNavGraphViewModel<HeatingViewModel>("HeatingRoute")
+                        HeatingScreen(
+                            theme = appTheme.value,
+                            isWifiAvailable = faircon.isAvailable.value == true,
+                            scaffoldState = scaffoldState,
+                            viewModel = heatingViewModel,
+                            navController = navController
+                        )
+                    }
+                    composable(route = HeatingDetail.route) {
+                        val heatingViewModel =
+                            navController.hiltNavGraphViewModel<HeatingViewModel>("HeatingRoute")
+                        HeatingDetailScreen(
+                            theme = appTheme.value,
+                            isWifiAvailable = faircon.isAvailable.value == true,
+                            scaffoldState = scaffoldState,
+                            viewModel = heatingViewModel
+                        )
+                    }
                 }
 
                 composable(route = Fan.route) { backStackEntry ->
