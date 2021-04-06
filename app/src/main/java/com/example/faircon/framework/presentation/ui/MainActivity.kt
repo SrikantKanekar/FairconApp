@@ -14,6 +14,7 @@ import com.example.faircon.framework.presentation.ui.connect.ConnectViewModel
 import com.example.faircon.framework.presentation.ui.cooling.CoolingDetailScreen
 import com.example.faircon.framework.presentation.ui.cooling.CoolingScreen
 import com.example.faircon.framework.presentation.ui.cooling.CoolingViewModel
+import com.example.faircon.framework.presentation.ui.fan.FanDetailScreen
 import com.example.faircon.framework.presentation.ui.fan.FanScreen
 import com.example.faircon.framework.presentation.ui.fan.FanViewModel
 import com.example.faircon.framework.presentation.ui.heating.HeatingDetailScreen
@@ -114,14 +115,32 @@ class MainActivity : BaseActivity() {
                     }
                 }
 
-                composable(route = Fan.route) { backStackEntry ->
-                    val fanViewModel = hiltNavGraphViewModel<FanViewModel>(backStackEntry)
-                    FanScreen(
-                        theme = appTheme.value,
-                        isWifiAvailable = faircon.isAvailable.value == true,
-                        scaffoldState = scaffoldState,
-                        viewModel = fanViewModel
-                    )
+                navigation(
+                    startDestination = Fan.route,
+                    route = "FanRoute"
+                ) {
+                    composable(route = Fan.route) {
+                        val fanViewModel =
+                            navController.hiltNavGraphViewModel<FanViewModel>("FanRoute")
+                        FanScreen(
+                            theme = appTheme.value,
+                            isWifiAvailable = faircon.isAvailable.value == true,
+                            scaffoldState = scaffoldState,
+                            viewModel = fanViewModel,
+                            navController = navController
+                        )
+                    }
+
+                    composable(route = FanDetail.route) {
+                        val fanViewModel =
+                            navController.hiltNavGraphViewModel<FanViewModel>("FanRoute")
+                        FanDetailScreen(
+                            theme = appTheme.value,
+                            isWifiAvailable = faircon.isAvailable.value == true,
+                            scaffoldState = scaffoldState,
+                            viewModel = fanViewModel
+                        )
+                    }
                 }
 
                 composable(route = Settings.route) {

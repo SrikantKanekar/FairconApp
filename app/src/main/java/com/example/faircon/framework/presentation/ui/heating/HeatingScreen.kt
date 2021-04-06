@@ -22,6 +22,7 @@ import com.example.faircon.business.domain.model.IndicatorSize
 import com.example.faircon.framework.presentation.components.ControllerSlider
 import com.example.faircon.framework.presentation.components.ParameterIndicator
 import com.example.faircon.framework.presentation.navigation.Navigation
+import com.example.faircon.framework.presentation.navigation.Navigation.*
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
@@ -54,7 +55,7 @@ fun HeatingScreen(
                         .clickable(
                             interactionSource = MutableInteractionSource(),
                             indication = null,
-                            onClick = { navController.navigate(Navigation.CoolingDetail.route) }
+                            onClick = { navController.navigate(HeatingDetail.route) }
                         ),
                     shape = MaterialTheme.shapes.large
                 ) {
