@@ -10,7 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ModeViewModel@Inject constructor(
+class ModeViewModel
+@Inject
+constructor(
     private val webSocket: WebSocket
 ) : ViewModel() {
 

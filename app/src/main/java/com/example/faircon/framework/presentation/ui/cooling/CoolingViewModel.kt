@@ -7,7 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CoolingViewModel @Inject constructor(
+class CoolingViewModel
+@Inject
+constructor(
     private val webSocket: WebSocket
 ) : ViewModel() {
 

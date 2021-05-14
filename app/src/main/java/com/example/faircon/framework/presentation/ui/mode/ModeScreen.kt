@@ -3,14 +3,19 @@ package com.example.faircon.framework.presentation.ui.mode
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Air
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,8 +25,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
-import com.example.faircon.SettingPreferences
+import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.business.domain.model.Mode
+import com.example.faircon.business.domain.model.Mode.*
 import com.example.faircon.framework.presentation.navigation.Navigation.*
 import com.example.faircon.framework.presentation.theme.FairconTheme
 import com.example.faircon.framework.presentation.theme.connect
@@ -29,7 +35,7 @@ import com.example.faircon.framework.presentation.theme.darkSurface
 
 @Composable
 fun ModeScreen(
-    theme: SettingPreferences.Theme,
+    theme: Theme,
     scaffoldState: ScaffoldState,
     viewModel: ModeViewModel,
     navController: NavHostController
@@ -55,15 +61,15 @@ fun ModeScreen(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     ModeIcon(
-                        selected = viewModel.currentMode == Mode.OFF,
-                        mode = Mode.OFF,
+                        selected = viewModel.currentMode == OFF,
+                        mode = OFF,
                         imageVector = Icons.Default.PowerSettingsNew,
                         onClick = { viewModel.updateMode(it) },
                         navigate = { }
                     )
                     ModeIcon(
-                        selected = viewModel.currentMode == Mode.COOLING,
-                        mode = Mode.COOLING,
+                        selected = viewModel.currentMode == COOLING,
+                        mode = COOLING,
                         imageVector = Icons.Default.AcUnit,
                         onClick = { viewModel.updateMode(it) },
                         navigate = {
@@ -81,8 +87,8 @@ fun ModeScreen(
                 ) {
 
                     ModeIcon(
-                        selected = viewModel.currentMode == Mode.HEATING,
-                        mode = Mode.HEATING,
+                        selected = viewModel.currentMode == HEATING,
+                        mode = HEATING,
                         imageVector = Icons.Default.LocalFireDepartment,
                         onClick = { viewModel.updateMode(it) },
                         navigate = {
@@ -94,8 +100,8 @@ fun ModeScreen(
                     )
 
                     ModeIcon(
-                        selected = viewModel.currentMode == Mode.FAN,
-                        mode = Mode.FAN,
+                        selected = viewModel.currentMode == FAN,
+                        mode = FAN,
                         imageVector = Icons.Default.Air,
                         onClick = { viewModel.updateMode(it) },
                         navigate = {

@@ -3,8 +3,6 @@ package com.example.faircon.framework.presentation.ui.fan
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -19,11 +17,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.business.domain.model.IndicatorSize
-import com.example.faircon.framework.presentation.components.ShowParameter
 import com.example.faircon.framework.presentation.components.ControllerSlider
 import com.example.faircon.framework.presentation.components.ParameterIndicator
-import com.example.faircon.framework.presentation.navigation.Navigation
-import com.example.faircon.framework.presentation.navigation.Navigation.*
+import com.example.faircon.framework.presentation.navigation.Navigation.FanDetail
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.faircon.framework.di
+package com.example.faircon.di
 
 import com.example.faircon.business.domain.util.Urls
 import com.example.faircon.framework.datasource.network.services.ConnectService
