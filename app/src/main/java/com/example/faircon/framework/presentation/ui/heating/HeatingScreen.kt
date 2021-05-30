@@ -16,13 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences
 import com.example.faircon.business.domain.model.IndicatorSize
 import com.example.faircon.framework.presentation.components.ControllerSlider
 import com.example.faircon.framework.presentation.components.ParameterIndicator
-import com.example.faircon.framework.presentation.navigation.Navigation
-import com.example.faircon.framework.presentation.navigation.Navigation.*
+import com.example.faircon.framework.presentation.navigation.Navigation.HeatingDetail
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable

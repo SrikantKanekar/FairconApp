@@ -16,8 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.popUpTo
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.framework.presentation.components.ConnectButton
 import com.example.faircon.framework.presentation.navigation.Navigation.*
@@ -55,7 +53,7 @@ fun ConnectScreen(
                         Icon(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .padding(10.dp)
+                                .padding(15.dp)
                                 .clickable {
                                     navController.navigate(Settings.route)
                                 },
@@ -67,7 +65,7 @@ fun ConnectScreen(
                         Icon(
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
-                                .padding(10.dp)
+                                .padding(15.dp)
                                 .clickable {
                                     navController.navigate(Mode.route) {
                                         popUpTo(Connect.route) { inclusive = true }

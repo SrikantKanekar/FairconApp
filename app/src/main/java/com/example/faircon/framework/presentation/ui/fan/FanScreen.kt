@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.business.domain.model.IndicatorSize
 import com.example.faircon.framework.presentation.components.ControllerSlider

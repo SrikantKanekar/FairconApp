@@ -12,10 +12,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AcUnit
-import androidx.compose.material.icons.filled.Air
-import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.business.domain.model.Mode
 import com.example.faircon.business.domain.model.Mode.*
@@ -49,68 +45,82 @@ fun ModeScreen(
             snackbarHost = { scaffoldState.snackbarHostState },
         ) {
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 30.dp),
-                verticalArrangement = Arrangement.spacedBy(100.dp, Alignment.CenterVertically)
-            ) {
+            Box(modifier = Modifier.fillMaxSize()) {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    ModeIcon(
-                        selected = viewModel.currentMode == OFF,
-                        mode = OFF,
-                        imageVector = Icons.Default.PowerSettingsNew,
-                        onClick = { viewModel.updateMode(it) },
-                        navigate = { }
-                    )
-                    ModeIcon(
-                        selected = viewModel.currentMode == COOLING,
-                        mode = COOLING,
-                        imageVector = Icons.Default.AcUnit,
-                        onClick = { viewModel.updateMode(it) },
-                        navigate = {
-                            if (viewModel.navigate) {
-                                navController.navigate(Cooling.route)
-                                viewModel.navigate = false
-                            }
-                        }
-                    )
-                }
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(15.dp)
+                        .clickable {
+                            navController.navigate(Diagnostics.route)
+                        },
+                    imageVector = Icons.Default.Insights,
+                    contentDescription = "Diagnostics"
+                )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 30.dp),
+                    verticalArrangement = Arrangement.spacedBy(100.dp, Alignment.CenterVertically)
                 ) {
 
-                    ModeIcon(
-                        selected = viewModel.currentMode == HEATING,
-                        mode = HEATING,
-                        imageVector = Icons.Default.LocalFireDepartment,
-                        onClick = { viewModel.updateMode(it) },
-                        navigate = {
-                            if (viewModel.navigate) {
-                                navController.navigate(Heating.route)
-                                viewModel.navigate = false
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        ModeIcon(
+                            selected = viewModel.currentMode == OFF,
+                            mode = OFF,
+                            imageVector = Icons.Default.PowerSettingsNew,
+                            onClick = { viewModel.updateMode(it) },
+                            navigate = { }
+                        )
+                        ModeIcon(
+                            selected = viewModel.currentMode == COOLING,
+                            mode = COOLING,
+                            imageVector = Icons.Default.AcUnit,
+                            onClick = { viewModel.updateMode(it) },
+                            navigate = {
+                                if (viewModel.navigate) {
+                                    navController.navigate(Cooling.route)
+                                    viewModel.navigate = false
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
 
-                    ModeIcon(
-                        selected = viewModel.currentMode == FAN,
-                        mode = FAN,
-                        imageVector = Icons.Default.Air,
-                        onClick = { viewModel.updateMode(it) },
-                        navigate = {
-                            if (viewModel.navigate) {
-                                navController.navigate(Fan.route)
-                                viewModel.navigate = false
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+
+                        ModeIcon(
+                            selected = viewModel.currentMode == HEATING,
+                            mode = HEATING,
+                            imageVector = Icons.Default.LocalFireDepartment,
+                            onClick = { viewModel.updateMode(it) },
+                            navigate = {
+                                if (viewModel.navigate) {
+                                    navController.navigate(Heating.route)
+                                    viewModel.navigate = false
+                                }
                             }
-                        }
-                    )
+                        )
+
+                        ModeIcon(
+                            selected = viewModel.currentMode == FAN,
+                            mode = FAN,
+                            imageVector = Icons.Default.Air,
+                            onClick = { viewModel.updateMode(it) },
+                            navigate = {
+                                if (viewModel.navigate) {
+                                    navController.navigate(Fan.route)
+                                    viewModel.navigate = false
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }

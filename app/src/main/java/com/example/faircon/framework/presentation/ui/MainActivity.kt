@@ -3,17 +3,20 @@ package com.example.faircon.framework.presentation.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.material.rememberScaffoldState
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.example.faircon.framework.presentation.navigation.Navigation.*
 import com.example.faircon.framework.presentation.ui.connect.ConnectScreen
 import com.example.faircon.framework.presentation.ui.connect.ConnectViewModel
 import com.example.faircon.framework.presentation.ui.cooling.CoolingDetailScreen
 import com.example.faircon.framework.presentation.ui.cooling.CoolingScreen
 import com.example.faircon.framework.presentation.ui.cooling.CoolingViewModel
+import com.example.faircon.framework.presentation.ui.diagnostics.DiagnosticScreen
+import com.example.faircon.framework.presentation.ui.diagnostics.health.HealthScreen
+import com.example.faircon.framework.presentation.ui.diagnostics.performance.PerformanceScreen
 import com.example.faircon.framework.presentation.ui.fan.FanDetailScreen
 import com.example.faircon.framework.presentation.ui.fan.FanScreen
 import com.example.faircon.framework.presentation.ui.fan.FanViewModel
@@ -40,8 +43,8 @@ class MainActivity : BaseActivity() {
                 startDestination = Connect.route
             ) {
 
-                composable(route = Connect.route) { backStackEntry ->
-                    val connectViewModel = hiltNavGraphViewModel<ConnectViewModel>(backStackEntry)
+                composable(route = Connect.route) {
+                    val connectViewModel = hiltViewModel<ConnectViewModel>()
                     ConnectScreen(
                         theme = appTheme.value,
                         scaffoldState = scaffoldState,
@@ -50,8 +53,8 @@ class MainActivity : BaseActivity() {
                     )
                 }
 
-                composable(route = Mode.route) { backStackEntry ->
-                    val modeViewModel = hiltNavGraphViewModel<ModeViewModel>(backStackEntry)
+                composable(route = Mode.route) {
+                    val modeViewModel = hiltViewModel<ModeViewModel>()
                     ModeScreen(
                         theme = appTheme.value,
                         scaffoldState = scaffoldState,
@@ -65,8 +68,9 @@ class MainActivity : BaseActivity() {
                     route = "CoolingRoute"
                 ) {
                     composable(route = Cooling.route) {
-                        val coolingViewModel =
-                            navController.hiltNavGraphViewModel<CoolingViewModel>("CoolingRoute")
+                        val coolingViewModel = hiltViewModel<CoolingViewModel>(
+                            navController.getBackStackEntry("CoolingRoute")
+                        )
                         CoolingScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -77,8 +81,9 @@ class MainActivity : BaseActivity() {
                     }
 
                     composable(route = CoolingDetail.route) {
-                        val coolingViewModel =
-                            navController.hiltNavGraphViewModel<CoolingViewModel>("CoolingRoute")
+                        val coolingViewModel = hiltViewModel<CoolingViewModel>(
+                            navController.getBackStackEntry("CoolingRoute")
+                        )
                         CoolingDetailScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -93,8 +98,9 @@ class MainActivity : BaseActivity() {
                     route = "HeatingRoute"
                 ) {
                     composable(route = Heating.route) {
-                        val heatingViewModel =
-                            navController.hiltNavGraphViewModel<HeatingViewModel>("HeatingRoute")
+                        val heatingViewModel = hiltViewModel<HeatingViewModel>(
+                            navController.getBackStackEntry("HeatingRoute")
+                        )
                         HeatingScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -104,8 +110,9 @@ class MainActivity : BaseActivity() {
                         )
                     }
                     composable(route = HeatingDetail.route) {
-                        val heatingViewModel =
-                            navController.hiltNavGraphViewModel<HeatingViewModel>("HeatingRoute")
+                        val heatingViewModel = hiltViewModel<HeatingViewModel>(
+                            navController.getBackStackEntry("HeatingRoute")
+                        )
                         HeatingDetailScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -120,8 +127,9 @@ class MainActivity : BaseActivity() {
                     route = "FanRoute"
                 ) {
                     composable(route = Fan.route) {
-                        val fanViewModel =
-                            navController.hiltNavGraphViewModel<FanViewModel>("FanRoute")
+                        val fanViewModel = hiltViewModel<FanViewModel>(
+                            navController.getBackStackEntry("FanRoute")
+                        )
                         FanScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -132,8 +140,9 @@ class MainActivity : BaseActivity() {
                     }
 
                     composable(route = FanDetail.route) {
-                        val fanViewModel =
-                            navController.hiltNavGraphViewModel<FanViewModel>("FanRoute")
+                        val fanViewModel = hiltViewModel<FanViewModel>(
+                            navController.getBackStackEntry("FanRoute")
+                        )
                         FanDetailScreen(
                             theme = appTheme.value,
                             isWifiAvailable = faircon.isAvailable.value == true,
@@ -148,6 +157,31 @@ class MainActivity : BaseActivity() {
                         theme = appTheme.value,
                         isWiFiAvailable = faircon.isAvailable.value == true,
                         scaffoldState = scaffoldState,
+                    )
+                }
+
+                composable(route = Diagnostics.route) {
+                    DiagnosticScreen(
+                        theme = appTheme.value,
+                        isWifiAvailable = faircon.isAvailable.value == true,
+                        scaffoldState = scaffoldState,
+                        navController = navController
+                    )
+                }
+
+                composable(route = Health.route) {
+                    HealthScreen(
+                        theme = appTheme.value,
+                        isWifiAvailable = faircon.isAvailable.value == true,
+                        scaffoldState = scaffoldState
+                    )
+                }
+
+                composable(route = Performance.route) {
+                    PerformanceScreen(
+                        theme = appTheme.value,
+                        isWifiAvailable = faircon.isAvailable.value == true,
+                        scaffoldState = scaffoldState
                     )
                 }
             }

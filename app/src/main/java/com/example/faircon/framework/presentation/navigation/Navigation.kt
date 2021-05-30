@@ -17,4 +17,8 @@ sealed class Navigation(
     object FanDetail: Navigation("FanDetail")
 
     object Settings: Navigation("Settings")
+
+    object Diagnostics: Navigation("Diagnostics")
+    object Health: Navigation("Health")
+    object Performance: Navigation("Performance")
 }

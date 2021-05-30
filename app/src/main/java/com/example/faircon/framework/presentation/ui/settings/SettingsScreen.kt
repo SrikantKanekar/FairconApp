@@ -7,7 +7,6 @@ import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -15,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.SettingPreferences.Theme.DARK
 import com.example.faircon.SettingPreferences.Theme.LIGHT
@@ -32,12 +31,10 @@ fun SettingsScreen(
 
     FairconTheme(
         theme = theme,
-        scaffoldState = scaffoldState,
-        stateMessage = null,
-        removeStateMessage = { }
+        scaffoldState = scaffoldState
     ) {
 
-        val settingsViewModel = hiltNavGraphViewModel<SettingsViewModel>()
+        val settingsViewModel = hiltViewModel<SettingsViewModel>()
         val settings = settingsViewModel.settingFlow.collectAsState(initial = Setting())
 
         Scaffold(
