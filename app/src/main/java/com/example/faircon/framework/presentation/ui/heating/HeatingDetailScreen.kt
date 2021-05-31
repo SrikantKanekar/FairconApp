@@ -20,7 +20,6 @@ import com.example.faircon.framework.presentation.theme.FairconTheme
 @Composable
 fun HeatingDetailScreen(
     theme: Theme,
-    isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     viewModel: HeatingViewModel
 ) {

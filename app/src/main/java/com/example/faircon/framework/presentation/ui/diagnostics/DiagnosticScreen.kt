@@ -16,7 +16,6 @@ import com.example.faircon.framework.presentation.theme.FairconTheme
 @Composable
 fun DiagnosticScreen(
     theme: SettingPreferences.Theme,
-    isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     navController: NavHostController
 ) {

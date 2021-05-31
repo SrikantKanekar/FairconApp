@@ -11,12 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.example.faircon.SettingPreferences
 import com.example.faircon.framework.presentation.theme.FairconTheme
-import com.example.faircon.framework.presentation.ui.settings.SettingsViewModel
 
 @Composable
 fun HealthScreen(
     theme: SettingPreferences.Theme,
-    isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
     FairconTheme(

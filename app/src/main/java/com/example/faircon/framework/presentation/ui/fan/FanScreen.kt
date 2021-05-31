@@ -24,7 +24,6 @@ import com.example.faircon.framework.presentation.theme.FairconTheme
 @Composable
 fun FanScreen(
     theme: Theme,
-    isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     viewModel: FanViewModel,
     navController: NavHostController

@@ -25,7 +25,6 @@ import com.example.faircon.framework.presentation.theme.FairconTheme
 @Composable
 fun SettingsScreen(
     theme: Theme,
-    isWiFiAvailable: Boolean,
     scaffoldState: ScaffoldState
 ) {
 

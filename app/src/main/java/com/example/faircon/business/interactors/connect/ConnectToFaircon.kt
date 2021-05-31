@@ -5,7 +5,6 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import com.example.faircon.business.domain.state.*
 import com.example.faircon.framework.presentation.ui.BaseApplication
-import com.example.faircon.framework.presentation.ui.connect.state.ConnectViewState
 import kotlinx.coroutines.flow.flow
 
 class ConnectToFaircon(
@@ -13,7 +12,7 @@ class ConnectToFaircon(
 ) {
     fun execute(
         stateEvent: StateEvent
-    ) = flow {
+    ) = flow<Nothing> {
 
         val wifiConfiguration = WifiConfiguration()
         wifiConfiguration.apply {
@@ -28,16 +27,5 @@ class ConnectToFaircon(
             enableNetwork(netId, true)
             reconnect()
         }
-        emit(
-            DataState.data(
-                data = ConnectViewState(connecting = true),
-                response = Response(
-                    message = "Connecting to Faircon",
-                    uiType = UiType.None,
-                    messageType = MessageType.Info
-                ),
-                stateEvent = stateEvent
-            )
-        )
     }
 }

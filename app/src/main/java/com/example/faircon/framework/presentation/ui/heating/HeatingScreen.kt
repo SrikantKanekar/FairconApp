@@ -26,7 +26,6 @@ import com.example.faircon.framework.presentation.theme.FairconTheme
 @Composable
 fun HeatingScreen(
     theme: SettingPreferences.Theme,
-    isWifiAvailable: Boolean,
     scaffoldState: ScaffoldState,
     viewModel: HeatingViewModel,
     navController: NavHostController
