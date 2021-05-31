@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import com.example.faircon.SettingPreferences.Theme
-import com.example.faircon.framework.datasource.connectivity.FairconConnectivityManager
+import com.example.faircon.framework.datasource.connectivity.FairconConnection
 import com.example.faircon.framework.datasource.dataStore.SettingDataStore
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var faircon: FairconConnectivityManager
+    lateinit var faircon: FairconConnection
 
     @Inject
     lateinit var settingDataStore: SettingDataStore
@@ -21,17 +21,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        faircon.registerWifiObserver(this)
-
         lifecycleScope.launchWhenStarted {
             settingDataStore.settingFlow.collect { setting ->
                 appTheme.value = setting.theme
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        faircon.unregisterWifiObserver(this)
     }
 }

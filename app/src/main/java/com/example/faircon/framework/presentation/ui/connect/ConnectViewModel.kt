@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.faircon.business.domain.state.DataState
 import com.example.faircon.business.domain.state.StateEvent
 import com.example.faircon.business.interactors.connect.ConnectInteractors
-import com.example.faircon.framework.datasource.connectivity.FairconConnectivityManager
+import com.example.faircon.framework.datasource.connectivity.FairconConnection
 import com.example.faircon.framework.presentation.ui.BaseViewModel
 import com.example.faircon.framework.presentation.ui.connect.ConnectViewModel.ConnectionState.*
 import com.example.faircon.framework.presentation.ui.connect.state.ConnectStateEvent.ConnectToFairconEvent
@@ -16,8 +16,7 @@ import com.example.faircon.framework.presentation.ui.connect.state.ConnectViewSt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
@@ -27,7 +26,7 @@ class ConnectViewModel
 @Inject
 constructor(
     private val connectInteractors: ConnectInteractors,
-    private val fairconConnectivity: FairconConnectivityManager
+    private val fairconConnection: FairconConnection
 ) : BaseViewModel<ConnectViewState>() {
 
     var initialCheck by mutableStateOf(false)
@@ -36,14 +35,14 @@ constructor(
 
     init {
         viewModelScope.launch {
-            fairconConnectivity.isAvailable.collect { connected ->
-                connected?.let {
-                    connectionState = when(connected) {
+            fairconConnection.available.collect { connection ->
+                connection?.let {
+                    connectionState = when(connection) {
                         true -> CONNECTED
                         false -> CONNECT
                     }
                     if (!initialCheck){
-                        navigateToModeScreen = connected
+                        navigateToModeScreen = connection
                         initialCheck = true
                     }
                 }

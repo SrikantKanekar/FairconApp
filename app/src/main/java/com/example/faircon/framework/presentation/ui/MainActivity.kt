@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
                         )
                         CoolingScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = coolingViewModel,
                             navController = navController
@@ -86,7 +86,7 @@ class MainActivity : BaseActivity() {
                         )
                         CoolingDetailScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = coolingViewModel
                         )
@@ -103,7 +103,7 @@ class MainActivity : BaseActivity() {
                         )
                         HeatingScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = heatingViewModel,
                             navController = navController
@@ -115,7 +115,7 @@ class MainActivity : BaseActivity() {
                         )
                         HeatingDetailScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = heatingViewModel
                         )
@@ -132,7 +132,7 @@ class MainActivity : BaseActivity() {
                         )
                         FanScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = fanViewModel,
                             navController = navController
@@ -145,7 +145,7 @@ class MainActivity : BaseActivity() {
                         )
                         FanDetailScreen(
                             theme = appTheme.value,
-                            isWifiAvailable = faircon.isAvailable.value == true,
+                            isWifiAvailable = faircon.available.value == true,
                             scaffoldState = scaffoldState,
                             viewModel = fanViewModel
                         )
@@ -155,7 +155,7 @@ class MainActivity : BaseActivity() {
                 composable(route = Settings.route) {
                     SettingsScreen(
                         theme = appTheme.value,
-                        isWiFiAvailable = faircon.isAvailable.value == true,
+                        isWiFiAvailable = faircon.available.value == true,
                         scaffoldState = scaffoldState,
                     )
                 }
@@ -163,7 +163,7 @@ class MainActivity : BaseActivity() {
                 composable(route = Diagnostics.route) {
                     DiagnosticScreen(
                         theme = appTheme.value,
-                        isWifiAvailable = faircon.isAvailable.value == true,
+                        isWifiAvailable = faircon.available.value == true,
                         scaffoldState = scaffoldState,
                         navController = navController
                     )
@@ -172,7 +172,7 @@ class MainActivity : BaseActivity() {
                 composable(route = Health.route) {
                     HealthScreen(
                         theme = appTheme.value,
-                        isWifiAvailable = faircon.isAvailable.value == true,
+                        isWifiAvailable = faircon.available.value == true,
                         scaffoldState = scaffoldState
                     )
                 }
@@ -180,7 +180,7 @@ class MainActivity : BaseActivity() {
                 composable(route = Performance.route) {
                     PerformanceScreen(
                         theme = appTheme.value,
-                        isWifiAvailable = faircon.isAvailable.value == true,
+                        isWifiAvailable = faircon.available.value == true,
                         scaffoldState = scaffoldState
                     )
                 }
