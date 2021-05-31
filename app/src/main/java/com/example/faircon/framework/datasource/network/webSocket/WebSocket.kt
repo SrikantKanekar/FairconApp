@@ -43,6 +43,7 @@ constructor(
     private fun handleSocketUpdate(update: WebSocketEvent) {
         update.isConnected?.let { boolean ->
             _isOpen.value = boolean
+            printLogD("WebSocket", "isOpen : $boolean")
         }
         update.message?.let { message ->
             val fairconResponse = Gson().fromJson(message, FairconResponse::class.java)

@@ -1,6 +1,6 @@
 package com.example.faircon.framework.datasource.network.webSocket
 
-import android.util.Log
+import com.example.faircon.business.domain.util.printLogD
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
@@ -49,7 +49,7 @@ constructor(
             _webSocket?.close(1000, null)
             _webSocket = null
         } catch (e: Exception) {
-            Log.d("APP_DEBUG", "closeSocket exception: $e")
+            printLogD("WebSocketService", "closeSocket exception: $e")
         }
     }
 }
