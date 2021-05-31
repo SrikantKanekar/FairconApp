@@ -1,3 +1,3 @@
-package com.example.spotifyclone.business.domain.state
+package com.example.faircon.business.domain.state
 
 interface ViewState
