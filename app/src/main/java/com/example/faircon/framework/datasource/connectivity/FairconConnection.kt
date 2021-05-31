@@ -38,7 +38,6 @@ constructor(
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
-
     private fun createNetworkCallback() = object : ConnectivityManager.NetworkCallback() {
 
         override fun onAvailable(network: Network) {
