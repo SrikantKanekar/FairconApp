@@ -2,6 +2,7 @@ package com.example.faircon.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,7 +44,12 @@ class MainActivity : BaseActivity() {
 
             FairconTheme(
                 theme = appTheme,
-                fairconConnection = if (currentRoute == Connect.route || currentRoute == Settings.route) true else webSocket.isOpen.value
+                fairconConnection = if (
+                    currentRoute == Connect.route ||
+                    currentRoute == Settings.route ||
+                    currentRoute == null
+                ) true
+                else webSocket.isOpen
             ) {
                 Scaffold {
 

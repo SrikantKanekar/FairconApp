@@ -16,7 +16,10 @@ constructor(
     private val webSocket: WebSocket
 ) : ViewModel() {
 
-    var currentMode by mutableStateOf(Mode.OFF)
+    var currentMode by mutableStateOf(webSocket.faircon.value.mode)
+    /**
+     * flag to allow mode buttons to navigate to their destination
+     */
     var navigate by mutableStateOf(false)
 
     fun updateMode(mode: Mode) {

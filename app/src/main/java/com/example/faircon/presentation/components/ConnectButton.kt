@@ -23,13 +23,13 @@ import com.example.faircon.presentation.theme.connect
 import com.example.faircon.presentation.theme.connected
 import com.example.faircon.presentation.theme.connecting
 import com.example.faircon.presentation.theme.retry
-import com.example.faircon.presentation.ui.connect.ConnectViewModel
+import com.example.faircon.presentation.ui.connect.ConnectViewModel.*
 import com.example.faircon.presentation.ui.connect.ConnectViewModel.ConnectionState.*
 
 @Composable
 fun ConnectButton(
     modifier: Modifier = Modifier,
-    connectionState: ConnectViewModel.ConnectionState,
+    connectionState: ConnectionState,
     onClick: () -> Unit,
     navigate: () -> Unit
 ) {

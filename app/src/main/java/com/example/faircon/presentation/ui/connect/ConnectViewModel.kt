@@ -27,18 +27,29 @@ constructor(
     private val application: BaseApplication
 ) : ViewModel() {
 
+    /**
+     * Waits for [fairconConnection] class to emit first non null value to determine weather the app is already connected to the Faircon sever.
+     */
     var initialCheck by mutableStateOf(false)
+
+    /**
+     * navigate to mode screen if the app is already connected to Faircon Server
+     */
     var navigateToModeScreen by mutableStateOf(false)
+
     var connectionState by mutableStateOf(CONNECT)
 
     init {
         viewModelScope.launch {
             fairconConnection.available.collect { connection ->
                 connection?.let {
+
                     connectionState = when (connection) {
                         true -> CONNECTED
                         false -> CONNECT
                     }
+
+                    // Executed only once, if connection is true -> navigated to mode screen
                     if (!initialCheck) {
                         navigateToModeScreen = connection
                         initialCheck = true

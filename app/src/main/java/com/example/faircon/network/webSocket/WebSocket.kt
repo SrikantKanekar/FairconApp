@@ -1,5 +1,8 @@
 package com.example.faircon.network.webSocket
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.faircon.model.Faircon
 import com.example.faircon.model.Mode
 import com.example.faircon.model.WebSocketEvent
@@ -17,6 +20,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * * A websocket connection between Faircon server and the app.
+ * * Once initialized, it will contentiously try to connect to the server.
+ * * After the connection is established, it will expose a [faircon] flow which will update in very short intervals.
+ * * If the websocket is disconnected, it will automatically try to reconnect.
+ */
 @Singleton
 class WebSocket
 @Inject
@@ -28,8 +37,7 @@ constructor(
     private val _faircon = MutableStateFlow(Faircon())
     val faircon: StateFlow<Faircon> = _faircon
 
-    private val _isOpen = MutableStateFlow(false)
-    val isOpen: StateFlow<Boolean> = _isOpen
+    var isOpen by mutableStateOf(false)
 
     init {
         webSocketService.startSocket()
@@ -41,16 +49,19 @@ constructor(
     }
 
     private fun handleSocketUpdate(update: WebSocketEvent) {
-        update.isConnected?.let { boolean ->
-            _isOpen.value = boolean
+        update.isOpen?.let { boolean ->
+            isOpen = boolean
             printLogD("WebSocket", "isOpen : $boolean")
+            if (!boolean) clearFaircon()
         }
+
         update.message?.let { message ->
             val fairconResponse = Gson().fromJson(message, FairconResponse::class.java)
             val faircon = fairconMapper.mapToDomainModel(fairconResponse)
             _faircon.value = faircon
             printLogD("WebSocket", "Raw : $message")
         }
+
         update.exception?.let { exception ->
             printLogD("WebSocket", "handleSocketUpdate exception : ${exception.message}")
             webSocketService.reconnectSocket()
@@ -82,6 +93,13 @@ constructor(
     }
 
     private fun sendMessage(message: String) = webSocketService.sendMessage(message)
+
+    private fun clearFaircon(){
+        if (_faircon.value != Faircon()){
+            _faircon.value = Faircon()
+            printLogD("WebSocket", "clearFaircon : cleared")
+        }
+    }
 
     //fun closeSocket() = webSocketService.closeSocket()
 }

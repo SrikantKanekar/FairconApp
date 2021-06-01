@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Make sure to execute this on a background thread.
+ * * Make sure to execute this on a background thread.
  */
 @Singleton
 class PingFaircon

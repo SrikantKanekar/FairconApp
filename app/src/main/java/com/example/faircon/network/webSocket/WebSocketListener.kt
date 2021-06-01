@@ -18,7 +18,7 @@ class WebSocketListener : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         printLogD("WebSocketListener", "onOpen: called")
-        emit(WebSocketEvent(isConnected = true))
+        emit(WebSocketEvent(isOpen = true))
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
@@ -28,20 +28,20 @@ class WebSocketListener : WebSocketListener() {
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
         printLogD("WebSocketListener", "onClosing: called")
-        emit(WebSocketEvent(isConnected = false))
+        emit(WebSocketEvent(isOpen = false))
         webSocket.close(1000, null)
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         printLogD("WebSocketListener", "onClosed: called")
-        emit(WebSocketEvent(isConnected = false))
+        emit(WebSocketEvent(isOpen = false))
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         printLogD("WebSocketListener", "onFailure: called")
         emit(
             WebSocketEvent(
-                isConnected = false,
+                isOpen = false,
                 exception = t
             )
         )

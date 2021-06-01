@@ -14,6 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * * Monitors the connection of the app to the faircon server.
+ * * It pings the faircon server everytime there are changes in wifi connections.
+ */
 @Singleton
 class FairconConnection
 @Inject

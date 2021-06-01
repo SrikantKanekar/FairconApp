@@ -1,6 +1,8 @@
 package com.example.faircon.presentation.theme
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +46,7 @@ private val DarkColorPalette = darkColors(
     onError = Color.Black
 )
 
+@ExperimentalAnimationApi
 @Composable
 fun FairconTheme(
     theme: Theme,
@@ -58,13 +61,10 @@ fun FairconTheme(
         typography = typography,
         shapes = shapes
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column {
-                FairconConnection(fairconConnection = fairconConnection)
-                content()
-            }
+
+        Column {
+            FairconConnection(fairconConnection = fairconConnection)
+            content()
         }
     }
 }
