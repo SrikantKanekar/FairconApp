@@ -1,8 +1,6 @@
 package com.example.faircon.framework.presentation.ui.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -20,44 +18,28 @@ import com.example.faircon.SettingPreferences.Theme.DARK
 import com.example.faircon.SettingPreferences.Theme.LIGHT
 import com.example.faircon.business.domain.model.Setting
 import com.example.faircon.framework.presentation.components.MyIcon
-import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
-fun SettingsScreen(
-    theme: Theme,
-    scaffoldState: ScaffoldState
-) {
+fun SettingsScreen() {
 
-    FairconTheme(
-        theme = theme,
-        scaffoldState = scaffoldState
+    val settingsViewModel = hiltViewModel<SettingsViewModel>()
+    val settings = settingsViewModel.settingFlow.collectAsState(initial = Setting())
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+            .padding(top = 25.dp)
     ) {
 
-        val settingsViewModel = hiltViewModel<SettingsViewModel>()
-        val settings = settingsViewModel.settingFlow.collectAsState(initial = Setting())
-
-        Scaffold(
-            scaffoldState = scaffoldState,
-            snackbarHost = { scaffoldState.snackbarHostState },
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-                    .padding(top = 25.dp)
-            ) {
-
-                SwitchSetting(
-                    imageVector = Icons.Default.ColorLens,
-                    theme = settings.value.theme,
-                    value = if (settings.value.theme == DARK) "Dark" else "Light",
-                    onCheckedChange = { theme ->
-                        settingsViewModel.setTheme(theme)
-                    }
-                )
+        SwitchSetting(
+            imageVector = Icons.Default.ColorLens,
+            theme = settings.value.theme,
+            value = if (settings.value.theme == DARK) "Dark" else "Light",
+            onCheckedChange = { theme ->
+                settingsViewModel.setTheme(theme)
             }
-        }
+        )
     }
 }
 

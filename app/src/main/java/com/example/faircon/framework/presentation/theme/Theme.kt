@@ -4,18 +4,16 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.SettingPreferences.Theme.DARK
-import com.example.faircon.business.domain.state.StateMessage
-import com.example.faircon.framework.presentation.components.MyCircularProgressIndicator
 import com.example.faircon.framework.presentation.components.WiFiMonitor
 import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
-import com.example.faircon.framework.presentation.components.stateMessageHandler.HandleMessageUiType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 
@@ -54,11 +52,7 @@ val snackbarController = SnackbarController(CoroutineScope(Main))
 @Composable
 fun FairconTheme(
     theme: Theme,
-    isWifiAvailable: Boolean = true,
-    displayProgressBar: Boolean = false,
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    stateMessage: StateMessage? = null,
-    removeStateMessage: () -> Unit = {},
+    fairconConnection: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val colour = if (theme == DARK) DarkColorPalette else LightColorPalette
@@ -71,22 +65,10 @@ fun FairconTheme(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-
             Column {
-                WiFiMonitor(isWiFiAvailable = isWifiAvailable)
+                WiFiMonitor(isWiFiAvailable = fairconConnection)
                 content()
             }
-
-            MyCircularProgressIndicator(
-                isDisplayed = displayProgressBar,
-                modifier = Modifier.align(Alignment.Center)
-            )
-
-            HandleMessageUiType(
-                stateMessage = stateMessage,
-                scaffoldState = scaffoldState,
-                removeStateMessage = removeStateMessage
-            )
         }
     }
 }

@@ -9,32 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.faircon.SettingPreferences
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
-fun HealthScreen(
-    theme: SettingPreferences.Theme,
-    scaffoldState: ScaffoldState
-) {
-    FairconTheme(
-        theme = theme,
-        scaffoldState = scaffoldState
-    ) {
+fun HealthScreen() {
 
-        val healthViewModel = hiltNavGraphViewModel<HealthViewModel>()
+    val healthViewModel = hiltViewModel<HealthViewModel>()
 
-        Scaffold(
-            scaffoldState = scaffoldState,
-            snackbarHost = { scaffoldState.snackbarHostState },
-        ) {
-
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "Health"
-                )
-            }
-        }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "Health"
+        )
     }
 }

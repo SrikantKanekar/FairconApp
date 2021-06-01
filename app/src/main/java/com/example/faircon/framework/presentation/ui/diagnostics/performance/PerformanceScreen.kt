@@ -9,33 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.faircon.SettingPreferences
 import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
-fun PerformanceScreen(
-    theme: SettingPreferences.Theme,
-    scaffoldState: ScaffoldState
-) {
+fun PerformanceScreen() {
 
-    FairconTheme(
-        theme = theme,
-        scaffoldState = scaffoldState
-    ) {
+    val performanceViewModel = hiltViewModel<PerformanceViewModel>()
 
-        val performanceViewModel = hiltNavGraphViewModel<PerformanceViewModel>()
-
-        Scaffold(
-            scaffoldState = scaffoldState,
-            snackbarHost = { scaffoldState.snackbarHostState },
-        ) {
-
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "Performance"
-                )
-            }
-        }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "Performance"
+        )
     }
 }

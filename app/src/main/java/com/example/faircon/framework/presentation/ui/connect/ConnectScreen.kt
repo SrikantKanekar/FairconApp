@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SkipNext
@@ -15,78 +13,48 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.framework.presentation.components.ConnectButton
-import com.example.faircon.framework.presentation.navigation.Navigation.*
-import com.example.faircon.framework.presentation.theme.FairconTheme
 
 @Composable
 fun ConnectScreen(
-    theme: Theme,
-    scaffoldState: ScaffoldState,
     viewModel: ConnectViewModel,
-    navController: NavHostController
+    navigateToMode: () -> Unit,
+    navigateToSettings: () -> Unit
 ) {
 
-    FairconTheme(
-        theme = theme
-    ) {
+    if (viewModel.initialCheck) {
 
-        if (viewModel.initialCheck) {
+        if (viewModel.navigateToModeScreen) {
+            LaunchedEffect(Unit) { navigateToMode() }
+        } else {
 
-            if (viewModel.navigateToModeScreen) {
-                LaunchedEffect(Unit) {
-                    navController.navigate(Mode.route) {
-                        popUpTo(Connect.route) { inclusive = true }
-                    }
-                }
-            } else {
+            Box(modifier = Modifier.fillMaxSize()) {
 
-                Scaffold(
-                    scaffoldState = scaffoldState,
-                    snackbarHost = { scaffoldState.snackbarHostState },
-                ) {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(15.dp)
+                        .clickable { navigateToSettings() },
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings"
+                )
 
-                    Box(modifier = Modifier.fillMaxSize()) {
+                //To be removed
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(15.dp)
+                        .clickable { navigateToMode() },
+                    imageVector = Icons.Default.SkipNext,
+                    contentDescription = "Next"
+                )
 
-                        Icon(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(15.dp)
-                                .clickable {
-                                    navController.navigate(Settings.route)
-                                },
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings"
-                        )
-
-                        //To be removed
-                        Icon(
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(15.dp)
-                                .clickable {
-                                    navController.navigate(Mode.route) {
-                                        popUpTo(Connect.route) { inclusive = true }
-                                    }
-                                },
-                            imageVector = Icons.Default.SkipNext,
-                            contentDescription = "Next"
-                        )
-
-                        ConnectButton(
-                            modifier = Modifier.align(Alignment.Center),
-                            connectionState = viewModel.connectionState,
-                            onClick = { viewModel.connect() },
-                            navigate = {
-                                navController.navigate(Mode.route) {
-                                    popUpTo(Connect.route) { inclusive = true }
-                                }
-                            }
-                        )
-                    }
-                }
+                ConnectButton(
+                    modifier = Modifier.align(Alignment.Center),
+                    connectionState = viewModel.connectionState,
+                    onClick = { viewModel.connect() },
+                    navigate = { navigateToMode() }
+                )
             }
         }
     }
