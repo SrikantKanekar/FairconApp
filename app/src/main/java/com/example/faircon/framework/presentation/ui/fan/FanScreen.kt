@@ -11,12 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.faircon.business.domain.model.IndicatorSize
 import com.example.faircon.framework.datasource.network.webSocket.WebSocket
-import com.example.faircon.framework.presentation.components.ControllerSlider
-import com.example.faircon.framework.presentation.components.ParameterIndicator
-import com.example.faircon.framework.presentation.navigation.Navigation.FanDetail
+import com.example.faircon.framework.presentation.components.SlideController
+import com.example.faircon.framework.presentation.components.Indicator
 
 @Composable
 fun FanScreen(
@@ -49,7 +47,7 @@ fun FanScreen(
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ParameterIndicator(
+                    Indicator(
                         name = "Speed",
                         unit = "Rpm",
                         value = faircon.parameter.fanSpeed.toFloat(),
@@ -64,7 +62,7 @@ fun FanScreen(
                         .padding(top = 20.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ParameterIndicator(
+                    Indicator(
                         modifier = Modifier.padding(bottom = 6.dp),
                         name = "Power",
                         unit = "Kwh",
@@ -73,7 +71,7 @@ fun FanScreen(
                         size = IndicatorSize.SMALL
                     )
 
-                    ParameterIndicator(
+                    Indicator(
                         name = "Room",
                         unit = "℃",
                         value = faircon.parameter.roomTemperature,
@@ -81,7 +79,7 @@ fun FanScreen(
                         size = IndicatorSize.SMALL
                     )
 
-                    ParameterIndicator(
+                    Indicator(
                         name = "Tec",
                         unit = "℃",
                         value = faircon.parameter.tecTemperature,
@@ -102,7 +100,7 @@ fun FanScreen(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                ControllerSlider(
+                SlideController(
                     name = "Fan Speed",
                     unit = "Rpm",
                     newValue = faircon.controller.fanSpeed.toFloat(),

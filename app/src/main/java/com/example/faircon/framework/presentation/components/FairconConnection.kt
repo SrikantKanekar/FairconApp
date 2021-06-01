@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun WiFiMonitor(
-    isWiFiAvailable: Boolean,
+fun FairconConnection(
+    fairconConnection: Boolean,
 ){
-    if(!isWiFiAvailable){
+    if(!fairconConnection){
         Column(
             modifier = Modifier
                 .fillMaxWidth()

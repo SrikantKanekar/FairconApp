@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.SettingPreferences.Theme.DARK
-import com.example.faircon.framework.presentation.components.WiFiMonitor
-import com.example.faircon.framework.presentation.components.snackbar.SnackbarController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
+import com.example.faircon.framework.presentation.components.FairconConnection
 
 @SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColors(
@@ -47,14 +44,13 @@ private val DarkColorPalette = darkColors(
     onError = Color.Black
 )
 
-val snackbarController = SnackbarController(CoroutineScope(Main))
-
 @Composable
 fun FairconTheme(
     theme: Theme,
     fairconConnection: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+
     val colour = if (theme == DARK) DarkColorPalette else LightColorPalette
 
     MaterialTheme(
@@ -66,7 +62,7 @@ fun FairconTheme(
             modifier = Modifier.fillMaxSize()
         ) {
             Column {
-                WiFiMonitor(isWiFiAvailable = fairconConnection)
+                FairconConnection(fairconConnection = fairconConnection)
                 content()
             }
         }

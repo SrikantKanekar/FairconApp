@@ -1,12 +1,17 @@
 package com.example.faircon.framework.presentation.components
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,51 +27,7 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Composable
-fun ControllerSlider(
-    name: String,
-    unit: String,
-    newValue: Float,
-    valueRange: ClosedFloatingPointRange<Float>,
-    onValueChangeFinished: (Float) -> Unit,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-
-        var currentValue by remember { mutableStateOf(valueRange.start) }
-
-        LaunchedEffect(newValue) {
-            currentValue = newValue
-        }
-
-        val textValue = when(unit){
-            "℃" -> currentValue.roundToHalf()
-            "V" -> currentValue.roundToOne()
-            else -> currentValue.roundToInt()
-        }
-        Text(
-            text = "$name : $textValue $unit",
-            fontSize = 14.sp,
-            style = MaterialTheme.typography.overline
-        )
-
-
-        Slider(
-            value = currentValue,
-            onValueChange = { value ->
-                currentValue = value
-            },
-            valueRange = valueRange,
-            onValueChangeFinished = { onValueChangeFinished(currentValue) }
-        )
-    }
-}
-
-fun Float.roundToHalf() = (this * 2).roundToInt().toFloat() / 2
-fun Float.roundToOne() = (this * 10).roundToInt().toFloat() / 10
-
-@Composable
-fun ParameterIndicator(
+fun Indicator(
     modifier: Modifier = Modifier,
     name: String,
     unit: String,
@@ -162,3 +123,6 @@ fun ParameterIndicator(
         }
     }
 }
+
+fun Float.roundToHalf() = (this * 2).roundToInt().toFloat() / 2
+fun Float.roundToOne() = (this * 10).roundToInt().toFloat() / 10

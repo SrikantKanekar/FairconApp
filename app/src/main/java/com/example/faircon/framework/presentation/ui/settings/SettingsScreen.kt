@@ -1,6 +1,7 @@
 package com.example.faircon.framework.presentation.ui.settings
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -17,7 +18,6 @@ import com.example.faircon.SettingPreferences.Theme
 import com.example.faircon.SettingPreferences.Theme.DARK
 import com.example.faircon.SettingPreferences.Theme.LIGHT
 import com.example.faircon.business.domain.model.Setting
-import com.example.faircon.framework.presentation.components.MyIcon
 
 @Composable
 fun SettingsScreen() {
@@ -60,9 +60,10 @@ fun SwitchSetting(
     ) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            MyIcon(
-                modifier = Modifier.padding(5.dp),
-                imageVector = imageVector
+            Icon(
+                modifier = modifier.requiredSize(20.dp),
+                imageVector = imageVector,
+                contentDescription = null
             )
 
             Column(

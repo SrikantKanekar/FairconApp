@@ -13,12 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.faircon.business.domain.model.IndicatorSize.*
 import com.example.faircon.framework.datasource.network.webSocket.WebSocket
-import com.example.faircon.framework.presentation.components.ControllerSlider
-import com.example.faircon.framework.presentation.components.ParameterIndicator
-import com.example.faircon.framework.presentation.navigation.Navigation.CoolingDetail
+import com.example.faircon.framework.presentation.components.SlideController
+import com.example.faircon.framework.presentation.components.Indicator
 
 @Composable
 fun CoolingScreen(
@@ -52,14 +50,14 @@ fun CoolingScreen(
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ParameterIndicator(
+                    Indicator(
                         name = "Room",
                         unit = "℃",
                         value = faircon.parameter.roomTemperature,
                         valueRange = 15F..25F,
                         size = LARGE
                     )
-                    ParameterIndicator(
+                    Indicator(
                         modifier = Modifier.padding(bottom = 6.dp),
                         name = "Power",
                         unit = "Kwh",
@@ -75,28 +73,28 @@ fun CoolingScreen(
                         .padding(top = 20.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ParameterIndicator(
+                    Indicator(
                         name = "Speed",
                         unit = "Rpm",
                         value = faircon.parameter.fanSpeed.toFloat(),
                         valueRange = 300F..400F,
                         size = SMALL
                     )
-                    ParameterIndicator(
+                    Indicator(
                         name = "Tec",
                         unit = "℃",
                         value = faircon.parameter.tecTemperature,
                         valueRange = 25F..120F,
                         size = SMALL
                     )
-                    ParameterIndicator(
+                    Indicator(
                         name = "Heat",
                         unit = "W",
                         value = faircon.parameter.heatExpelling.toFloat(),
                         valueRange = 0F..500F,
                         size = SMALL
                     )
-                    ParameterIndicator(
+                    Indicator(
                         name = "Voltage",
                         unit = "V",
                         value = faircon.parameter.tecVoltage,
@@ -118,7 +116,7 @@ fun CoolingScreen(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                ControllerSlider(
+                SlideController(
                     name = "Fan Speed",
                     unit = "Rpm",
                     newValue = faircon.controller.fanSpeed.toFloat(),
@@ -126,7 +124,7 @@ fun CoolingScreen(
                     onValueChangeFinished = { webSocket.updateFanSpeed(it.toInt()) }
                 )
 
-                ControllerSlider(
+                SlideController(
                     name = "Temperature",
                     unit = "℃",
                     newValue = faircon.controller.temperature,
@@ -134,7 +132,7 @@ fun CoolingScreen(
                     onValueChangeFinished = { webSocket.updateTemperature(it) }
                 )
 
-                ControllerSlider(
+                SlideController(
                     name = "Tec Voltage",
                     unit = "V",
                     newValue = faircon.controller.tecVoltage,
