@@ -1,8 +1,8 @@
 package com.example.faircon.di
 
-import com.example.faircon.business.domain.util.Urls
-import com.example.faircon.framework.datasource.network.services.ConnectService
-import com.example.faircon.framework.datasource.network.webSocket.WebSocketListener
+import com.example.faircon.util.Urls
+import com.example.faircon.network.services.FairconService
+import com.example.faircon.network.webSocket.WebSocketListener
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,10 +38,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideConnectService(
+    fun provideFairconService(
         retrofit: Retrofit
-    ): ConnectService {
+    ): FairconService {
         return retrofit
-            .create(ConnectService::class.java)
+            .create(FairconService::class.java)
     }
 }

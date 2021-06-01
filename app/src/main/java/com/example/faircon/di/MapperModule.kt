@@ -1,6 +1,6 @@
 package com.example.faircon.di
 
-import com.example.faircon.framework.datasource.network.mappers.FairconMapper
+import com.example.faircon.network.mappers.FairconMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

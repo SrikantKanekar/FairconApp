@@ -1,7 +1,7 @@
 package com.example.faircon.di
 
 import android.content.Context
-import com.example.faircon.framework.presentation.ui.BaseApplication
+import com.example.faircon.presentation.ui.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
