@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,14 +24,16 @@ fun DiagnosticScreen(
                 .fillMaxWidth()
                 .clickable { navigateToHealth() }
                 .padding(horizontal = 16.dp, vertical = 25.dp),
-            text = "Health"
+            text = "Health",
+            fontWeight = FontWeight.Bold
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { navigateToPerformance() }
                 .padding(horizontal = 16.dp, vertical = 25.dp),
-            text = "Performance"
+            text = "Performance",
+            fontWeight = FontWeight.Bold
         )
     }
 }

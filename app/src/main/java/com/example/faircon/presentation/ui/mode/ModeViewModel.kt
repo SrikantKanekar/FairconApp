@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.faircon.model.Mode
 import com.example.faircon.network.webSocket.WebSocket
+import com.example.faircon.util.printLogD
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

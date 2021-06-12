@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.faircon.model.Mode.*
 import com.example.faircon.presentation.components.ModeButton
+import com.example.faircon.util.printLogD
 
 @Composable
 fun ModeScreen(
